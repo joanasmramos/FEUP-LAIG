@@ -179,7 +179,7 @@ class MySceneGraphAdapt{
     parseScene(sceneNode) {
 
         var rootObject = this.reader.getString(sceneNode, 'root');
-        var axisLength = this.reader.getFloat(sceneNode, 'axis_length');
+        this.scene.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
         if(!(rootObject!=null && rootObject!=""))
             return "You must define a root object in the <scene> tag";
