@@ -105,20 +105,20 @@ class MySceneGraphAdapt{
                 return error;
         }
 
-        //VI ATÉ AQUI
-        //------------------------------------------------------------------
-
-        // <ILLUMINATION>
-        if ((index = nodeNames.indexOf("ILLUMINATION")) == -1)
-            return "tag <ILLUMINATION> missing";
+        // <views>
+        if ((index = nodeNames.indexOf("views")) == -1)
+            return "tag <views> missing";
         else {
-            if (index != ILLUMINATION_INDEX)
-                this.onXMLMinorError("tag <ILLUMINATION> out of order");
+            if (index != VIEWS_INDEX)
+                this.onXMLMinorError("tag <views> out of order");
 
-            //Parse ILLUMINATION block
-            if ((error = this.parseIllumination(rootChildren[index])) != null)
+            //Parse views block
+            if ((error = this.parseViews(rootChildren[index])) != null)
                 return error;
         }
+
+        //VI ATÉ AQUI
+        //------------------------------------------------------------------
 
         // <LIGHTS>
         if ((index = nodeNames.indexOf("LIGHTS")) == -1)
@@ -171,6 +171,7 @@ class MySceneGraphAdapt{
 
     /**
      * Parses the <scene> block.
+     * @param {scene block element} sceneNode
      */
     parseScene(sceneNode) {
 
@@ -178,15 +179,12 @@ class MySceneGraphAdapt{
         this.idRoot = this.reader.getString(sceneNode, 'root');
         this.referenceLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        if(!(rootObject!=null && rootObject!=""))
-            return "You must define a root object in the <scene> tag";
+        if(!(this.idRoot!=null && this.idRoot!=""))
+            return "You must define a root component in the <scene> tag";
 
-        if(!(axisLength!=null && !isNaN(axisLength))) {
-            axisLength = 1;
+        if(!(this.referenceLength!=null && !isNaN(this.referenceLength))) {
             this.onXMLMinorError("unable to parse value for axis length; assuming axis length = 1");
         }
-
-        //TO DO: armazenar estes dados, descobrir como? perceber o que é o root.
 
         this.log("Parsed scene");
 
@@ -194,13 +192,12 @@ class MySceneGraphAdapt{
     }
 
     /**
-     * Parses the <ILLUMINATION> block.
-     * @param {illumination block element} illuminationNode
+     * Parses the <views> block.
+     * @param {views block element} viewsNode
      */
-    parseIllumination(illuminationNode) {
-        // TODO: Parse Illumination node
+    parseViews(viewsNode) {
 
-        this.log("Parsed illumination");
+        this.log("Parsed views");
 
         return null;
     }
