@@ -4,8 +4,8 @@
     <views default="unique_persp" >
 
         <perspective id="unique_persp" near="0.1" far="500" angle="ff">
-            <from x="ff" y="ff" z="ff" />
-            <to x="ff" y="ff" z="ff" />
+            <from x="15" y="15" z="15" />
+            <to x="0" y="0" z="0" />
         </perspective>
 
     </views>
@@ -18,7 +18,7 @@
     <lights>
 
         <omni id="unique_omni" enabled="1" >
-            <location x="0" y="3" z="-3" w="ff" />
+            <location x="3" y="3" z="0" w="1" />
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
@@ -27,53 +27,41 @@
     </lights>
 
     <textures>
-        <texture id="unique_tex" file="images/vidral.jpg" />
+        <texture id="unique_tex" file="images/trunk-image.jpg" />
     </textures>
 
     <materials>
         <material id="unique_mat" shininess = "1" >
-            <emission r="ff" g="ff" b="ff" a="ff" />
-            <ambient r="ff" g="ff" b="ff" a="ff" />
-            <diffuse r="ff" g="ff" b="ff" a="ff" />
-            <specular r="ff" g="ff" b="ff" a="ff" />
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
         </material>
     </materials>
 
     <transformations>
-        <transformation id="ss">
-            <translate x="ff" y="ff" z="ff" />
-            <rotate axis="cc" angle="ff" />
-            <scale x="ff" y="ff" z="ff" />
+        <transformation id="unique_trf">
+            <translate x="0" y="0" z="0" />
         </transformation>
     </transformations>
 
     <primitives>
-        <primitive id="ss">
-            <rectangle x1="ff" y1="ff" x2="ff" y2="ff" />
-            <triangle x1="ff" y1="ff" z1="ff"
-            x2="ff" y2="ff" z2="ff"
-            x3="ff" y3="ff" z3="ff" />
-            <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
-            <sphere radius="ff" slices="ii" stacks="ii" />
-            <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+        <primitive id="unique_prim">
+            <rectangle x1="0" y1="0" x2="5" y2="5" />
         </primitive >
     </primitives >
 
  <components>
-    <component id="ss">
+    <component id="unique_comp">
         <transformation>
-            <transformationref id="ss" />
-            <translate x="ff" y="ff" z="ff" />
-            <rotate axis="cc" angle="ff" />
-            <scale x="ff" y="ff" z="ff" />
+            <transformationref id="unique_trf" />
         </transformation>
         <materials>
-            <material id="ss" />
+            <material id="unique_mat" />
         </materials>
-        <texture id="ss" length_s="ff" length_t="ff" />
+        <texture id="unique_tex" length_s="1" length_t="1" />
         <children>
-            <componentref id="ss" />
-            <primitiveref id="ss" />
+            <primitiveref id="unique_prim" />
         </children>
     </component>
  </components>

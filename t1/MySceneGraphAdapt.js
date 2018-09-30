@@ -36,11 +36,7 @@ class MySceneGraphAdapt{
         this.nodes = [];
 
         this.idRoot = null;                    // The id of the root element.
-
-        this.axisCoords = [];
-        this.axisCoords['x'] = [1, 0, 0];
-        this.axisCoords['y'] = [0, 1, 0];
-        this.axisCoords['z'] = [0, 0, 1];
+        this.referenceLength = 1;              // Axis' length. default is 1
 
         // File reading 
         this.reader = new CGFXMLreader();
@@ -53,7 +49,6 @@ class MySceneGraphAdapt{
 
         this.reader.open('scenes/' + filename, this);
     }
-
 
     /*
      * Callback to be executed after successful reading
@@ -110,6 +105,7 @@ class MySceneGraphAdapt{
                 return error;
         }
 
+        //VI ATÉ AQUI
         //------------------------------------------------------------------
 
         // <ILLUMINATION>
@@ -178,8 +174,9 @@ class MySceneGraphAdapt{
      */
     parseScene(sceneNode) {
 
-        var rootObject = this.reader.getString(sceneNode, 'root');
-        this.scene.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
+        //é preciso verificar depois nos components se este id existe
+        this.idRoot = this.reader.getString(sceneNode, 'root');
+        this.referenceLength = this.reader.getFloat(sceneNode, 'axis_length');
 
         if(!(rootObject!=null && rootObject!=""))
             return "You must define a root object in the <scene> tag";
