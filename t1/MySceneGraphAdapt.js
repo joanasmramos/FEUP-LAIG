@@ -196,6 +196,14 @@ class MySceneGraphAdapt{
      * @param {views block element} viewsNode
      */
     parseViews(viewsNode) {
+        var children = viewsNode.children;
+
+        //TO DO: verificar se children está vazia -> erro
+
+        var defaultView = this.reader.getString(viewsNode, 'default');
+
+        //TO DO: verificar se defaultView é válido 
+        //TO DO: guardar perspective (camera) diretamente na xmlscene
 
         this.log("Parsed views");
 
