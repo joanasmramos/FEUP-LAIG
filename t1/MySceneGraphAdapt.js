@@ -2,9 +2,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 
 /*
 ERROS:
-Nas tags filhas da tag yas (que deviam ser scene, views, ambient ...)
-dá pela seguinte ordem: parserror, scene, views, ambient, lights, apenas
-descobrir o que se passa
+// escrever aqui se existir algum problema com a versão atual
 */
 
 // Order of the groups in the XML document.
@@ -33,10 +31,11 @@ class MySceneGraphAdapt{
         this.scene = scene;
         scene.graph = this;
 
+        this.data = new MySceneData();
+
         this.nodes = [];
 
         this.idRoot = null;                    // The id of the root element.
-        this.referenceLength = 1;              // Axis' length. default is 1
 
         // File reading 
         this.reader = new CGFXMLreader();
@@ -177,12 +176,13 @@ class MySceneGraphAdapt{
 
         //é preciso verificar depois nos components se este id existe
         this.idRoot = this.reader.getString(sceneNode, 'root');
-        this.referenceLength = this.reader.getFloat(sceneNode, 'axis_length');
+        this.data.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
         if(!(this.idRoot!=null && this.idRoot!=""))
             return "You must define a root component in the <scene> tag";
 
-        if(!(this.referenceLength!=null && !isNaN(this.referenceLength))) {
+        if(!(this.data.axisLength!=null && !isNaN(this.data.axisLength))) {
+            this.data.axisLength = 1;
             this.onXMLMinorError("unable to parse value for axis length; assuming axis length = 1");
         }
 
@@ -198,11 +198,13 @@ class MySceneGraphAdapt{
     parseViews(viewsNode) {
         var children = viewsNode.children;
 
-        //TO DO: verificar se children está vazia -> erro
+        if(children.length == 0) 
+            return "You must define a perspective/ortho view in the <views> tag";
+        
 
         var defaultView = this.reader.getString(viewsNode, 'default');
 
-        //TO DO: verificar se defaultView é válido 
+        //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
         //TO DO: guardar perspective (camera) diretamente na xmlscene
 
         this.log("Parsed views");
