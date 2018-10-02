@@ -3,7 +3,7 @@
 
     <views default="unique_persp" >
 
-        <perspective id="unique_persp" near="0.1" far="500" angle="ff">
+        <perspective id="unique_persp" near="0.1" far="500" angle="1">
             <from x="15" y="15" z="15" />
             <to x="0" y="0" z="0" />
         </perspective>

@@ -37,7 +37,7 @@ class MySceneGraphAdapt{
 
         this.idRoot = null;                    // The id of the root element.
 
-        // File reading 
+        // File reading
         this.reader = new CGFXMLreader();
 
         /*
@@ -198,14 +198,30 @@ class MySceneGraphAdapt{
     parseViews(viewsNode) {
         var children = viewsNode.children;
 
-        if(children.length == 0) 
+        if(children.length == 0)
             return "You must define a perspective/ortho view in the <views> tag";
-        
+
 
         var defaultView = this.reader.getString(viewsNode, 'default');
-
         //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
-        //TO DO: guardar perspective (camera) diretamente na xmlscene
+
+        var idp, near, far, angle, from, to;
+
+        for(let i=0;i<children.length;i++) {
+          if(children[i].nodeName == "perspective") {
+            idp=children[i].getAttribute("id");
+            near=children[i].getAttribute("near");
+            far=children[i].getAttribute("far");
+            angle=children[i].getAttribute("angle");
+            from=vec3.fromValues(children[i].firstElementChild.getAttribute("x"),
+                                 children[i].firstElementChild.getAttribute("y"),
+                                 children[i].firstElementChild.getAttribute("z"));
+            to=vec3.fromValues(children[i].lastElementChild.getAttribute("x"),
+                               children[i].lastElementChild.getAttribute("y"),
+                               children[i].lastElementChild.getAttribute("z"));
+            //TO DO: fazer verificações (muitas), construir camara, map e por na data
+          }
+        }
 
         this.log("Parsed views");
 
@@ -360,7 +376,7 @@ class MySceneGraphAdapt{
     }
 
     /**
-     * Parses the <TEXTURES> block. 
+     * Parses the <TEXTURES> block.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
