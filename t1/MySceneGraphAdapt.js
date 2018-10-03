@@ -118,6 +118,24 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Verifies an array of strings and an array of floats
+     * @param {strings to verify} strs 
+     * @param {floats} fls 
+     */
+    verifyStringsFloats(strs, fls) {
+        for(let i=0;i<strs.length;i++) {
+            if(!this.verifyString(strs[i]))
+                return false;
+        }
+
+        for(let i=0;i<fls.length;i++) {
+            if(!this.verifyFloat(fls[i]))
+                return false;
+        }
+        return true;
+    }
+
+    /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
      */
@@ -260,14 +278,29 @@ class MySceneGraphAdapt {
      * @param {views block element} viewsNode
      */
     parseViews(viewsNode) {
-        var children = viewsNode.children;
+        var perspectives = viewsNode.getElementsByTagName("perspective");
+        var orthos = viewsNode.getElementsByTagName("ortho");
 
-        if (children.length == 0)
-            return "You must define a perspective/ortho view in the <views> tag";
+        if(perspectives.length == 0 && orthos.length == 0) 
+            return "<views> - you must define at least one perspective/ortho view";
+        
 
-        var idp, near, far, angle, from, to;
-        var valid=false;
+        var id, near, far, angle, from, to;
+            
+        for(let i = 0; i < perspectives.length; i++) {
+            id = this.reader.getString(perspectives[i], "id", true);
+            near = this.reader.getFloat(perspectives[i], "near", true);
+            far =  this.reader.getFloat(perspectives[i], "far", true);
+            angle = this.reader.getFloat(perspectives[i], "angle", true);
+            //from = this.reader.getVector3(perspectives[i], "from", true);
+            //to = this.reader.getVector3(perspectives[i], "to");
+            if(!this.verifyStringsFloats([id], [near, far, angle]))
+                return "<views> - something wrong with perspectives";
 
+        }
+
+
+        /*
         for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName == "perspective") {
                 idp = children[i].getAttribute("id");
@@ -283,8 +316,9 @@ class MySceneGraphAdapt {
                 //TO DO: fazer verificações (muitas), construir camara, map e por na data
             }
         }
+        */
 
-        this.data.defaultView = this.reader.getString(viewsNode, 'default');
+        this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
         //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
 
         this.log("Parsed views");
