@@ -12,12 +12,13 @@ class MySceneData {
 
         //views
         this.defaultView = "";
-        this.defaultCamera = "";
         this.views = new Object();
 
+        //lights
+        
         //array para ambient c 4
-        this.ambientComponent = ['0', '0', '0', '1'];
-        this.backgroundComponent = ['0', '0', '0', '1'];
+        this.ambientComponent = ["", "", "", '1'];
+        this.backgroundComponent = ["", "", "", '1'];
 
         //textures
         this.id_texture = "";
