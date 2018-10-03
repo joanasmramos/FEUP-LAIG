@@ -538,8 +538,8 @@ class MySceneGraphAdapt {
 
             for (let i = 0; i < children.length; i++) {
                 if (children[i].nodeName == "texture") {
-                    this.id_texture = this.reader.getString(texturesNode, 'id');
-                    this.file_texture = this.reader.getString(texturesNode, 'file');
+                    this.id_texture = this.reader.getString(children[i], 'id');
+                    this.file_texture = this.reader.getString(children[i], 'file');
 
                     if (!(this.id_texture != null && this.id_texture != "")) {
                         return "ID for texture in <textures> tag  is empty";
