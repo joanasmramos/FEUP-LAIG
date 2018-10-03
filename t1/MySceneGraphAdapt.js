@@ -4,6 +4,10 @@ var DEGREE_TO_RAD = Math.PI / 180;
 ERROS:
 // escrever aqui se existir algum problema com a versão atual
 */
+/*
+RELEMBRAR:
+NÃO PODEMOS FAZER LIGHTS[1] = NOVA LIGHT (na xmlscene), APENAS DAR SET DAS COISAS
+*/
 
 // Order of the groups in the XML document.
 
@@ -120,7 +124,7 @@ class MySceneGraphAdapt {
     /**
      * Verifies an array of strings and an array of floats
      * @param {strings to verify} strs 
-     * @param {floats} fls 
+     * @param {floats to verify} fls 
      */
     verifyStringsFloats(strs, fls) {
         for(let i=0;i<strs.length;i++) {
@@ -133,6 +137,32 @@ class MySceneGraphAdapt {
                 return false;
         }
         return true;
+    }
+
+    /**
+     * Verifies an array of elements
+     * @param {Elements to verify} elems 
+     */
+    verifyElems(elems) {
+        for(let i=0;i<elems.length;i++) {
+            if(!this.verifyElement(elems[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Reads x, y, z from an element, returns vector from values
+     * @param {element} node 
+     */
+    readXYZ(node) {
+        var x, y, z;
+        x = this.reader.getFloat(node, "x", true);
+        y = this.reader.getFloat(node, "y", true);
+        z = this.reader.getFloat(node, "z", true);
+        
+        return vec3.fromValues(x, y, z);
     }
 
     /**
@@ -285,41 +315,39 @@ class MySceneGraphAdapt {
             return "<views> - you must define at least one perspective/ortho view";
         
 
-        var id, near, far, angle, from, to;
+        var id, near, far, angle, from, to, fromTag, toTag;
             
+        //read perspectives
         for(let i = 0; i < perspectives.length; i++) {
             id = this.reader.getString(perspectives[i], "id", true);
+
+            if(!this.verifyString(id) || this.data.views[id] != null)
+                return "views - something wrong with perspectives";
+
             near = this.reader.getFloat(perspectives[i], "near", true);
             far =  this.reader.getFloat(perspectives[i], "far", true);
             angle = this.reader.getFloat(perspectives[i], "angle", true);
-            //from = this.reader.getVector3(perspectives[i], "from", true);
-            //to = this.reader.getVector3(perspectives[i], "to");
-            if(!this.verifyStringsFloats([id], [near, far, angle]))
+            fromTag = perspectives[i].getElementsByTagName("from")[0];
+            toTag = perspectives[i].getElementsByTagName("to")[0];
+
+            if(!this.verifyElems([fromTag, toTag]))
                 return "<views> - something wrong with perspectives";
 
+            from = this.readXYZ(fromTag);
+            to = this.readXYZ(toTag);
+            
+            if(!this.verifyStringsFloats([], [near, far, angle, from[0], from[1], from[2], to[0], to[1], to[2]]))
+                return "<views> - something wrong with perspectives";
+            
+            this.data.views[id] = new CGFcamera(angle, near, far, from, to);
         }
 
-
-        /*
-        for (let i = 0; i < children.length; i++) {
-            if (children[i].nodeName == "perspective") {
-                idp = children[i].getAttribute("id");
-                near = children[i].getAttribute("near");
-                far = children[i].getAttribute("far");
-                angle = children[i].getAttribute("angle");
-                from = vec3.fromValues(children[i].firstElementChild.getAttribute("x"),
-                    children[i].firstElementChild.getAttribute("y"),
-                    children[i].firstElementChild.getAttribute("z"));
-                to = vec3.fromValues(children[i].lastElementChild.getAttribute("x"),
-                    children[i].lastElementChild.getAttribute("y"),
-                    children[i].lastElementChild.getAttribute("z"));
-                //TO DO: fazer verificações (muitas), construir camara, map e por na data
-            }
-        }
-        */
+        //TO DO: orthos
 
         this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
-        //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
+
+        if(!this.verifyString(this.data.defaultView) || this.data.views[this.data.defaultView]==null)
+            return "views - something wrong with perspectives";
 
         this.log("Parsed views");
 

@@ -13,7 +13,7 @@ class MySceneData {
         //views
         this.defaultView = "";
         this.defaultCamera = "";
-        this.views = "";
+        this.views = new Object();
 
         //array para ambient c 4
         this.ambientComponent = ['0', '0', '0', '1'];
