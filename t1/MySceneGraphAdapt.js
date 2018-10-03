@@ -12,15 +12,20 @@ var VIEWS_INDEX = 1;
 var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
+/*var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
+*/
+var R_INDEX = 0;
+var G_INDEX = 1;
+var B_INDEX = 2;
+var A_INDEX = 3;
 
 /**
  * MySceneGraph class, representing the scene graph.
  */
-class MySceneGraphAdapt{
+class MySceneGraphAdapt {
     /**
      * @constructor
      */
@@ -116,6 +121,31 @@ class MySceneGraphAdapt{
                 return error;
         }
 
+        //<ambient>
+        if ((index = nodeNames.indexOf("ambient")) == -1) {
+            return "tag <ambient> missing";
+        }
+        else {
+            if (index != AMBIENT_INDEX)
+                this.onXMLMinorError("tag <ambient> out of order");
+
+            //Parse ambient block
+            if ((error = this.parseAmbient(rootChildren[index])) != null)
+                return error;
+        }
+
+        // <ambient>
+        if ((index = nodeNames.indexOf("textures")) == -1)
+            return "tag <textures> missing";
+        else {
+            if (index != TEXTURES_INDEX)
+                this.onXMLMinorError("tag <textures> out of order");
+
+            //Parse TEXTURES block
+            if ((error = this.parseTextures(rootChildren[index])) != null)
+                return error;
+        }
+
         //VI ATÉ AQUI
         //------------------------------------------------------------------
 
@@ -128,18 +158,6 @@ class MySceneGraphAdapt{
 
             //Parse LIGHTS block
             if ((error = this.parseLights(rootChildren[index])) != null)
-                return error;
-        }
-
-        // <TEXTURES>
-        if ((index = nodeNames.indexOf("TEXTURES")) == -1)
-            return "tag <TEXTURES> missing";
-        else {
-            if (index != TEXTURES_INDEX)
-                this.onXMLMinorError("tag <TEXTURES> out of order");
-
-            //Parse TEXTURES block
-            if ((error = this.parseTextures(rootChildren[index])) != null)
                 return error;
         }
 
@@ -166,6 +184,7 @@ class MySceneGraphAdapt{
             if ((error = this.parseNodes(rootChildren[index])) != null)
                 return error;
         }
+
     }
 
     /**
@@ -178,10 +197,10 @@ class MySceneGraphAdapt{
         this.idRoot = this.reader.getString(sceneNode, 'root');
         this.data.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        if(!(this.idRoot!=null && this.idRoot!=""))
+        if (!(this.idRoot != null && this.idRoot != ""))
             return "You must define a root component in the <scene> tag";
 
-        if(!(this.data.axisLength!=null && !isNaN(this.data.axisLength))) {
+        if (!(this.data.axisLength != null && !isNaN(this.data.axisLength))) {
             this.data.axisLength = 1;
             this.onXMLMinorError("unable to parse value for axis length; assuming axis length = 1");
         }
@@ -198,7 +217,7 @@ class MySceneGraphAdapt{
     parseViews(viewsNode) {
         var children = viewsNode.children;
 
-        if(children.length == 0)
+        if (children.length == 0)
             return "You must define a perspective/ortho view in the <views> tag";
 
 
@@ -207,20 +226,20 @@ class MySceneGraphAdapt{
 
         var idp, near, far, angle, from, to;
 
-        for(let i=0;i<children.length;i++) {
-          if(children[i].nodeName == "perspective") {
-            idp=children[i].getAttribute("id");
-            near=children[i].getAttribute("near");
-            far=children[i].getAttribute("far");
-            angle=children[i].getAttribute("angle");
-            from=vec3.fromValues(children[i].firstElementChild.getAttribute("x"),
-                                 children[i].firstElementChild.getAttribute("y"),
-                                 children[i].firstElementChild.getAttribute("z"));
-            to=vec3.fromValues(children[i].lastElementChild.getAttribute("x"),
-                               children[i].lastElementChild.getAttribute("y"),
-                               children[i].lastElementChild.getAttribute("z"));
-            //TO DO: fazer verificações (muitas), construir camara, map e por na data
-          }
+        for (let i = 0; i < children.length; i++) {
+            if (children[i].nodeName == "perspective") {
+                idp = children[i].getAttribute("id");
+                near = children[i].getAttribute("near");
+                far = children[i].getAttribute("far");
+                angle = children[i].getAttribute("angle");
+                from = vec3.fromValues(children[i].firstElementChild.getAttribute("x"),
+                    children[i].firstElementChild.getAttribute("y"),
+                    children[i].firstElementChild.getAttribute("z"));
+                to = vec3.fromValues(children[i].lastElementChild.getAttribute("x"),
+                    children[i].lastElementChild.getAttribute("y"),
+                    children[i].lastElementChild.getAttribute("z"));
+                //TO DO: fazer verificações (muitas), construir camara, map e por na data
+            }
         }
 
         this.log("Parsed views");
@@ -228,6 +247,90 @@ class MySceneGraphAdapt{
         return null;
     }
 
+    /**
+     * Parses the <ambient> block. 
+     * @param {ambient block element} ambientsNode
+     */
+    parseAmbient(ambientsNode) {
+        var children = ambientsNode.children;
+
+        if (children.length == 0)
+            return "You must define an ambient/background component in the <ambient> tag";
+        else {
+            var red, green, blue, alpha;
+
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].nodeName == "ambient") {
+                    red = children[i].getAttribute("r");
+                    green = children[i].getAttribute("g");
+                    blue = children[i].getAttribute("b");
+                    alpha = children[i].getAttribute("a");
+
+                    if (red != null) {
+                        if (isNaN(red)) return "red RGBA property of ambient component('r') is a non numeric value";
+                        else if (red < 0 || red > 1) return "red RGBA property of ambient component('r') is out of bounds [0<r<1]";
+                        else
+                            this.data.ambientComponent[R_INDEX] = red;
+                    } else return "red RGBA property of ambient component('r') is empty, assuming 'r' = 0";
+                    if (green != null) {
+                        if (isNaN(green)) return "green RGBA property of ambient component('g') is a non numeric value";
+                        else if (green < 0 || green > 1) return "green RGBA property of ambient component('g') is out of bounds [0<g<1]";
+                        else
+                            this.data.ambientComponent[G_INDEX] = green;
+                    } else return "green RGBA property of ambient component('g') is empty, assuming 'g' = 0";
+                    if (blue != null) {
+                        if (isNaN(blue)) return "blue RGBA property of ambient component('b') is a non numeric value";
+                        else if (blue < 0 || blue > 1) return "blue RGBA property of ambient component('b') is out of bounds [0<b<1]";
+                        else
+                            this.data.ambientComponent[B_INDEX] = blue;
+                    } else return "blue RGBA property of ambient component('b') is empty, assuming 'b' = 0";
+                    if (alpha != null) {
+                        if (isNaN(alpha)) return "alpha RGBA property of ambient component('a') is a non numeric value";
+                        else if (alpha < 0 || alpha > 1) return "alpha RGBA property of ambient component('a') is out of bounds [0<a<1]";
+                        else
+                            this.data.ambientComponent[A_INDEX] = alpha;
+                    } else return "alpha RGBA property of ambient component('a') is empty, assuming 'a' = 1";
+
+                }
+                if (children[i].nodeName == "background") {
+                    red = children[i].getAttribute("r");
+                    green = children[i].getAttribute("g");
+                    blue = children[i].getAttribute("b");
+                    alpha = children[i].getAttribute("a");
+
+                    if (red != null) {
+                        if (isNaN(red)) return "red RGBA property of background component('r') is a non numeric value";
+                        else if (red < 0 || red > 1) return "red RGBA property of background component('r') is out of bounds [0<r<1]";
+                        else
+                            this.data.backgroundComponent[R_INDEX] = red;
+                    } else return "red RGBA property of background component('r') is empty, assuming 'r' = 0";
+                    if (green != null) {
+                        if (isNaN(green)) return "green RGBA property of background component('g') is a non numeric value";
+                        else if (green < 0 || green > 1) return "green RGBA property of background component('g') is out of bounds [0<g<1]";
+                        else
+                            this.data.backgroundComponent[G_INDEX] = green;
+                    } else return "green RGBA property of background component('g') is empty, assuming 'g' = 0";
+                    if (blue != null) {
+                        if (isNaN(blue)) return "blue RGBA property of background component('b') is a non numeric value";
+                        else if (blue < 0 || blue > 1) return "blue RGBA property of background component('b') is out of bounds [0<b<1]";
+                        else
+                            this.data.backgroundComponent[B_INDEX] = blue;
+                    } else return "blue RGBA property of background component('b') is empty, assuming 'b' = 0";
+                    if (alpha != null) {
+                        if (isNaN(alpha)) return "alpha RGBA property of background component('a') is a non numeric value";
+                        else if (alpha < 0 || alpha > 1) return "alpha RGBA property of background component('a') is out of bounds [0<a<1]";
+                        else
+                            this.data.backgroundComponent[A_INDEX] = alpha;
+                    } else return "alpha RGBA property of background component('a') is empty, assuming 'a' = 1";
+
+                }
+            }
+        }
+
+        this.log("Parsed ambient");
+
+        return null;
+    }
 
     /**
      * Parses the <LIGHTS> node.
@@ -376,12 +479,32 @@ class MySceneGraphAdapt{
     }
 
     /**
-     * Parses the <TEXTURES> block.
+     * Parses the <TEXTURES> block. 
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-        // TODO: Parse block
+        var children = texturesNode.children;
 
+        if (children.length == 0)
+            return "You must define a texture in the <textures> tag";
+        else {
+            //confirmar nos components se o id é o mesmo
+            var id_texture, file_texture;
+
+            for (let i = 0; i < children.length; i++) {
+                if (children[i].nodeName == "texture") {
+                    this.id_texture = this.reader.getString(texturesNode, 'id');
+                    this.file_texture = this.reader.getString(texturesNode, 'file');
+
+                    if (!(this.id_texture != null && this.id_texture != "")) {
+                        return "ID for texture in <textures> tag  is empty";
+                    } else this.data.id_texture = id_texture;
+                    if (!(this.file_texture != null && this.file_texture != "")) {
+                        return "file for texture in <textures> tag  is missing";
+                    } else this.data.file_texture = file_texture;
+                }
+            }
+        }
         console.log("Parsed textures");
 
         return null;
@@ -391,8 +514,164 @@ class MySceneGraphAdapt{
      * Parses the <MATERIALS> node.
      * @param {materials block element} materialsNode
      */
+
     parseMaterials(materialsNode) {
-        // TODO: Parse block
+        var children = materialsNode.children;
+        var grandChildren = [];
+
+        if (children.length == 0)
+            return "You must define a material in the <materials> tag";
+        else {
+            //confirmar nos components se o id é o mesmo
+            var id_material, shininess_material;
+            var red, green, blue, alpha;
+            for (let i = 0; i < children.length; i++) {
+                grandChildren = children[i].children;
+
+                if (children[i].nodeName == "material") {
+                    this.id_material = this.reader.getString(materialsNode, 'id');
+                    this.shininess_material = this.reader.getFloat(materialsNode, 'shininess');
+
+                    if (!(this.id_material != null && this.id_material != "")) {
+                        return "ID for material in <materials> tag  is empty";
+                    } else this.data.id_material = id_material;
+
+                    if (!(this.shininess_material != null && !isNaN(this.shininess_material))) {
+                        this.shininess_material = 1;
+                        this.data.shininess_material = shininess_material;
+                        this.onXMLMinorError("unable to parse value for shininess; assuming shininess = 1");
+                    }
+                    for (let i = 0; i < grandChildren.length; i++) {
+                        if (grandChildren[i].nodeName == "emission") {
+                            red = grandChildren[i].getAttribute("r");
+                            green = grandChildren[i].getAttribute("g");
+                            blue = grandChildren[i].getAttribute("b");
+                            alpha = grandChildren[i].getAttribute("a");
+
+                            if (red != null) {
+                                if (isNaN(red)) return "red RGBA property of emission component('r') is a non numeric value";
+                                else if (red < 0 || red > 1) return "red RGBA property of emission component('r') is out of bounds [0<r<1]";
+                                else
+                                    this.data.emission_material[R_INDEX] = red;
+                            } else return "red RGBA property of emission component('r') is empty, assuming 'r' = 0";
+                            if (green != null) {
+                                if (isNaN(green)) return "green RGBA property of emission component('g') is a non numeric value";
+                                else if (green < 0 || green > 1) return "green RGBA property of emission component('g') is out of bounds [0<g<1]";
+                                else
+                                    this.data.emission_material[G_INDEX] = green;
+                            } else return "green RGBA property of emission component('g') is empty, assuming 'g' = 0";
+                            if (blue != null) {
+                                if (isNaN(blue)) return "blue RGBA property of emission component('b') is a non numeric value";
+                                else if (blue < 0 || blue > 1) return "blue RGBA property of emission component('b') is out of bounds [0<b<1]";
+                                else
+                                    this.data.emission_material[B_INDEX] = blue;
+                            } else return "blue RGBA property of emission component('b') is empty, assuming 'b' = 0";
+                            if (alpha != null) {
+                                if (isNaN(alpha)) return "alpha RGBA property of emission component('a') is a non numeric value";
+                                else if (alpha < 0 || alpha > 1) return "alpha RGBA property of emission component('a') is out of bounds [0<a<1]";
+                                else
+                                    this.data.emission_material[A_INDEX] = alpha;
+                            } else return "alpha RGBA property of emission component('a') is empty, assuming 'a' = 1";
+                        }
+                        if (grandChildren[i].nodeName == "ambient") {
+                            red = grandChildren[i].getAttribute("r");
+                            green = grandChildren[i].getAttribute("g");
+                            blue = grandChildren[i].getAttribute("b");
+                            alpha = grandChildren[i].getAttribute("a");
+
+                            if (red != null) {
+                                if (isNaN(red)) return "red RGBA property of ambient component('r') is a non numeric value";
+                                else if (red < 0 || red > 1) return "red RGBA property of ambient component('r') is out of bounds [0<r<1]";
+                                else
+                                    this.data.ambient_material[R_INDEX] = red;
+                            } else return "red RGBA property of ambient component('r') is empty, assuming 'r' = 0";
+                            if (green != null) {
+                                if (isNaN(green)) return "green RGBA property of ambient component('g') is a non numeric value";
+                                else if (green < 0 || green > 1) return "green RGBA property of ambient component('g') is out of bounds [0<g<1]";
+                                else
+                                    this.data.ambient_material[G_INDEX] = green;
+                            } else return "green RGBA property of ambient component('g') is empty, assuming 'g' = 0";
+                            if (blue != null) {
+                                if (isNaN(blue)) return "blue RGBA property of ambient component('b') is a non numeric value";
+                                else if (blue < 0 || blue > 1) return "blue RGBA property of ambient component('b') is out of bounds [0<b<1]";
+                                else
+                                    this.data.ambient_material[B_INDEX] = blue;
+                            } else return "blue RGBA property of ambient component('b') is empty, assuming 'b' = 0";
+                            if (alpha != null) {
+                                if (isNaN(alpha)) return "alpha RGBA property of ambient component('a') is a non numeric value";
+                                else if (alpha < 0 || alpha > 1) return "alpha RGBA property of ambient component('a') is out of bounds [0<a<1]";
+                                else
+                                    this.data.ambient_material[A_INDEX] = alpha;
+                            } else return "alpha RGBA property of ambient component('a') is empty, assuming 'a' = 1";
+                        }
+                        if (grandChildren[i].nodeName == "diffuse") {
+                            red = grandChildren[i].getAttribute("r");
+                            green = grandChildren[i].getAttribute("g");
+                            blue = grandChildren[i].getAttribute("b");
+                            alpha = grandChildren[i].getAttribute("a");
+
+                            if (red != null) {
+                                if (isNaN(red)) return "red RGBA property of diffuse component('r') is a non numeric value";
+                                else if (red < 0 || red > 1) return "red RGBA property of diffuse component('r') is out of bounds [0<r<1]";
+                                else
+                                    this.data.diffuse_material[R_INDEX] = red;
+                            } else return "red RGBA property of diffuse component('r') is empty, assuming 'r' = 0";
+                            if (green != null) {
+                                if (isNaN(green)) return "green RGBA property of diffuse component('g') is a non numeric value";
+                                else if (green < 0 || green > 1) return "green RGBA property of diffuse component('g') is out of bounds [0<g<1]";
+                                else
+                                    this.data.diffuse_material[G_INDEX] = green;
+                            } else return "green RGBA property of diffuse component('g') is empty, assuming 'g' = 0";
+                            if (blue != null) {
+                                if (isNaN(blue)) return "blue RGBA property of diffuse component('b') is a non numeric value";
+                                else if (blue < 0 || blue > 1) return "blue RGBA property of diffuse component('b') is out of bounds [0<b<1]";
+                                else
+                                    this.data.diffuse_material[B_INDEX] = blue;
+                            } else return "blue RGBA property of diffuse component('b') is empty, assuming 'b' = 0";
+                            if (alpha != null) {
+                                if (isNaN(alpha)) return "alpha RGBA property of diffuse component('a') is a non numeric value";
+                                else if (alpha < 0 || alpha > 1) return "alpha RGBA property of diffuse component('a') is out of bounds [0<a<1]";
+                                else
+                                    this.data.diffuse_material[A_INDEX] = alpha;
+                            } else return "alpha RGBA property of diffuse component('a') is empty, assuming 'a' = 1";
+                        }
+                        if (grandChildren[i].nodeName == "specular") {
+                            red = grandChildren[i].getAttribute("r");
+                            green = grandChildren[i].getAttribute("g");
+                            blue = grandChildren[i].getAttribute("b");
+                            alpha = grandChildren[i].getAttribute("a");
+
+                            if (red != null) {
+                                if (isNaN(red)) return "red RGBA property of specular component('r') is a non numeric value";
+                                else if (red < 0 || red > 1) return "red RGBA property of specular component('r') is out of bounds [0<r<1]";
+                                else
+                                    this.data.specular_material[R_INDEX] = red;
+                            } else return "red RGBA property of specular component('r') is empty, assuming 'r' = 0";
+                            if (green != null) {
+                                if (isNaN(green)) return "green RGBA property of specular component('g') is a non numeric value";
+                                else if (green < 0 || green > 1) return "green RGBA property of specular component('g') is out of bounds [0<g<1]";
+                                else
+                                    this.data.specular_material[G_INDEX] = green;
+                            } else return "green RGBA property of specular component('g') is empty, assuming 'g' = 0";
+                            if (blue != null) {
+                                if (isNaN(blue)) return "blue RGBA property of specular component('b') is a non numeric value";
+                                else if (blue < 0 || blue > 1) return "blue RGBA property of specular component('b') is out of bounds [0<b<1]";
+                                else
+                                    this.data.specular_material[B_INDEX] = blue;
+                            } else return "blue RGBA property of specular component('b') is empty, assuming 'b' = 0";
+                            if (alpha != null) {
+                                if (isNaN(alpha)) return "alpha RGBA property of specular component('a') is a non numeric value";
+                                else if (alpha < 0 || alpha > 1) return "alpha RGBA property of specular component('a') is out of bounds [0<a<1]";
+                                else
+                                    this.data.specular_material[A_INDEX] = alpha;
+                            } else return "alpha RGBA property of emission component('a') is empty, assuming 'a' = 1";
+                        }
+                    }
+                }
+            }
+        }
+
+
         this.log("Parsed materials");
         return null;
 

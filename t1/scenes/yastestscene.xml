@@ -11,7 +11,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.1" g="0.1" b="0.1" a="1" />
+        <ambient r="0.5" g="0.1" b="0.9" a="1" />
         <background r="0.2" g="0.2" b="0.2" a="1" />
     </ambient>
 
