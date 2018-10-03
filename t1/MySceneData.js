@@ -7,8 +7,12 @@ class MySceneData {
     * @constructor 
     */
     constructor() {
+        //scene
         this.axisLength = "";
+
+        //views
         this.defaultView = "";
+        this.defaultCamera = "";
         this.views = "";
 
         //array para ambient c 4
@@ -22,9 +26,9 @@ class MySceneData {
         //materials
         this.id_material = "";
         this.shininess_material = 1;
-        this.emission_material = ['0', '0', '0', '1'];
-        this.ambient_material = ['0', '0', '0', '1'];
-        this.diffuse_material = ['0', '0', '0', '1'];
-        this.specular_material = ['0', '0', '0', '1'];
+        this.emission_material = ["", "", "", 1];
+        this.ambient_material = ["", "", "", 1];
+        this.diffuse_material = ["", "", "", 1];
+        this.specular_material = ["", "", "", 1];
     }
 }

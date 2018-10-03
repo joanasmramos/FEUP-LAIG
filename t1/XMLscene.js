@@ -12,6 +12,7 @@ class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
+        this.data = "";
         this.lightValues = {};
     }
 
@@ -81,10 +82,10 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
-        this.camera.near = this.graph.near;
-        this.camera.far = this.graph.far;
+        this.camera=this.data.defaultCamera;
+        this.interface.setActiveCamera(this.camera);
 
-        this.axis = new CGFaxis(this, this.graph.referenceLength);
+        this.axis = new CGFaxis(this, this.data.axisLength);
 
         // TODO: Change ambient and background details according to parsed graph
 

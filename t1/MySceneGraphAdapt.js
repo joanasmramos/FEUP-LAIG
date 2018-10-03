@@ -37,6 +37,7 @@ class MySceneGraphAdapt {
         scene.graph = this;
 
         this.data = new MySceneData();
+        this.scene.data = this.data;
 
         this.nodes = [];
 
@@ -76,12 +77,56 @@ class MySceneGraphAdapt {
     }
 
     /**
+    * Verifies if element is not null
+    * @param  {element to verify} element
+    */
+    verifyElement(element) {
+        if (element != null)
+            return true;
+        return false;
+    }
+
+    /**
+    * Verifies string (is not empty/null)
+    * @param {string to verify} str
+    */
+    verifyString(str) {
+        if(str != "" && this.verifyElement(str))
+            return true;
+        return false;
+    }
+
+    /**
+     * Verifies if a string is valid and equal to another
+     * @param {string to verify} str
+     * @param {string to compare with} strModel
+     */
+    verifyStringEqual(str, strModel) {
+        if(this.verifyString(str) && str == strModel) 
+            return true;
+        return false;
+    }
+
+    /**
+     * Verifies if a float is valid
+     * @param {float to verify} fl
+     */
+    verifyFloat(fl) {
+        if(this.verifyElement(fl) && !isNaN(fl))
+            return true;
+        return false;
+    }
+
+    /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
      */
     parseXMLFile(rootElement) {
-        if (rootElement.nodeName != "yas")
-            return "root tag <yas> missing";
+        var errorRoot = !this.verifyStringEqual(rootElement.nodeName, "yas");
+
+        if(errorRoot) 
+            return "Something wrong with tag <yas>";
+        
 
         var rootChildren = rootElement.children;
 
@@ -92,9 +137,9 @@ class MySceneGraphAdapt {
             nodeNames.push(rootChildren[i].nodeName);
         }
 
-        var error;
-
         // Processes each node, verifying errors.
+
+        var error;
 
         // <scene>
         var index;
@@ -197,10 +242,10 @@ class MySceneGraphAdapt {
         this.idRoot = this.reader.getString(sceneNode, 'root');
         this.data.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        if (!(this.idRoot != null && this.idRoot != ""))
+        if (!this.verifyString(this.idRoot))
             return "You must define a root component in the <scene> tag";
 
-        if (!(this.data.axisLength != null && !isNaN(this.data.axisLength))) {
+        if (!this.verifyFloat(this.data.axisLength)) {
             this.data.axisLength = 1;
             this.onXMLMinorError("unable to parse value for axis length; assuming axis length = 1");
         }
@@ -220,11 +265,8 @@ class MySceneGraphAdapt {
         if (children.length == 0)
             return "You must define a perspective/ortho view in the <views> tag";
 
-
-        var defaultView = this.reader.getString(viewsNode, 'default');
-        //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
-
         var idp, near, far, angle, from, to;
+        var valid=false;
 
         for (let i = 0; i < children.length; i++) {
             if (children[i].nodeName == "perspective") {
@@ -242,13 +284,16 @@ class MySceneGraphAdapt {
             }
         }
 
+        this.data.defaultView = this.reader.getString(viewsNode, 'default');
+        //TO DO: verificar se defaultView é válido (existe, não nulo, é um id de alguma view)
+
         this.log("Parsed views");
 
         return null;
     }
 
     /**
-     * Parses the <ambient> block. 
+     * Parses the <ambient> block.
      * @param {ambient block element} ambientsNode
      */
     parseAmbient(ambientsNode) {
@@ -479,7 +524,7 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses the <TEXTURES> block. 
+     * Parses the <TEXTURES> block.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
