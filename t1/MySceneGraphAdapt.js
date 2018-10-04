@@ -14,8 +14,8 @@ var SCENE_INDEX = 0;
 var VIEWS_INDEX = 1;
 var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
-//var TEXTURES_INDEX = 4;
-//var MATERIALS_INDEX = 5;
+var TEXTURES_INDEX = 4;
+var MATERIALS_INDEX = 5;
 /*
 var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
@@ -79,8 +79,6 @@ class MySceneGraphAdapt {
         // As the graph loaded ok, signal the scene so that any additional initialization depending on the graph can take place
         this.scene.onGraphLoaded();
     }
-
-
 
     /**
     * Verifies if element is not null
@@ -154,20 +152,21 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Reads x, y, z from an element, returns vector from values
+     * Reads x, y, z from a DOM element, returns vector from values
+     * @param {element} elem
+     */
+    readXYZ(elem) {
+        var x, y, z;
+        x = this.reader.getFloat(elem, "x", true);
+        y = this.reader.getFloat(elem, "y", true);
+        z = this.reader.getFloat(elem, "z", true);
+        return vec3.fromValues(x, y, z);
+    }
+
+    /**
+     * Reads r, g, b from a DOM element, returns array
      * @param {element} node 
      */
-    readXYZ(node) {
-        var x, y, z;
-        //var w, vec;
-        x = this.reader.getFloat(node, "x", true);
-        y = this.reader.getFloat(node, "y", true);
-        z = this.reader.getFloat(node, "z", true);
-        //w = this.reader.getFloat(node, "w");
-        return vec3.fromValues(x, y, z);
-        //if (w != null) { vec.push(w); return vec; }
-        //else return vec;
-    }
     readRGB(node) {
         var r, g, b;
         //var a, vec,;
@@ -180,19 +179,58 @@ class MySceneGraphAdapt {
         //  if (a != null) { vec.push(a); return vec; }
         // else return vec;
     }
-    validate_RGB(color) {
-        if (color != null) {
-            if (isNaN(color)) return false;
-            else if (color < 0 || color > 1) return false;
-            else return true;
-        } else return false;
 
+    /**
+     * Reads r, g, b and a from a DOM element, returns array 
+     * @param {element} elem 
+     */
+    readRGBA(elem) {
+        var r, g, b, a;
+
+        r = this.reader.getFloat(elem, "r", true);
+        g = this.reader.getFloat(elem, "g", true);
+        b = this.reader.getFloat(elem, "b", true);
+        a = this.reader.getFloat(elem, "a", true);
+
+        return vec4.fromValues(r,g,b,a);
     }
-    validate_RGBs(colors) {
-        for (let i = 0; i < colors.length; i++) {
-            if (!this.validate_RGB(colors[i]))
+
+    /**
+     * Validates an rgb component (r, g, b, a)
+     * @param {color} color 
+     */
+    validate_RGB(color) {
+        if (!this.verifyElement(color) || !this.verifyFloat(color) || color < 0 || color > 1) {
+            return false;
+        } 
+
+        return true;
+    }
+
+    /**
+     * Validates rgb
+     * @param {color} color
+     */
+    validate_RGBs(color) {
+        for (let i = 0; i < color.length; i++) {
+            if (!this.validate_RGB(color[i]))
                 return false;
         }
+        return true;
+    }
+
+    /**
+     * Validates an array of rgba elements
+     * @param {colors} colors 
+     */
+    validateRGBAs(colors) {
+        for(let i=0; i<colors.lengt;i++) {
+            for(let j=0; j<colors[i].length; i++){
+                if(!this.validate_RGBs(colors[i][j]))
+                    return false;
+            }
+        }
+
         return true;
     }
 
@@ -241,17 +279,7 @@ class MySceneGraphAdapt {
             if ((error = this.parseViews(rootChildren[index])) != null)
                 return error;
         }
-        // <lights>
-        if ((index = nodeNames.indexOf("lights")) == -1)
-            return "tag <lights> missing";
-        else {
-            if (index != LIGHTS_INDEX)
-                this.onXMLMinorError("tag <lights> out of order");
 
-            //Parse LIGHTS block
-            if ((error = this.parseLights(rootChildren[index])) != null)
-                return error;
-        }
         //<ambient>
         if ((index = nodeNames.indexOf("ambient")) == -1) {
             return "tag <ambient> missing";
@@ -265,7 +293,19 @@ class MySceneGraphAdapt {
                 return error;
         }
 
-        // <extures>
+        // <lights>
+        if ((index = nodeNames.indexOf("lights")) == -1)
+            return "tag <lights> missing";
+        else {
+            if (index != LIGHTS_INDEX)
+                this.onXMLMinorError("tag <lights> out of order");
+
+            //Parse LIGHTS block
+            if ((error = this.parseLights(rootChildren[index])) != null)
+                return error;
+        }
+
+        // <textures>
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
         else {
@@ -318,13 +358,8 @@ class MySceneGraphAdapt {
         this.idRoot = this.reader.getString(sceneNode, 'root');
         this.data.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        if (!this.verifyString(this.idRoot))
-            return "You must define a root component in the <scene> tag";
-
-        if (!this.verifyFloat(this.data.axisLength)) {
-            this.data.axisLength = 1;
-            this.onXMLMinorError("unable to parse value for axis length; assuming axis length = 1");
-        }
+        if(!this.verifyStringsFloats([this.idRoot], [this.data.axisLength]))
+            return "<scene> - something wrong with attributes";
 
         this.log("Parsed scene");
 
@@ -332,9 +367,88 @@ class MySceneGraphAdapt {
     }
 
     /**
- * Parses the <lights> node.
- * @param {lights block element} lightsNode
- */
+    * Parses the <views> block.
+    * @param {views block element} viewsNode
+    */
+    parseViews(viewsNode) {
+        var perspectives = viewsNode.getElementsByTagName("perspective");
+        var orthos = viewsNode.getElementsByTagName("ortho");
+
+        if (perspectives.length == 0 && orthos.length == 0)
+            return "<views> - you must define at least one perspective/ortho view";
+
+        var id, near, far, angle, from, to, fromTag, toTag;
+
+        //read perspectives
+        for (let i = 0; i < perspectives.length; i++) {
+            id = this.reader.getString(perspectives[i], "id", true);
+
+            if (!this.verifyString(id) || this.data.views[id] != null)
+                return "views - something wrong with perspectives";
+
+            near = this.reader.getFloat(perspectives[i], "near", true);
+            far = this.reader.getFloat(perspectives[i], "far", true);
+            angle = this.reader.getFloat(perspectives[i], "angle", true);
+            fromTag = perspectives[i].getElementsByTagName("from")[0];
+            toTag = perspectives[i].getElementsByTagName("to")[0];
+
+            if (!this.verifyElems([fromTag, toTag]))
+                return "<views> - something wrong with perspectives";
+
+            from = this.readXYZ(fromTag);
+            to = this.readXYZ(toTag);
+
+            if (!this.verifyStringsFloats([], [near, far, angle, from[0], from[1], from[2], to[0], to[1], to[2]]))
+                return "<views> - something wrong with perspectives";
+
+            this.data.views[id] = new CGFcamera(angle, near, far, from, to);
+    }
+
+    //TO DO: orthos
+
+        this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
+
+        if (!this.verifyString(this.data.defaultView) || this.data.views[this.data.defaultView] == null)
+            return "views - something wrong with perspectives";
+
+        this.log("Parsed views");
+
+        return null;
+    }    
+
+    /**
+     * Parses the <ambient> block. 
+     * @param {ambient block element} ambientsNode
+     */
+    parseAmbient(ambientsNode) {
+        var child1 = ambientsNode.firstElementChild;
+        var child2 = child1.nextElementSibling;
+
+        if(!this.verifyElems([child1, child2]))
+            return "<ambient> - something wrong with child elements";
+        
+        if(child1.nodeName == "ambient" && child2.nodeName == "background") {
+            this.data.ambientLight = this.readRGBA(child1);
+            this.data.backgroundColor = this.readRGBA(child2);
+        }
+        else if(child1.nodeName == "background" && child2.nodeName == "ambient") {
+            this.data.ambientLight = this.readRGBA(child2);
+            this.data.backgroundColor = this.readRGBA(child1);
+        }
+        else return "<ambient> - something wrong with child elements";
+
+        if(!this.validateRGBAs([this.data.ambientLight, this.data.backgroundColor]))
+        return "<ambient> - something wrong, check values for RGBA";
+
+        
+        this.log("Parsed ambient");
+        return null;
+    }
+
+    /**
+     * Parses the <lights> node.
+     * @param {lights block element} lightsNode
+     */
     parseLights(lightsNode) {
         var omni = lightsNode.getElementsByTagName('omni');
         var spot = lightsNode.getElementsByTagName('spot');
@@ -437,96 +551,6 @@ class MySceneGraphAdapt {
 
         return null;
     }
-    /**
-        * Parses the <views> block.
-        * @param {views block element} viewsNode
-        */
-    parseViews(viewsNode) {
-        var perspectives = viewsNode.getElementsByTagName("perspective");
-        var orthos = viewsNode.getElementsByTagName("ortho");
-
-        if (perspectives.length == 0 && orthos.length == 0)
-            return "<views> - you must define at least one perspective/ortho view";
-
-
-        var id, near, far, angle, from, to, fromTag, toTag;
-
-        //read perspectives
-        for (let i = 0; i < perspectives.length; i++) {
-            id = this.reader.getString(perspectives[i], "id", true);
-
-            if (!this.verifyString(id) || this.data.views[id] != null)
-                return "views - something wrong with perspectives";
-
-            near = this.reader.getFloat(perspectives[i], "near", true);
-            far = this.reader.getFloat(perspectives[i], "far", true);
-            angle = this.reader.getFloat(perspectives[i], "angle", true);
-            fromTag = perspectives[i].getElementsByTagName("from")[0];
-            toTag = perspectives[i].getElementsByTagName("to")[0];
-
-            if (!this.verifyElems([fromTag, toTag]))
-                return "<views> - something wrong with perspectives";
-
-            from = this.readXYZ(fromTag);
-            to = this.readXYZ(toTag);
-
-            if (!this.verifyStringsFloats([], [near, far, angle, from[0], from[1], from[2], to[0], to[1], to[2]]))
-                return "<views> - something wrong with perspectives";
-
-            this.data.views[id] = new CGFcamera(angle, near, far, from, to);
-        }
-
-        //TO DO: orthos
-
-        this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
-
-        if (!this.verifyString(this.data.defaultView) || this.data.views[this.data.defaultView] == null)
-            return "views - something wrong with perspectives";
-
-        this.log("Parsed views");
-
-        return null;
-    }
-
-    /**
-     * Parses the <ambient> block. 
-     * @param {ambient block element} ambientsNode
-     */
-    parseAmbient(ambientsNode) {
-        var ambient = ambientsNode.getElementsByTagName("ambient");
-        var background = ambientsNode.getElementsByTagName("background");
-        if (ambient.length == 0 && background.length == 0)
-            return "You must define an ambient/background component in the <ambient> tag";
-        var ambient_cmpnt, background_cmpnt, ambientTag, backgroundTag;
-
-        for (let i = 0; i < ambient.length; i++) {
-            var ambientTag = ambient[i].getElementsByTagName("ambient");
-            if (!this.verifyElems([ambientTag]))
-                return "<ambient> - something wrong with the components within";
-
-            ambient_cmpnt = this.readRGB(ambientTag);
-            
-            //falta meter o 4elementos de todos
-            if (!this.validate_RGBs([ambient_cmpnt[0], ambient_cmpnt[1], ambient_cmpnt[2]]))
-                return "<ambient> - RGB colors unable to be parsed";
-
-        }
-    
-        for (let i = 0; i < background.length; i++) {
-            var backgroundTag = background[i].getElementsByTagName("background");
-            if (!this.verifyElems([backgroundTag]))
-                return "<ambient> - something wrong with the components within";
-            
-            background_cmpnt = this.readRGB(backgroundTag);
-            
-            //falta meter o 4elementos de todos
-            if (!this.validate_RGBs([ background_cmpnt[0], background_cmpnt[1], background_cmpnt[2]]))
-                return "<ambient> - RGB colors unable to be parsed";
-        }
-        
-        this.log("Parsed ambient");
-        return null;
-    }
 
 
     /**
@@ -552,7 +576,7 @@ class MySceneGraphAdapt {
 
         }
 
-        this.log("Parsed ambient");
+        this.log("Parsed textures");
         return null;
     }
 
@@ -687,10 +711,6 @@ class MySceneGraphAdapt {
         this.log("Parsed materials");
         return null;
     }
-
-
-
-
 
     /**
      * Parses the <NODES> block.

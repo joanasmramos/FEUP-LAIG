@@ -14,15 +14,15 @@ class MySceneData {
         this.defaultView = "";
         this.views = new Object();
 
+        //ambient
+        this.ambientLight = [];
+        this.backgroundColor = [];
+
         //lights
-        this.lights = [""];
+        this.lights = [];
         this.id_lights ="";
         this.enabled ="";
         this.angle ="";
-
-        //array para ambient c 4
-        this.ambientComponent = ["", "", "", 1];
-        this.backgroundComponent = ["", "", "", 1];
 
         //textures
         this.id_texture = "";
@@ -31,9 +31,9 @@ class MySceneData {
         //materials
         this.id_material = "";
         this.shininess_material = 1;
-        this.emission_material = ["", "", "", 1];
-        this.ambient_material = ["", "", "", 1];
-        this.diffuse_material = ["", "", "", 1];
-        this.specular_material = ["", "", "", 1];
+        this.emission_material = ["", "", "", ""];
+        this.ambient_material = ["", "", "", ""];
+        this.diffuse_material = ["", "", "", ""];
+        this.specular_material = ["", "", "", ""];
     }
 }

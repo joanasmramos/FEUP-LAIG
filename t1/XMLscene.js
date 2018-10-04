@@ -82,19 +82,23 @@ class XMLscene extends CGFscene {
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
+        //<scene>
+        this.axis = new CGFaxis(this, this.data.axisLength);
+
+        //<views>
         this.camera=this.data.defaultCamera;
         this.interface.setActiveCamera(this.camera);
 
-        this.axis = new CGFaxis(this, this.data.axisLength);
+        //<ambient>
+        //this.setGlobalAmbientLight(this.data.ambientLight[0], this.data.ambientLight[1], this.data.ambientLight[2], this.data.ambientLight[3]);
+        //this.gl.clearColor(this.data.backgroundColor[0], this.data.backgroundColor[1], this.data.backgroundColor[2], this.data.backgroundColor[3]);
 
-        // TODO: Change ambient and background details according to parsed graph
-
-        this.initLights();
+        //this.initLights();
 
         // Adds lights group.
-        this.interface.addLightsGroup(this.graph.lights);
+        //this.interface.addLightsGroup(this.graph.lights);
 
-        this.sceneInited = true;
+        //this.sceneInited = true;
     }
 
 
