@@ -16,13 +16,13 @@ class MySceneData {
 
         //lights
         this.lights = new Object();
-        this.id_lights ="";º
+        this.id_lights ="";
         this.enabled ="";
         this.angle ="";
 
         //array para ambient c 4
-        this.ambientComponent = ["", "", "", 1];
-        this.backgroundComponent = ["", "", "", 1];
+        //this.ambientComponent = ["", "", "", 1];
+        //this.backgroundComponent = ["", "", "", 1];
 
         //textures
         this.id_texture = "";

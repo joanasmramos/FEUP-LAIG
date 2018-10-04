@@ -158,36 +158,36 @@ class MySceneGraphAdapt {
      * @param {element} node 
      */
     readXYZ(node) {
-        var x, y, z, w;
+        var vec, x, y, z, w;
         x = this.reader.getFloat(node, "x", true);
         y = this.reader.getFloat(node, "y", true);
         z = this.reader.getFloat(node, "z", true);
         w = this.reader.getFloat(node, "w");
 
-        vec3.fromValues(x, y, z);
-        if (w != null) { vec3.push(w); return vec3; }
-        else return vec3;
+        vec = vec3.fromValues(x, y, z);
+        if (w != null) { vec.push(w); return vec; }
+        else return vec;
     }
     readRGB(node) {
-        var x, y, z, w;
-        x = this.reader.getFloat(node, "r", true);
-        y = this.reader.getFloat(node, "g", true);
-        z = this.reader.getFloat(node, "b", true);
-        w = this.reader.getFloat(node, "a");
+        var vec, r, g, b, a;
+        r = this.reader.getFloat(node, "r", true);
+        g = this.reader.getFloat(node, "g", true);
+        b = this.reader.getFloat(node, "b", true);
+        a = this.reader.getFloat(node, "a");
 
-        vec3.fromValues(r, g, b);
-        if (a != null) { vec3.push(a); return vec3; }
-        else return vec3;
+        vec = vec3.fromValues(r, g, b);
+        if (a != null) { vec.push(a); return vec; }
+        else return vec;
     }
     validate_RGB(color) {
-        if (colors != null) {
-            if (isNaN(colors)) return false;
+        if (color != null) {
+            if (isNaN(color)) return false;
             else if (color < 0 || color > 0) return false;
             else return true;
         } else return false;
 
     }
-    validate_RBGs(colors) {
+    validate_RGBs(colors) {
         for (let i = 0; i < colors.length; i++) {
             if (!this.validate_RGB(colors[i]))
                 return false;
@@ -267,11 +267,11 @@ class MySceneGraphAdapt {
         }
 
         // <MATERIALS>
-        if ((index = nodeNames.indexOf("MATERIALS")) == -1)
-            return "tag <MATERIALS> missing";
+        if ((index = nodeNames.indexOf("materials")) == -1)
+            return "tag <materials> missing";
         else {
             if (index != MATERIALS_INDEX)
-                this.onXMLMinorError("tag <MATERIALS> out of order");
+                this.onXMLMinorError("tag <materials> out of order");
 
             //Parse MATERIALS block
             if ((error = this.parseMaterials(rootChildren[index])) != null)
@@ -279,11 +279,11 @@ class MySceneGraphAdapt {
         }
 
         // <LIGHTS>
-        if ((index = nodeNames.indexOf("LIGHTS")) == -1)
-            return "tag <LIGHTS> missing";
+        if ((index = nodeNames.indexOf("lights")) == -1)
+            return "tag <lights> missing";
         else {
             if (index != LIGHTS_INDEX)
-                this.onXMLMinorError("tag <LIGHTS> out of order");
+                this.onXMLMinorError("tag <lights> out of order");
 
             //Parse LIGHTS block
             if ((error = this.parseLights(rootChildren[index])) != null)
@@ -387,66 +387,25 @@ class MySceneGraphAdapt {
      */
     parseAmbient(ambientsNode) {
         var children = ambientsNode.children;
-
         if (children.length == 0)
             return "You must define an ambient/background component in the <ambient> tag";
-        else {
-            var red, green, blue, alpha;
+        var ambient_cmpnt, background_cmpnt, ambientTag, backgroundTag;
 
-            for (let i = 0; i < children.length; i++) {
-                red = this.reader.getFloat(children[i], 'r');
-                green = this.reader.getFloat(children[i], 'g');
-                blue = this.reader.getFloat(children[i], 'b');
-                alpha = this.reader.getFloat(children[i], 'a');
-                if (children[i].nodeName == "ambient") {
-                    if (validate_RBG(red)) this.data.ambientComponent[R_INDEX] = red;
-                    else {
-                        this.onXMLMinorError("Unable to parse color red in ambient component. Assuming 'r' = 1");
-                        this.data.ambientComponent[R_INDEX] = 1;
-                    }
-                    if (validate_RBG(green)) this.data.ambientComponent[G_INDEX] = green;
-                    else {
-                        this.onXMLMinorError("Unable to parse color green in ambient component. Assuming 'g' = 1");
-                        this.data.ambientComponent[G_INDEX] = 1;
-                    }
-                    if (validate_RBG(blue)) this.data.ambientComponent[B_INDEX] = blue;
-                    else {
-                        this.onXMLMinorError("Unable to parse color blue in ambient component. Assuming 'b' = 1");
-                        this.data.ambientComponent[B_INDEX] = 1;
-                    }
-                    if (validate_RBG(alpha)) this.data.ambientComponent[A_INDEX] = alpha;
-                    else {
-                        this.onXMLMinorError("Unable to parse alpha in ambient component. Assuming 'a' = 1");
-                        this.data.ambientComponent[A_INDEX] = 1;
-                    }
-                }
-                if (children[i].nodeName == "background") {
-                    if (validate_RBG(red)) this.data.backgroundComponent[R_INDEX] = red;
-                    else {
-                        this.onXMLMinorError("Unable to parse color red in background component. Assuming 'r' = 1");
-                        this.data.backgroundComponent[R_INDEX] = 1;
-                    }
-                    if (validate_RBG(green)) this.data.backgroundComponent[G_INDEX] = green;
-                    else {
-                        this.onXMLMinorError("Unable to parse color green in background component. Assuming 'g' = 1");
-                        this.data.backgroundComponent[G_INDEX] = 1;
-                    }
-                    if (validate_RBG(blue)) this.data.backgroundComponent[B_INDEX] = blue;
-                    else {
-                        this.onXMLMinorError("Unable to parse color blue in background component. Assuming 'b' = 1");
-                        this.data.backgroundComponent[B_INDEX] = 1;
-                    }
-                    if (validate_RBG(alpha)) this.data.backgroundComponent[A_INDEX] = alpha;
-                    else {
-                        this.onXMLMinorError("Unable to parse alpha in background component. Assuming 'a' = 1");
-                        this.data.backgroundComponent[A_INDEX] = 1;
-                    }
-                }
-            }
+        for (let i = 0; i < children.length; i++) {
+            var ambientTag = children[i].getElementsByTagName("ambient");
+            var backgroundTag = children[i].getElementsByTagName("background");
+            if (!this.verifyElems([ambientTag, backgroundTag]))
+                return "<ambient> - something wrong with ambient component";
+
+            this.ambient_cmpnt = readRGB(ambientTag);
+            this.background_cmpnt = readRGB(backgroundTag);
+
+            if (!this.validate_RGBs([ambient_cmpnt, background_cmpnt]))
+                return "<ambient> - RGB colors unable to be parsed";
+
         }
 
         this.log("Parsed ambient");
-
         return null;
     }
 
@@ -456,6 +415,36 @@ class MySceneGraphAdapt {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
+        var children = texturesNode.children;
+
+        if (children.length == 0)
+            return "You must define a texture in the <textures> tag";
+
+        for (let i = 0; i < children.length; i++) {
+            var texture_cmpnt;
+            var textureTag = ambientsNode.getElementsByTagName("texture");
+            if (!this.verifyElems([textureTag]))
+                return "<textures> - something wrong with ambient component";
+
+            this.texture_cmpnt = readRGB(texture);
+
+            if (!this.validate_RGBs([ambient_cmpnt, background_cmpnt]))
+                return "<textures> - RGB colors unable to be parsed";
+
+        }
+
+        this.log("Parsed ambient");
+        return null;
+
+    }
+
+
+
+/*
+
+
+
+
         var children = texturesNode.children;
 
         if (children.length == 0)
@@ -505,7 +494,7 @@ class MySceneGraphAdapt {
                     this.id_material = this.reader.getString(children[i], 'id');
                     this.shininess_material = this.reader.getFloat(children[i], 'shininess');
 
-                    if (verifyString(id_material)) this.data.id_material = id_material;
+                    if (this.verifyString(id_material)) this.data.id_material = id_material;
                     else return "ID for material in <materials> tag  is empty";
 
                     if (!(this.shininess_material != null && !isNaN(this.shininess_material))) {
@@ -520,88 +509,88 @@ class MySceneGraphAdapt {
                         alpha = this.reader.getFloat(grandChildren[i], 'a');
 
                         if (grandChildren[i].nodeName == "emission") {
-                            if (validate_RBG(red)) this.data.emission_material[R_INDEX] = red;
+                            if (this.validate_RGB(red)) this.data.emission_material[R_INDEX] = red;
                             else {
                                 this.onXMLMinorError("Unable to parse color red in emission component. Assuming 'r' = 1");
                                 this.data.emission_material[R_INDEX] = 1;
                             }
-                            if (validate_RBG(green)) this.data.emission_material[G_INDEX] = green;
+                            if (this.validate_RGB(green)) this.data.emission_material[G_INDEX] = green;
                             else {
                                 this.onXMLMinorError("Unable to parse color green in emission component. Assuming 'g' = 1");
                                 this.data.emission_material[G_INDEX] = 1;
                             }
-                            if (validate_RBG(blue)) this.data.emission_material[B_INDEX] = blue;
+                            if (this.validate_RGB(blue)) this.data.emission_material[B_INDEX] = blue;
                             else {
                                 this.onXMLMinorError("Unable to parse color blue in emission component. Assuming 'b' = 1");
                                 this.data.emission_material[B_INDEX] = 1;
                             }
-                            if (validate_RBG(alpha)) this.data.emission_material[A_INDEX] = alpha;
+                            if (this.validate_RGB(alpha)) this.data.emission_material[A_INDEX] = alpha;
                             else {
                                 this.onXMLMinorError("Unable to parse alpha in emission component. Assuming 'a' = 1");
                                 this.data.emission_material[A_INDEX] = 1;
                             }
                         }
                         if (grandChildren[i].nodeName == "ambient") {
-                            if (validate_RBG(red)) this.data.ambient_material[R_INDEX] = red;
+                            if (this.validate_RGB(red)) this.data.ambient_material[R_INDEX] = red;
                             else {
                                 this.onXMLMinorError("Unable to parse color red in ambient component. Assuming 'r' = 1");
                                 this.data.ambient_material[R_INDEX] = 1;
                             }
-                            if (validate_RBG(green)) this.data.ambient_material[G_INDEX] = green;
+                            if (this.validate_RGB(green)) this.data.ambient_material[G_INDEX] = green;
                             else {
                                 this.onXMLMinorError("Unable to parse color green in ambient component. Assuming 'g' = 1");
                                 this.data.ambient_material[G_INDEX] = 1;
                             }
-                            if (validate_RBG(blue)) this.data.ambient_material[B_INDEX] = blue;
+                            if (this.validate_RGB(blue)) this.data.ambient_material[B_INDEX] = blue;
                             else {
                                 this.onXMLMinorError("Unable to parse color blue in ambient component. Assuming 'b' = 1");
                                 this.data.ambient_material[B_INDEX] = 1;
                             }
-                            if (validate_RBG(alpha)) this.data.ambient_material[A_INDEX] = alpha;
+                            if (this.validate_RGB(alpha)) this.data.ambient_material[A_INDEX] = alpha;
                             else {
                                 this.onXMLMinorError("Unable to parse alpha in ambient component. Assuming 'a' = 1");
                                 this.data.ambient_material[A_INDEX] = 1;
                             }
                         }
                         if (grandChildren[i].nodeName == "diffuse") {
-                            if (validate_RBG(red)) this.data.diffuse_material[R_INDEX] = red;
+                            if (this.validate_RGB(red)) this.data.diffuse_material[R_INDEX] = red;
                             else {
                                 this.onXMLMinorError("Unable to parse color red in diffuse component. Assuming 'r' = 1");
                                 this.data.diffuse_material[R_INDEX] = 1;
                             }
-                            if (validate_RBG(green)) this.data.diffuse_material[G_INDEX] = green;
+                            if (this.validate_RGB(green)) this.data.diffuse_material[G_INDEX] = green;
                             else {
                                 this.onXMLMinorError("Unable to parse color green in diffuse component. Assuming 'g' = 1");
                                 this.data.diffuse_material[G_INDEX] = 1;
                             }
-                            if (validate_RBG(blue)) this.data.diffuse_material[B_INDEX] = blue;
+                            if (this.validate_RGB(blue)) this.data.diffuse_material[B_INDEX] = blue;
                             else {
                                 this.onXMLMinorError("Unable to parse color blue in diffuse component. Assuming 'b' = 1");
                                 this.data.diffuse_material[B_INDEX] = 1;
                             }
-                            if (validate_RBG(alpha)) this.data.diffuse_material[A_INDEX] = alpha;
+                            if (this.validate_RGB(alpha)) this.data.diffuse_material[A_INDEX] = alpha;
                             else {
                                 this.onXMLMinorError("Unable to parse alpha in diffuse component. Assuming 'a' = 1");
                                 this.data.diffuse_material[A_INDEX] = 1;
                             }
                         }
                         if (grandChildren[i].nodeName == "specular") {
-                            if (validate_RBG(red)) this.data.specular_material[R_INDEX] = red;
+                            if (this.validate_RGB(red)) this.data.specular_material[R_INDEX] = red;
                             else {
                                 this.onXMLMinorError("Unable to parse color red in specular component. Assuming 'r' = 1");
                                 this.data.specular_material[R_INDEX] = 1;
                             }
-                            if (validate_RBG(green)) this.data.specular_material[G_INDEX] = green;
+                            if (this.validate_RGB(green)) this.data.specular_material[G_INDEX] = green;
                             else {
                                 this.onXMLMinorError("Unable to parse color green in specular component. Assuming 'g' = 1");
                                 this.data.specular_material[G_INDEX] = 1;
                             }
-                            if (validate_RBG(blue)) this.data.specular_material[B_INDEX] = blue;
+                            if (this.validate_RGB(blue)) this.data.specular_material[B_INDEX] = blue;
                             else {
                                 this.onXMLMinorError("Unable to parse color blue in specular component. Assuming 'b' = 1");
                                 this.data.specular_material[B_INDEX] = 1;
                             }
-                            if (validate_RBG(alpha)) this.data.specular_material[A_INDEX] = alpha;
+                            if (this.validate_RGB(alpha)) this.data.specular_material[A_INDEX] = alpha;
                             else {
                                 this.onXMLMinorError("Unable to parse alpha in specular component. Assuming 'a' = 1");
                                 this.data.specular_material[A_INDEX] = 1;
@@ -690,7 +679,7 @@ class MySceneGraphAdapt {
                 if (!this.verifyStringsFloats([], [location[0], location[1], location[2], location[3],
                 target[0], target[1], target[2]]))
                     return "<lights> - XYZ coordinates unable to be parsed";
-                if (!validate_RGBs([location, ambient, diffuse, specular]))
+                if (!this.validate_RGBs([location, ambient, diffuse, specular]))
                     return "<lights> - RGB colors unable to be parsed";
 
                 this.data.enabled = enabled;
@@ -701,7 +690,7 @@ class MySceneGraphAdapt {
             }
 
             /*
-
+ 
                           // TODO: Store Light global information.
                             //this.lights[lightId] = ...;  
                             numLights++;
