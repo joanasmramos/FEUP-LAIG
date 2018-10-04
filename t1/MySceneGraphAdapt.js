@@ -14,8 +14,8 @@ var SCENE_INDEX = 0;
 var VIEWS_INDEX = 1;
 var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
-var TEXTURES_INDEX = 4;
-var MATERIALS_INDEX = 5;
+//var TEXTURES_INDEX = 4;
+//var MATERIALS_INDEX = 5;
 /*
 var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
@@ -158,31 +158,32 @@ class MySceneGraphAdapt {
      * @param {element} node 
      */
     readXYZ(node) {
-        var vec, x, y, z, w;
+        var x, y, z;
+        //var w, vec;
         x = this.reader.getFloat(node, "x", true);
         y = this.reader.getFloat(node, "y", true);
         z = this.reader.getFloat(node, "z", true);
-        w = this.reader.getFloat(node, "w");
-
-        vec = vec3.fromValues(x, y, z);
-        if (w != null) { vec.push(w); return vec; }
-        else return vec;
+        //w = this.reader.getFloat(node, "w");
+        return vec3.fromValues(x, y, z);
+        //if (w != null) { vec.push(w); return vec; }
+        //else return vec;
     }
     readRGB(node) {
-        var vec, r, g, b, a;
+        var r, g, b;
+        //var a, vec,;
         r = this.reader.getFloat(node, "r", true);
         g = this.reader.getFloat(node, "g", true);
         b = this.reader.getFloat(node, "b", true);
-        a = this.reader.getFloat(node, "a");
+        // a = this.reader.getFloat(node, "a");
 
-        vec = vec3.fromValues(r, g, b);
-        if (a != null) { vec.push(a); return vec; }
-        else return vec;
+        return vec3.fromValues(r, g, b);
+        //  if (a != null) { vec.push(a); return vec; }
+        // else return vec;
     }
     validate_RGB(color) {
         if (color != null) {
             if (isNaN(color)) return false;
-            else if (color < 0 || color > 0) return false;
+            else if (color < 0 || color > 1) return false;
             else return true;
         } else return false;
 
@@ -240,7 +241,17 @@ class MySceneGraphAdapt {
             if ((error = this.parseViews(rootChildren[index])) != null)
                 return error;
         }
+        // <lights>
+        if ((index = nodeNames.indexOf("lights")) == -1)
+            return "tag <lights> missing";
+        else {
+            if (index != LIGHTS_INDEX)
+                this.onXMLMinorError("tag <lights> out of order");
 
+            //Parse LIGHTS block
+            if ((error = this.parseLights(rootChildren[index])) != null)
+                return error;
+        }
         //<ambient>
         if ((index = nodeNames.indexOf("ambient")) == -1) {
             return "tag <ambient> missing";
@@ -254,7 +265,7 @@ class MySceneGraphAdapt {
                 return error;
         }
 
-        // <ambient>
+        // <extures>
         if ((index = nodeNames.indexOf("textures")) == -1)
             return "tag <textures> missing";
         else {
@@ -278,17 +289,7 @@ class MySceneGraphAdapt {
                 return error;
         }
 
-        // <LIGHTS>
-        if ((index = nodeNames.indexOf("lights")) == -1)
-            return "tag <lights> missing";
-        else {
-            if (index != LIGHTS_INDEX)
-                this.onXMLMinorError("tag <lights> out of order");
 
-            //Parse LIGHTS block
-            if ((error = this.parseLights(rootChildren[index])) != null)
-                return error;
-        }
 
         //VI ATÉ AQUI
         //------------------------------------------------------------------
@@ -330,6 +331,112 @@ class MySceneGraphAdapt {
         return null;
     }
 
+    /**
+ * Parses the <lights> node.
+ * @param {lights block element} lightsNode
+ */
+    parseLights(lightsNode) {
+        var omni = lightsNode.getElementsByTagName('omni');
+        var spot = lightsNode.getElementsByTagName('spot');
+        this.lights = [];
+        var numLights = 0;
+
+        if (omni.length == 0 && spot.length == 0)
+            return "You must define an omni/spot light in the <lights> tag";
+        var id, enabled, angle, exponent;
+        var location, ambient, diffuse, specular, target;
+        var locationTag, ambientTag, diffuseTag, specularTag, targetTag;
+        this.enabled = false;
+        //read omnilights
+        for (let i = 0; i < omni.length; i++) {
+            id = this.reader.getString(omni[i], "id", true);
+
+            if (!(this.verifyString(id) || this.data.lights[id] != null))
+                return "id for omnilights is unable to be parsed";
+            enabled = omni[i].getElementsByTagName('enabled')[0];
+            locationTag = omni[i].getElementsByTagName('location')[0];
+            ambientTag = omni[i].getElementsByTagName('ambient')[0];
+            diffuseTag = omni[i].getElementsByTagName("diffuse")[0];
+            specularTag = omni[i].getElementsByTagName("specular")[0];
+            //pecular aqui tbm
+            if (!this.verifyElems([locationTag, ambientTag, diffuseTag, specularTag]))
+                return "<lights> - something wrong with lights";
+
+            location = this.readXYZ(locationTag);
+            ambient = this.readRGB(ambientTag);
+            diffuse = this.readRGB(diffuseTag);
+            specular = this.readRGB(specularTag);
+            //falta meter location3
+            if (!this.verifyStringsFloats([], [location[0], location[1], location[2]]))
+                return "<lights> - XYZ coordinates unable to be parsed";
+            //falta meter 4elemtno de todos
+            if (!this.validate_RGBs([
+                ambient[0], ambient[1], ambient[2],
+                diffuse[0], diffuse[1], diffuse[2],
+                specular[0], specular[1], specular[2]]))
+                return "<lights> - RGB colors unable to be parsed";
+
+            this.data.enabled = enabled;
+            if(this.data.lights.push(id) > 8)  this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
+            numLights++;
+        }
+        //read spotlights
+        for (let i = 0; i < spot.length; i++) {
+            this.id = this.reader.getString(spot[i], "id", true);
+
+            if (!this.verifyString(id) || this.data.lights[id] != null)
+                return "id for spotlights is unable to be parsed";
+            enabled = spot[i].getElementsByTagName("enabled")[0];
+            angle = this.reader.getFloat(spot[i], "angle", true);
+            exponent = this.reader.getFloat(spot[i], "exponent", true);
+            locationTag = spot[i].getElementsByTagName("location")[0];
+            targetTag = spot[i].getElementsByTagName("target")[0];
+            ambientTag = spot[i].getElementsByTagName("ambient")[0];
+            diffuseTag = spot[i].getElementsByTagName("diffuse")[0];
+            specularTag = spot[i].getElementsByTagName("specular")[0];
+
+            if (!this.verifyElems([locationTag, targetTag, ambientTag, diffuseTag, specularTag]))
+                return "<lights> - something wrong with perspectives";
+
+            location = this.readXYZ(locationTag);
+            target = this.readXYZ(targetTag);
+            ambient = this.readRGB(ambientTag);
+            diffuse = this.readRGB(diffuseTag);
+            specular = this.readRGB(specularTag);
+            //falta meter location3
+            if (!this.verifyStringsFloats([], [location[0], location[1], location[2],
+            target[0], target[1], target[2]]))
+                return "<lights> - XYZ coordinates unable to be parsed";
+            //fala meter 4elemtno de todos
+            if (!this.validate_RGBs([
+                ambient[0], ambient[1], ambient[2],
+                diffuse[0], diffuse[1], diffuse[2],
+                specular[0], specular[1], specular[2]]))
+                return "<lights> - RGB colors unable to be parsed";
+
+            this.data.angle = angle;
+            this.data.exponent = exponent;
+            this.data.enabled = enabled;
+            if(this.data.lights.push(id) > 8)  this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
+            numLights++;
+        }
+
+        /*
+ 
+                      // TODO: Store Light global information.
+                        //this.lights[lightId] = ...;  
+                        numLights++;
+                    }
+       */
+
+
+        if (numLights == 0 || numLights > 8)
+            this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
+
+        this.log("Parsed lights");
+
+        return null;
+    }
     /**
         * Parses the <views> block.
         * @param {views block element} viewsNode
@@ -386,25 +493,37 @@ class MySceneGraphAdapt {
      * @param {ambient block element} ambientsNode
      */
     parseAmbient(ambientsNode) {
-        var children = ambientsNode.children;
-        if (children.length == 0)
+        var ambient = ambientsNode.getElementsByTagName("ambient");
+        var background = ambientsNode.getElementsByTagName("background");
+        if (ambient.length == 0 && background.length == 0)
             return "You must define an ambient/background component in the <ambient> tag";
         var ambient_cmpnt, background_cmpnt, ambientTag, backgroundTag;
 
-        for (let i = 0; i < children.length; i++) {
-            var ambientTag = children[i].getElementsByTagName("ambient");
-            var backgroundTag = children[i].getElementsByTagName("background");
-            if (!this.verifyElems([ambientTag, backgroundTag]))
-                return "<ambient> - something wrong with ambient component";
+        for (let i = 0; i < ambient.length; i++) {
+            var ambientTag = ambient[i].getElementsByTagName("ambient");
+            if (!this.verifyElems([ambientTag]))
+                return "<ambient> - something wrong with the components within";
 
-            this.ambient_cmpnt = readRGB(ambientTag);
-            this.background_cmpnt = readRGB(backgroundTag);
-
-            if (!this.validate_RGBs([ambient_cmpnt, background_cmpnt]))
+            ambient_cmpnt = this.readRGB(ambientTag);
+            
+            //falta meter o 4elementos de todos
+            if (!this.validate_RGBs([ambient_cmpnt[0], ambient_cmpnt[1], ambient_cmpnt[2]]))
                 return "<ambient> - RGB colors unable to be parsed";
 
         }
-
+    
+        for (let i = 0; i < background.length; i++) {
+            var backgroundTag = background[i].getElementsByTagName("background");
+            if (!this.verifyElems([backgroundTag]))
+                return "<ambient> - something wrong with the components within";
+            
+            background_cmpnt = this.readRGB(backgroundTag);
+            
+            //falta meter o 4elementos de todos
+            if (!this.validate_RGBs([ background_cmpnt[0], background_cmpnt[1], background_cmpnt[2]]))
+                return "<ambient> - RGB colors unable to be parsed";
+        }
+        
         this.log("Parsed ambient");
         return null;
     }
@@ -426,49 +545,14 @@ class MySceneGraphAdapt {
             if (!this.verifyElems([textureTag]))
                 return "<textures> - something wrong with ambient component";
 
-            this.texture_cmpnt = readRGB(texture);
+            this.texture_cmpnt = readRGB(textureTag);
 
-            if (!this.validate_RGBs([ambient_cmpnt, background_cmpnt]))
+            if (!this.validate_RGBs([texture_cmpnt]))
                 return "<textures> - RGB colors unable to be parsed";
 
         }
 
         this.log("Parsed ambient");
-        return null;
-
-    }
-
-
-
-/*
-
-
-
-
-        var children = texturesNode.children;
-
-        if (children.length == 0)
-            return "You must define a texture in the <textures> tag";
-        else {
-            //confirmar nos components se o id é o mesmo
-            var id_texture, file_texture;
-
-            for (let i = 0; i < children.length; i++) {
-                if (children[i].nodeName == "texture") {
-                    this.id_texture = this.reader.getString(children[i], 'id');
-                    this.file_texture = this.reader.getString(children[i], 'file');
-
-                    if (!(this.id_texture != null && this.id_texture != "")) {
-                        return "ID for texture in <textures> tag  is empty";
-                    } else this.data.id_texture = id_texture;
-                    if (!(this.file_texture != null && this.file_texture != "")) {
-                        return "file for texture in <textures> tag  is missing";
-                    } else this.data.file_texture = file_texture;
-                }
-            }
-        }
-        console.log("Parsed textures");
-
         return null;
     }
 
@@ -605,106 +689,7 @@ class MySceneGraphAdapt {
     }
 
 
-    /**
-     * Parses the <lights> node.
-     * @param {lights block element} lightsNode
-     */
-    parseLights(lightsNode) {
-        var omni = lightsNode.getElementsByTagName('omni');
-        var spot = lightsNode.getElementsByTagName('spot');
-        this.lights = [];
-        var numLights = 0;
 
-        if (omni.length == 0 && spot.length == 0)
-            return "You must define an omni/spot light in the <lights> tag";
-
-        else {
-            var id, enabled, angle, exponent;
-            var location, ambient, diffuse, specular, target;
-            var locationTag, ambientTag, diffuseTag, specularTag, targetTag;
-            this.enabled = false;
-            //read omnilights
-            for (let i = 0; i < omni.length; i++) {
-                this.id = this.reader.getString(omni[i], "id", true);
-
-                if (!this.verifyString(id) || this.data.lights[id] != null)
-                    return "id for omnilights is unable to be parsed";
-                enabled = omni[i].getElementsByTagName("enabled")[0];
-                locationTag = omni[i].getElementsByTagName("location")[0];
-                ambientTag = omni[i].getElementsByTagName("ambient")[0];
-                diffuseTag = omni[i].getElementsByTagName("diffuse")[0];
-                specularTag = omni[i].getElementsByTagName("specular")[0];
-
-                if (!this.verifyElems([locationTag, ambientTag, diffuseTag, specularTag]))
-                    return "<lights> - something wrong with perspectives";
-
-                location = this.readXYZ(locationTag);
-                ambient = this.readRGB(ambientTag);
-                diffuse = this.readRGB(diffuseTag);
-                specular = this.readRGB(specularTag);
-
-                if (!this.verifyStringsFloats([], [location[0], location[1], location[2], location[3]]))
-                    return "<lights> - XYZ coordinates unable to be parsed";
-                if (!this.validate_RGBs([location, ambient, diffuse, specular]))
-                    return "<lights> - RGB colors unable to be parsed";
-
-                this.data.enabled = enabled;
-                this.data.lights.push(id);
-                numLights++;
-            }
-            //read spotlights
-            for (let i = 0; i < spot.length; i++) {
-                this.id = this.reader.getString(spot[i], "id", true);
-
-                if (!this.verifyString(id) || this.data.lights[id] != null)
-                    return "id for spotlights is unable to be parsed";
-                enabled = spot[i].getElementsByTagName("enabled")[0];
-                angle = this.reader.getFloat(spot[i], "angle", true);
-                exponent = this.reader.getFloat(spot[i], "exponent", true);
-                locationTag = spot[i].getElementsByTagName("location")[0];
-                targetTag = spot[i].getElementsByTagName("target")[0];
-                ambientTag = spot[i].getElementsByTagName("ambient")[0];
-                diffuseTag = spot[i].getElementsByTagName("diffuse")[0];
-                specularTag = spot[i].getElementsByTagName("specular")[0];
-
-                if (!this.verifyElems([locationTag, targetTag, ambientTag, diffuseTag, specularTag]))
-                    return "<lights> - something wrong with perspectives";
-
-                location = this.readXYZ(locationTag);
-                target = this.readXYZ(targetTag);
-                ambient = this.readRGB(ambientTag);
-                diffuse = this.readRGB(diffuseTag);
-                specular = this.readRGB(specularTag);
-
-                if (!this.verifyStringsFloats([], [location[0], location[1], location[2], location[3],
-                target[0], target[1], target[2]]))
-                    return "<lights> - XYZ coordinates unable to be parsed";
-                if (!this.validate_RGBs([location, ambient, diffuse, specular]))
-                    return "<lights> - RGB colors unable to be parsed";
-
-                this.data.enabled = enabled;
-                this.data.angle = angle;
-                this.data.exponent = exponent;
-                this.data.lights.push(id);
-                numLights++;
-            }
-
-            /*
- 
-                          // TODO: Store Light global information.
-                            //this.lights[lightId] = ...;  
-                            numLights++;
-                        }
-           */
-        }
-
-        if (numLights == 0 || numLights > 8)
-            this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
-
-        this.log("Parsed lights");
-
-        return null;
-    }
 
 
     /**
