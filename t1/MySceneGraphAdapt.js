@@ -122,7 +122,7 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Verifies an array of strings and an array of floats
+     * Verifies if an array of strings and an array of floats are valid
      * @param {strings to verify} strs 
      * @param {floats to verify} fls 
      */
@@ -139,7 +139,7 @@ class MySceneGraphAdapt {
         return true;
     }
     /**
-    * Verifies an array of elements
+    * Verifies if an array of elements is valid (not null)
     * @param {Elements to verify} elems 
     */
     verifyElems(elems) {
@@ -152,7 +152,7 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Reads x, y, z from a DOM element, returns vector from values
+     * Reads x, y, z from a DOM element, returns vec3 from values
      * @param {element} elem
      */
     readXYZ(elem) {
@@ -164,20 +164,18 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Reads r, g, b from a DOM element, returns array
-     * @param {element} node 
+     * Reads x, y, z and w from a DOM element, returns associative array with xyzw
+     * @param {element} elem 
      */
-    readRGB(node) {
-        var r, g, b;
-        //var a, vec,;
-        r = this.reader.getFloat(node, "r", true);
-        g = this.reader.getFloat(node, "g", true);
-        b = this.reader.getFloat(node, "b", true);
-        // a = this.reader.getFloat(node, "a");
+    readXYZW(elem) {
+        var xyzw = [];
 
-        return vec3.fromValues(r, g, b);
-        //  if (a != null) { vec.push(a); return vec; }
-        // else return vec;
+        xyzw["x"] = this.reader.getFloat(elem, "x", true);
+        xyzw["y"] = this.reader.getFloat(elem, "y", true);
+        xyzw["z"] = this.reader.getFloat(elem, "z", true);
+        xyzw["w"] = this.reader.getFloat(elem, "w", true);
+
+        return xyzw;
     }
 
     /**
@@ -226,6 +224,19 @@ class MySceneGraphAdapt {
     validateRGBAs(colors) {
         for(let i=0; i<colors.length;i++) {
             if(!this.validate_RGBs(colors[i]))
+                return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Verifies if an array of xyzw coordinates (floats) is valid
+     * @param {xyzw} coords 
+     */
+    verifyXYZW(coords) {
+        for(var key in coords) {
+            if(!this.verifyFloat(coords[key]))
                 return false;
         }
 
@@ -290,8 +301,6 @@ class MySceneGraphAdapt {
             if ((error = this.parseAmbient(rootChildren[index])) != null)
                 return error;
         }
-
-        this.scene.onGraphLoaded();
 
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
@@ -459,43 +468,49 @@ class MySceneGraphAdapt {
 
         if (omni.length == 0 && spot.length == 0)
             return "You must define an omni/spot light in the <lights> tag";
-        var id, enabled, angle, exponent;
-        var location, ambient, diffuse, specular, target;
+        
+        var id;
         var locationTag, ambientTag, diffuseTag, specularTag, targetTag;
-        this.enabled = false;
+
         //read omnilights
         for (let i = 0; i < omni.length; i++) {
             id = this.reader.getString(omni[i], "id", true);
 
             if (!(this.verifyString(id) || this.data.lights[id] != null))
-                return "id for omnilights is unable to be parsed";
-            enabled = omni[i].getElementsByTagName('enabled')[0];
+                return "<lights> - something wrong with omni's id";
+            
+            this.data.lights[id] = new Object();
+            this.data.lights[id].enabled = this.reader.getFloat(omni[i], 'enabled');
+
+            if(this.data.lights[id].enabled == 1)
+                this.data.lights[id].enabled = true;
+            else if(this.data.lights[id].enabled == 0)
+                    this.data.lights[id].enabled = false;
+            else return "<lights> - something wrong with omni's enable values";
+            
             locationTag = omni[i].getElementsByTagName('location')[0];
             ambientTag = omni[i].getElementsByTagName('ambient')[0];
             diffuseTag = omni[i].getElementsByTagName("diffuse")[0];
             specularTag = omni[i].getElementsByTagName("specular")[0];
-            //pecular aqui tbm
+
             if (!this.verifyElems([locationTag, ambientTag, diffuseTag, specularTag]))
                 return "<lights> - something wrong with lights";
 
-            location = this.readXYZ(locationTag);
-            ambient = this.readRGB(ambientTag);
-            diffuse = this.readRGB(diffuseTag);
-            specular = this.readRGB(specularTag);
-            //falta meter location3
-            if (!this.verifyStringsFloats([], [location[0], location[1], location[2]]))
-                return "<lights> - XYZ coordinates unable to be parsed";
-            //falta meter 4elemtno de todos
-            if (!this.validate_RGBs([
-                ambient[0], ambient[1], ambient[2],
-                diffuse[0], diffuse[1], diffuse[2],
-                specular[0], specular[1], specular[2]]))
-                return "<lights> - RGB colors unable to be parsed";
+            this.data.lights[id].location = this.readXYZW(locationTag);
+            this.data.lights[id].ambient = this.readRGBA(ambientTag);
+            this.data.lights[id].diffuse = this.readRGBA(diffuseTag);
+            this.data.lights[id].specular = this.readRGBA(specularTag);
 
-            this.data.enabled = enabled;
-            if(this.data.lights.push(id) > 8)  this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
-            numLights++;
+            if (!this.verifyXYZW(this.data.lights[id].location))
+                return "<lights> - something wrong with omni's xyzw values";
+            
+            if (!this.validateRGBAs([this.data.lights[id].ambient, this.data.lights[id].diffuse, this.data.lights[id].specular]))
+                return "<lights> - something wrong with omni's rgb values";
+
+            if(++this.data.numLights >= 8) 
+                return "<lights> - you can't have more than 8 lights";
         }
+        
         //read spotlights
         for (let i = 0; i < spot.length; i++) {
             this.id = this.reader.getString(spot[i], "id", true);

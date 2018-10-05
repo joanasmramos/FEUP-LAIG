@@ -8,22 +8,19 @@ class MySceneData {
     */
     constructor() {
         //scene
-        this.axisLength = "";
+        this.axisLength = ""; // float
 
         //views
-        this.defaultView = "";
-        this.views = new Object();
+        this.defaultView = ""; // string
+        this.views = new Object(); // array associativo - this.views[viewId] = CGFcamera
 
         //ambient
-        this.ambientLight = [];
-        this.backgroundColor = [];
+        this.ambientLight = []; // array associativo - this.ambientLight["r"] = rValue (...)
+        this.backgroundColor = []; // array associativo - this.backgroundColor["r"] = rValue (...)
 
         //lights
-        this.lights = [];
-        this.id_lights ="";
-        this.enabled ="";
-        this.angle ="";
-        this.numLights = "";
+        this.lights = new Object();
+        this.numLights = 0;
 
         //textures
         this.id_texture = "";
