@@ -338,8 +338,9 @@ class MySceneGraphAdapt {
             if ((error = this.parseTextures(rootChildren[index])) != null)
                 return error;
         }
+        
 
-        // <MATERIALS>
+        // <materials>
         if ((index = nodeNames.indexOf("materials")) == -1)
             return "tag <materials> missing";
         else {
@@ -362,8 +363,6 @@ class MySceneGraphAdapt {
             if ((error = this.parseTransformations(rootChildren[index])) != null)
                 return error;
         }
-
-
 
         //VI ATÉ AQUI
         //------------------------------------------------------------------
@@ -630,7 +629,7 @@ class MySceneGraphAdapt {
             return "You must define at least one transformation in the <transformations> tag";
 
         var id;
-        var translateTag, rotateTag, scaleTag;
+        var translateTag, scaleTag;
         var vector, axis, angle;
 
         for (let i = 0; i < transformation.length; i++) {
@@ -641,7 +640,7 @@ class MySceneGraphAdapt {
 
             this.data.transformations[id] = new Object();
 
-            if (this.transformation[id].length == 0) {
+            if (this.data.transformations[id].length == 0) {
                 return "a transformation needs to have an effective action (translate/rotate/scale)";
             }
             else {
@@ -649,28 +648,28 @@ class MySceneGraphAdapt {
                 var identMatrix = mat4.create();
                 //creating identitymatrix
 
-                for (let j = 0; j < transformation[id].length; i++) {
+                for (let j = 0; j < exact_transformation.length; i++) {
 
-                    switch (transformation[id].nodeName[j]) {
+                    switch (exact_transformation.nodeName[j]) {
                         case "translate":
-                            translateTag = transformation[id].getElementsByTagName("translate")[0];
+                            translateTag = exact_transformation.getElementsByTagName("translate")[0];
                             vector = this.readXYZ(translateTag);
 
                             mat4.translate(identMatrix, identMatrix, vector);
                             break;
                         case "rotate":
-                            rotateTag = transformation[id].getElementsByTagName("rotate")[0];
-                            axis = this.transformation[id].nodeName[j].getAttribute('axis');
-                            angle = this.reader.getFloat(transformation[id].nodeName[j], 'angle', true);
+                            rotateTag = exact_transformation.getElementsByTagName("rotate")[0];
+                            axis = exact_transformation.nodeName[j].getAttribute('axis');
+                            angle = this.reader.getFloat(exact_transformation.nodeName[j], 'angle', true);
                             vec3.set(vector, axis, angle);
 
-                            mat4.rotate(identMatrix,identMatrix,vector);
+                            mat4.rotate(identMatrix, identMatrix, vector);
                             break;
                         case "scale":
-                            scaleTag = transformation[id].getElementsByTagName("scale")[0];
+                            scaleTag = exact_transformation.getElementsByTagName("scale")[0];
                             vector = this.readXYZ(scaleTag);
 
-                            mat4.scale(identMatrix,identMatrix,vector);
+                            mat4.scale(identMatrix, identMatrix, vector);
                             break;
                         default:
                             break;
@@ -696,133 +695,53 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses the <MATERIALS> node.
+     * Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
 
     parseMaterials(materialsNode) {
-        var children = materialsNode.children;
-        var grandChildren = [];
+        var material = materialsNode.getElementsByTagName('material');
 
-        if (children.length == 0)
-            return "You must define a material in the <materials> tag";
-        else {
-            //confirmar nos components se o id é o mesmo
-            var id_material, shininess_material;
-            var red, green, blue, alpha;
-            for (let i = 0; i < children.length; i++) {
-                grandChildren = children[i].children;
+        if (material.length == 0)
+            return "You must define an material in the <materials> tag";
 
-                if (children[i].nodeName == "material") {
-                    this.id_material = this.reader.getString(children[i], 'id');
-                    this.shininess_material = this.reader.getFloat(children[i], 'shininess');
+        var id;
+        var emissionTag, ambientTag, diffuseTag, specularTag;
 
-                    if (this.verifyString(id_material)) this.data.id_material = id_material;
-                    else return "ID for material in <materials> tag  is empty";
+        for (let i = 0; i < material.length; i++) {
+            id = this.reader.getString(material[i], "id", true);
 
-                    if (!(this.shininess_material != null && !isNaN(this.shininess_material))) {
-                        this.shininess_material = 1;
-                        this.data.shininess_material = shininess_material;
-                        this.onXMLMinorError("unable to parse value for shininess; assuming shininess = 1");
-                    }
-                    for (let i = 0; i < grandChildren.length; i++) {
-                        red = this.reader.getFloat(grandChildren[i], 'r');
-                        green = this.reader.getFloat(grandChildren[i], 'g');
-                        blue = this.reader.getFloat(grandChildren[i], 'b');
-                        alpha = this.reader.getFloat(grandChildren[i], 'a');
+            if (!this.verifyString(id) || this.data.materials[id] != null)
+                return "<materials> - something wrong with materials' id";
+            this.data.materials[id] = new Object();
+            this.data.materials[id].shininess = this.reader.getFloat(material[i], 'shininess', true);
 
-                        if (grandChildren[i].nodeName == "emission") {
-                            if (this.validate_RGB(red)) this.data.emission_material[R_INDEX] = red;
-                            else {
-                                this.onXMLMinorError("Unable to parse color red in emission component. Assuming 'r' = 1");
-                                this.data.emission_material[R_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(green)) this.data.emission_material[G_INDEX] = green;
-                            else {
-                                this.onXMLMinorError("Unable to parse color green in emission component. Assuming 'g' = 1");
-                                this.data.emission_material[G_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(blue)) this.data.emission_material[B_INDEX] = blue;
-                            else {
-                                this.onXMLMinorError("Unable to parse color blue in emission component. Assuming 'b' = 1");
-                                this.data.emission_material[B_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(alpha)) this.data.emission_material[A_INDEX] = alpha;
-                            else {
-                                this.onXMLMinorError("Unable to parse alpha in emission component. Assuming 'a' = 1");
-                                this.data.emission_material[A_INDEX] = 1;
-                            }
-                        }
-                        if (grandChildren[i].nodeName == "ambient") {
-                            if (this.validate_RGB(red)) this.data.ambient_material[R_INDEX] = red;
-                            else {
-                                this.onXMLMinorError("Unable to parse color red in ambient component. Assuming 'r' = 1");
-                                this.data.ambient_material[R_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(green)) this.data.ambient_material[G_INDEX] = green;
-                            else {
-                                this.onXMLMinorError("Unable to parse color green in ambient component. Assuming 'g' = 1");
-                                this.data.ambient_material[G_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(blue)) this.data.ambient_material[B_INDEX] = blue;
-                            else {
-                                this.onXMLMinorError("Unable to parse color blue in ambient component. Assuming 'b' = 1");
-                                this.data.ambient_material[B_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(alpha)) this.data.ambient_material[A_INDEX] = alpha;
-                            else {
-                                this.onXMLMinorError("Unable to parse alpha in ambient component. Assuming 'a' = 1");
-                                this.data.ambient_material[A_INDEX] = 1;
-                            }
-                        }
-                        if (grandChildren[i].nodeName == "diffuse") {
-                            if (this.validate_RGB(red)) this.data.diffuse_material[R_INDEX] = red;
-                            else {
-                                this.onXMLMinorError("Unable to parse color red in diffuse component. Assuming 'r' = 1");
-                                this.data.diffuse_material[R_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(green)) this.data.diffuse_material[G_INDEX] = green;
-                            else {
-                                this.onXMLMinorError("Unable to parse color green in diffuse component. Assuming 'g' = 1");
-                                this.data.diffuse_material[G_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(blue)) this.data.diffuse_material[B_INDEX] = blue;
-                            else {
-                                this.onXMLMinorError("Unable to parse color blue in diffuse component. Assuming 'b' = 1");
-                                this.data.diffuse_material[B_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(alpha)) this.data.diffuse_material[A_INDEX] = alpha;
-                            else {
-                                this.onXMLMinorError("Unable to parse alpha in diffuse component. Assuming 'a' = 1");
-                                this.data.diffuse_material[A_INDEX] = 1;
-                            }
-                        }
-                        if (grandChildren[i].nodeName == "specular") {
-                            if (this.validate_RGB(red)) this.data.specular_material[R_INDEX] = red;
-                            else {
-                                this.onXMLMinorError("Unable to parse color red in specular component. Assuming 'r' = 1");
-                                this.data.specular_material[R_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(green)) this.data.specular_material[G_INDEX] = green;
-                            else {
-                                this.onXMLMinorError("Unable to parse color green in specular component. Assuming 'g' = 1");
-                                this.data.specular_material[G_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(blue)) this.data.specular_material[B_INDEX] = blue;
-                            else {
-                                this.onXMLMinorError("Unable to parse color blue in specular component. Assuming 'b' = 1");
-                                this.data.specular_material[B_INDEX] = 1;
-                            }
-                            if (this.validate_RGB(alpha)) this.data.specular_material[A_INDEX] = alpha;
-                            else {
-                                this.onXMLMinorError("Unable to parse alpha in specular component. Assuming 'a' = 1");
-                                this.data.specular_material[A_INDEX] = 1;
-                            }
-                        }
-                    }
-                }
-            }
+            if (!this.verifyString(this.data.materials[id]))
+                return "<materials> - something wrong with materials' id";
+
+            if (!this.verifyStringsFloats([], [this.data.materials[id].shininess]))
+                return "<materials> - something wrong with materials's attributes";
+
+
+            emissionTag = material[id].getElementsByTagName('emission')[0];
+            ambientTag = material[id].getElementsByTagName('ambient')[0];
+            diffuseTag = material[id].getElementsByTagName("diffuse")[0];
+            specularTag = material[id].getElementsByTagName("specular")[0];
+
+
+            if (!this.verifyElems([emissionTag, ambientTag, diffuseTag, specularTag]))
+                return "<materials> - something wrong with material children";
+
+
+            this.data.materials[id].emission = this.readRGBA(emissionTag);
+            this.data.materials[id].ambient = this.readRGBA(ambientTag);
+            this.data.materials[id].diffuse = this.readRGBA(diffuseTag);
+            this.data.materials[id].specular = this.readRGBA(specularTag);
+
+            if (!this.validateRGBAs([this.data.materials[id].emission, this.data.materials[id].ambient, this.data.materials[id].diffuse, this.data.materials[id].specular]))
+                return "<materials> - something wrong with material's rgb values";
         }
+
         this.log("Parsed materials");
         return null;
     }

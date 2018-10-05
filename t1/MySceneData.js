@@ -27,12 +27,7 @@ class MySceneData {
         this.textures = [];
 
         //materials
-        this.id_material = "";
-        this.shininess_material = 1;
-        this.emission_material = ["", "", "", ""];
-        this.ambient_material = ["", "", "", ""];
-        this.diffuse_material = ["", "", "", ""];
-        this.specular_material = ["", "", "", ""];
+        this.materials = new Object();
 
         //transformations
         this.transformations = [];

@@ -14,6 +14,7 @@ class XMLscene extends CGFscene {
         this.interface = myinterface;
         this.data = "";
         this.lightValues = {};
+        this.transformationMatrix;
     }
 
     /**
@@ -186,5 +187,12 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+/*
+        this.sceneInited.pushMatrix();
+        this.sceneInited.multMatrix(this.transformationMatrix);
+
+        //components,primitives here
+        this.sceneInited.popMatrix();
+        */
     }
 }
