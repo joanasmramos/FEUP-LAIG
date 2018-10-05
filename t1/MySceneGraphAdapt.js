@@ -44,7 +44,6 @@ class MySceneGraphAdapt {
         this.scene.data = this.data;
 
         this.nodes = [];
-
         this.idRoot = null;                    // The id of the root element.
 
         // File reading
@@ -477,8 +476,6 @@ class MySceneGraphAdapt {
     parseLights(lightsNode) {
         var omni = lightsNode.getElementsByTagName('omni');
         var spot = lightsNode.getElementsByTagName('spot');
-        this.lights = [];
-        var numLights = 0;
 
         if (omni.length == 0 && spot.length == 0)
             return "You must define an omni/spot light in the <lights> tag";
@@ -543,7 +540,7 @@ class MySceneGraphAdapt {
                     this.data.spotLights[id].enabled = false;
             else return "<lights> - something wrong with spots's enable values";
 
-            if(!this.data.verifyStringsFloats([], [this.data.spotLights[id].angle, this.data.spotLights[id].exponent]))
+            if(!this.verifyStringsFloats([], [this.data.spotLights[id].angle, this.data.spotLights[id].exponent]))
                 return "<lights> - something wrong with spot's attributes";
             
             locationTag = spot[i].getElementsByTagName('location')[0];

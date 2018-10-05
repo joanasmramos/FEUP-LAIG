@@ -26,6 +26,7 @@ class XMLscene extends CGFscene {
         this.sceneInited = false;
 
         this.initCameras();
+        this.lightValues = [];
 
         this.enableTextures(true);
 
@@ -43,37 +44,31 @@ class XMLscene extends CGFscene {
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
+
     /**
      * Initializes the scene lights with the values read from the XML file.
      */
     initLights() {
         var i = 0;
-        // Lights index.
 
-        // Reads the lights from the scene graph.
-        for (var key in this.graph.lights) {
-            if (i >= 8)
-                break;              // Only eight lights allowed by WebGL.
+        for(var key in this.data.omniLights) {
+            if(i>=8)
+                break;
+            
+            this.lights[i].setPosition(this.data.omniLights[key].location["x"], this.data.omniLights[key].location["y"], this.data.omniLights[key].location["z"], this.data.omniLights[key].location["w"]);
+            this.lights[i].setAmbient(this.data.omniLights[key].ambient["r"], this.data.omniLights[key].ambient["g"], this.data.omniLights[key].ambient["b"], this.data.omniLights[key].ambient["a"]);
+            this.lights[i].setDiffuse(this.data.omniLights[key].diffuse["r"], this.data.omniLights[key].diffuse["g"], this.data.omniLights[key].diffuse["b"], this.data.omniLights[key].diffuse["a"]);
+            this.lights[i].setSpecular(this.data.omniLights[key].specular["r"], this.data.omniLights[key].specular["g"], this.data.omniLights[key].specular["b"], this.data.omniLights[key].specular["a"]);
 
-            if (this.graph.lights.hasOwnProperty(key)) {
-                var light = this.graph.lights[key];
+            if(this.data.omniLights[key].enabled)
+                this.lights[i].enable();
+            else this.lights[i].disable();
 
-                //lights are predefined in cgfscene
-                this.lights[i].setPosition(light[1][0], light[1][1], light[1][2], light[1][3]);
-                this.lights[i].setAmbient(light[2][0], light[2][1], light[2][2], light[2][3]);
-                this.lights[i].setDiffuse(light[3][0], light[3][1], light[3][2], light[3][3]);
-                this.lights[i].setSpecular(light[4][0], light[4][1], light[4][2], light[4][3]);
+            this.lightValues[key] = this.data.omniLights[key].enabled;
 
-                this.lights[i].setVisible(true);
-                if (light[0])
-                    this.lights[i].enable();
-                else
-                    this.lights[i].disable();
+            this.lights[i].update();
 
-                this.lights[i].update();
-
-                i++;
-            }
+            i++;
         }
     }
 
@@ -93,12 +88,12 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.data.ambientLight["r"], this.data.ambientLight["g"], this.data.ambientLight["b"], this.data.ambientLight["a"]);
         this.gl.clearColor(this.data.backgroundColor["r"], this.data.backgroundColor["g"], this.data.backgroundColor["b"], this.data.backgroundColor["a"]);
 
-        //this.initLights();
+        this.initLights();
 
         // Adds lights group.
-        //this.interface.addLightsGroup(this.graph.lights);
+        this.interface.addOmniLightsGroup(this.data.omniLights);
 
-        //this.sceneInited = true;
+        this.sceneInited = true;
     }
 
 
