@@ -351,8 +351,6 @@ class MySceneGraphAdapt {
                 return error;
         }
 
-
-
         //VI ATÉ AQUI
         //------------------------------------------------------------------
 
@@ -554,7 +552,12 @@ class MySceneGraphAdapt {
 
             this.data.spotLights[id].location = this.readXYZW(locationTag);
             this.data.spotLights[id].target = this.readXYZarray(targetTag);
-            //TO DO: calculo da direction com base na target e position
+
+            this.data.spotLights[id].direction = [];
+            this.data.spotLights[id].direction["x"] = this.data.spotLights[id].target["x"]-this.data.spotLights[id].location["x"];
+            this.data.spotLights[id].direction["y"] = this.data.spotLights[id].target["y"]-this.data.spotLights[id].location["y"];
+            this.data.spotLights[id].direction["z"] = this.data.spotLights[id].target["z"]-this.data.spotLights[id].location["z"];
+
             this.data.spotLights[id].ambient = this.readRGBA(ambientTag);
             this.data.spotLights[id].diffuse = this.readRGBA(diffuseTag);
             this.data.spotLights[id].specular = this.readRGBA(specularTag);

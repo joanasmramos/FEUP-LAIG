@@ -26,7 +26,8 @@ class XMLscene extends CGFscene {
         this.sceneInited = false;
 
         this.initCameras();
-        this.lightValues = [];
+        this.omniValues = [];
+        this.spotValues = [];
 
         this.enableTextures(true);
 
@@ -64,7 +65,30 @@ class XMLscene extends CGFscene {
                 this.lights[i].enable();
             else this.lights[i].disable();
 
-            this.lightValues[key] = this.data.omniLights[key].enabled;
+            this.omniValues[key] = this.data.omniLights[key].enabled;
+
+            this.lights[i].update();
+
+            i++;
+        }
+
+        for(var key in this.data.spotLights) {
+            if(i>=8)
+                break;
+            
+            this.lights[i].setSpotCutOff(this.data.spotLights[key].angle);
+            this.lights[i].setSpotExponent(this.data.spotLights[key].exponent);
+            this.lights[i].setSpotDirection(this.data.spotLights[key].direction["x"], this.data.spotLights[key].direction["y"], this.data.spotLights[key].direction["z"]);
+            this.lights[i].setPosition(this.data.spotLights[key].location["x"], this.data.spotLights[key].location["y"], this.data.spotLights[key].location["z"], this.data.spotLights[key].location["w"]);
+            this.lights[i].setAmbient(this.data.spotLights[key].ambient["r"], this.data.spotLights[key].ambient["g"], this.data.spotLights[key].ambient["b"], this.data.spotLights[key].ambient["a"]);
+            this.lights[i].setDiffuse(this.data.spotLights[key].diffuse["r"], this.data.spotLights[key].diffuse["g"], this.data.spotLights[key].diffuse["b"], this.data.spotLights[key].diffuse["a"]);
+            this.lights[i].setSpecular(this.data.spotLights[key].specular["r"], this.data.spotLights[key].specular["g"], this.data.spotLights[key].specular["b"], this.data.spotLights[key].specular["a"]);
+
+            if(this.data.spotLights[key].enabled)
+                this.lights[i].enable();
+            else this.lights[i].disable();
+
+            this.spotValues[key] = this.data.spotLights[key].enabled;
 
             this.lights[i].update();
 
@@ -92,6 +116,7 @@ class XMLscene extends CGFscene {
 
         // Adds lights group.
         this.interface.addOmniLightsGroup(this.data.omniLights);
+        this.interface.addSpotLightsGroup(this.data.spotLights);
 
         this.sceneInited = true;
     }
@@ -121,9 +146,24 @@ class XMLscene extends CGFscene {
             this.axis.display();
 
             var i = 0;
-            for (var key in this.lightValues) {
-                if (this.lightValues.hasOwnProperty(key)) {
-                    if (this.lightValues[key]) {
+            for (var key in this.omniValues) {
+                if (this.omniValues.hasOwnProperty(key)) {
+                    if (this.omniValues[key]) {
+                        this.lights[i].setVisible(true);
+                        this.lights[i].enable();
+                    }
+                    else {
+                        this.lights[i].setVisible(false);
+                        this.lights[i].disable();
+                    }
+                    this.lights[i].update();
+                    i++;
+                }
+            }
+
+            for (var key in this.spotValues) {
+                if (this.spotValues.hasOwnProperty(key)) {
+                    if (this.spotValues[key]) {
                         this.lights[i].setVisible(true);
                         this.lights[i].enable();
                     }
