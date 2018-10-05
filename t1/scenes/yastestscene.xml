@@ -1,5 +1,5 @@
 <yas>
-    <scene root="unique_comp" axis_length="1" />
+    <scene root="unique_comp" axis_length="5" />
 
     <views default="unique_persp" >
 
@@ -11,8 +11,8 @@
     </views>
 
     <ambient>
-        <ambient r="0.5" g="0.1" b="0.9" a="1" />
-        <background r="0.2" g="0.2" b="0.2" a="1" />
+        <ambient r="0.1" g="0.1" b="0.1" a="1" />
+        <background r="0.76" g="1" b="0.85" a="1" />
     </ambient>
 
     <lights>

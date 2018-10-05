@@ -291,6 +291,8 @@ class MySceneGraphAdapt {
                 return error;
         }
 
+        this.scene.onGraphLoaded();
+
         // <lights>
         if ((index = nodeNames.indexOf("lights")) == -1)
             return "tag <lights> missing";
@@ -440,8 +442,8 @@ class MySceneGraphAdapt {
         if(!this.validateRGBAs([this.data.ambientLight, this.data.backgroundColor]))
         return "<ambient> - something wrong, check values for RGBA";
 
-        
         this.log("Parsed ambient");
+
         return null;
     }
 

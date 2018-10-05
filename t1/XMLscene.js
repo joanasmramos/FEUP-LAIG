@@ -86,12 +86,12 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this, this.data.axisLength);
 
         //<views>
-        this.camera=this.data.defaultCamera;
+        this.camera = this.data.views[this.data.defaultView];
         this.interface.setActiveCamera(this.camera);
 
         //<ambient>
-        //this.setGlobalAmbientLight(this.data.ambientLight[0], this.data.ambientLight[1], this.data.ambientLight[2], this.data.ambientLight[3]);
-        //this.gl.clearColor(this.data.backgroundColor[0], this.data.backgroundColor[1], this.data.backgroundColor[2], this.data.backgroundColor[3]);
+        this.setGlobalAmbientLight(this.data.ambientLight["r"], this.data.ambientLight["g"], this.data.ambientLight["b"], this.data.ambientLight["a"]);
+        this.gl.clearColor(this.data.backgroundColor["r"], this.data.backgroundColor["g"], this.data.backgroundColor["b"], this.data.backgroundColor["a"]);
 
         //this.initLights();
 
