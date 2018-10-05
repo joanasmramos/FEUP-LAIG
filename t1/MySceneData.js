@@ -24,8 +24,7 @@ class MySceneData {
         this.numLights = 0;
 
         //textures
-        this.id_texture = "";
-        this.file_texture = "";
+        this.textures = [];
 
         //materials
         this.id_material = "";

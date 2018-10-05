@@ -582,22 +582,22 @@ class MySceneGraphAdapt {
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
-        var children = texturesNode.children;
+        var textures = texturesNode.getElementsByTagName('texture');
 
-        if (children.length == 0)
-            return "You must define a texture in the <textures> tag";
+        if (textures.length == 0)
+            return "<textures> - you must define at least one texture";
 
-        for (let i = 0; i < children.length; i++) {
-            var texture_cmpnt;
-            var textureTag = ambientsNode.getElementsByTagName("texture");
-            if (!this.verifyElems([textureTag]))
-                return "<textures> - something wrong with ambient component";
+        var id;
+        for (let i = 0; i < textures.length; i++) {
+            id = this.reader.getString(textures[i], 'id', true);
 
-            this.texture_cmpnt = readRGB(textureTag);
+            if(!this.verifyString(id) || this.data.textures[id] != null)
+                return "<textures> - something wrong with texture's id";
+            
+            this.data.textures[id] = this.reader.getString(textures[i], 'file', true);
 
-            if (!this.validate_RGBs([texture_cmpnt]))
-                return "<textures> - RGB colors unable to be parsed";
-
+            if(!this.verifyString(this.data.textures[id]))
+                return "<textures> - something wrong with texture's file";
         }
 
         this.log("Parsed textures");
