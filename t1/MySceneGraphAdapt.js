@@ -164,6 +164,20 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Readz x, y and z from a DOM element, returns an associative array with xyz
+     * @param {element} elem 
+     */
+    readXYZarray(elem){
+        var xyz = [];
+
+        xyz["x"] = this.reader.getFloat(elem, "x", true);
+        xyz["y"] = this.reader.getFloat(elem, "y", true);
+        xyz["z"] = this.reader.getFloat(elem, "z", true);
+
+        return xyz;
+    }
+
+    /**
      * Reads x, y, z and w from a DOM element, returns associative array with xyzw
      * @param {element} elem 
      */
@@ -231,12 +245,12 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Verifies if an array of xyzw coordinates (floats) is valid
-     * @param {xyzw} coords 
+     * Verifies if an associative array of floats is valid
+     * @param {array} arr
      */
-    verifyXYZW(coords) {
-        for(var key in coords) {
-            if(!this.verifyFloat(coords[key]))
+    verifyAssocArr(arr) {
+        for(var key in arr) {
+            if(!this.verifyFloat(arr[key]))
                 return false;
         }
 
@@ -476,16 +490,16 @@ class MySceneGraphAdapt {
         for (let i = 0; i < omni.length; i++) {
             id = this.reader.getString(omni[i], "id", true);
 
-            if (!(this.verifyString(id) || this.data.lights[id] != null))
+            if (!(this.verifyString(id) || this.data.omniLights[id] != null))
                 return "<lights> - something wrong with omni's id";
             
-            this.data.lights[id] = new Object();
-            this.data.lights[id].enabled = this.reader.getFloat(omni[i], 'enabled');
+            this.data.omniLights[id] = new Object();
+            this.data.omniLights[id].enabled = this.reader.getFloat(omni[i], 'enabled', true);
 
-            if(this.data.lights[id].enabled == 1)
-                this.data.lights[id].enabled = true;
-            else if(this.data.lights[id].enabled == 0)
-                    this.data.lights[id].enabled = false;
+            if(this.data.omniLights[id].enabled == 1)
+                this.data.omniLights[id].enabled = true;
+            else if(this.data.omniLights[id].enabled == 0)
+                    this.data.omniLights[id].enabled = false;
             else return "<lights> - something wrong with omni's enable values";
             
             locationTag = omni[i].getElementsByTagName('location')[0];
@@ -494,75 +508,69 @@ class MySceneGraphAdapt {
             specularTag = omni[i].getElementsByTagName("specular")[0];
 
             if (!this.verifyElems([locationTag, ambientTag, diffuseTag, specularTag]))
-                return "<lights> - something wrong with lights";
+                return "<lights> - something wrong with omni";
 
-            this.data.lights[id].location = this.readXYZW(locationTag);
-            this.data.lights[id].ambient = this.readRGBA(ambientTag);
-            this.data.lights[id].diffuse = this.readRGBA(diffuseTag);
-            this.data.lights[id].specular = this.readRGBA(specularTag);
+            this.data.omniLights[id].location = this.readXYZW(locationTag);
+            this.data.omniLights[id].ambient = this.readRGBA(ambientTag);
+            this.data.omniLights[id].diffuse = this.readRGBA(diffuseTag);
+            this.data.omniLights[id].specular = this.readRGBA(specularTag);
 
-            if (!this.verifyXYZW(this.data.lights[id].location))
+            if (!this.verifyAssocArr(this.data.omniLights[id].location))
                 return "<lights> - something wrong with omni's xyzw values";
             
-            if (!this.validateRGBAs([this.data.lights[id].ambient, this.data.lights[id].diffuse, this.data.lights[id].specular]))
+            if (!this.validateRGBAs([this.data.omniLights[id].ambient, this.data.omniLights[id].diffuse, this.data.omniLights[id].specular]))
                 return "<lights> - something wrong with omni's rgb values";
 
             if(++this.data.numLights >= 8) 
                 return "<lights> - you can't have more than 8 lights";
         }
-        
+
         //read spotlights
         for (let i = 0; i < spot.length; i++) {
-            this.id = this.reader.getString(spot[i], "id", true);
+            id = this.reader.getString(spot[i], "id", true);
 
-            if (!this.verifyString(id) || this.data.lights[id] != null)
-                return "id for spotlights is unable to be parsed";
-            enabled = spot[i].getElementsByTagName("enabled")[0];
-            angle = this.reader.getFloat(spot[i], "angle", true);
-            exponent = this.reader.getFloat(spot[i], "exponent", true);
-            locationTag = spot[i].getElementsByTagName("location")[0];
-            targetTag = spot[i].getElementsByTagName("target")[0];
-            ambientTag = spot[i].getElementsByTagName("ambient")[0];
+            if (!(this.verifyString(id) || this.data.spotLights[id] != null))
+                return "<lights> - something wrong with spots's id";
+            
+            this.data.spotLights[id] = new Object();
+            this.data.spotLights[id].enabled = this.reader.getFloat(spot[i], 'enabled', true);
+            this.data.spotLights[id].angle = this.reader.getFloat(spot[i], 'angle', true);
+            this.data.spotLights[id].exponent = this.reader.getFloat(spot[i], 'exponent', true);
+
+            if(this.data.spotLights[id].enabled == 1)
+                this.data.spotLights[id].enabled = true;
+            else if(this.data.spotLights[id].enabled == 0)
+                    this.data.spotLights[id].enabled = false;
+            else return "<lights> - something wrong with spots's enable values";
+
+            if(!this.data.verifyStringsFloats([], [this.data.spotLights[id].angle, this.data.spotLights[id].exponent]))
+                return "<lights> - something wrong with spot's attributes";
+            
+            locationTag = spot[i].getElementsByTagName('location')[0];
+            targetTag = spot[i].getElementsByTagName('target')[0];
+            ambientTag = spot[i].getElementsByTagName('ambient')[0];
             diffuseTag = spot[i].getElementsByTagName("diffuse")[0];
             specularTag = spot[i].getElementsByTagName("specular")[0];
 
             if (!this.verifyElems([locationTag, targetTag, ambientTag, diffuseTag, specularTag]))
-                return "<lights> - something wrong with perspectives";
+                return "<lights> - something wrong with spot children";
 
-            location = this.readXYZ(locationTag);
-            target = this.readXYZ(targetTag);
-            ambient = this.readRGB(ambientTag);
-            diffuse = this.readRGB(diffuseTag);
-            specular = this.readRGB(specularTag);
-            //falta meter location3
-            if (!this.verifyStringsFloats([], [location[0], location[1], location[2],
-            target[0], target[1], target[2]]))
-                return "<lights> - XYZ coordinates unable to be parsed";
-            //fala meter 4elemtno de todos
-            if (!this.validate_RGBs([
-                ambient[0], ambient[1], ambient[2],
-                diffuse[0], diffuse[1], diffuse[2],
-                specular[0], specular[1], specular[2]]))
-                return "<lights> - RGB colors unable to be parsed";
+            this.data.spotLights[id].location = this.readXYZW(locationTag);
+            this.data.spotLights[id].target = this.readXYZarray(targetTag);
+            //TO DO: calculo da direction com base na target e position
+            this.data.spotLights[id].ambient = this.readRGBA(ambientTag);
+            this.data.spotLights[id].diffuse = this.readRGBA(diffuseTag);
+            this.data.spotLights[id].specular = this.readRGBA(specularTag);
 
-            this.data.angle = angle;
-            this.data.exponent = exponent;
-            this.data.enabled = enabled;
-            if(this.data.lights.push(id) > 8)  this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
-            numLights++;
+            if (!this.verifyAssocArr(this.data.spotLights[id].location) || !this.verifyAssocArr(this.data.spotLights[id].target))
+                return "<lights> - something wrong with spot's xyzw values";
+            
+            if (!this.validateRGBAs([this.data.spotLights[id].ambient, this.data.spotLights[id].diffuse, this.data.spotLights[id].specular]))
+                return "<lights> - something wrong with spot's rgb values";
+
+            if(++this.data.numLights >= 8) 
+                return "<lights> - you can't have more than 8 lights";
         }
-
-        /*
- 
-                      // TODO: Store Light global information.
-                        //this.lights[lightId] = ...;  
-                        numLights++;
-                    }
-       */
-
-
-        if (numLights == 0 || numLights > 8)
-            this.onXMLMinorError("WebGL imposes a minimun of 1 lights and a limit of 8 lights");
 
         this.log("Parsed lights");
 

@@ -19,7 +19,8 @@ class MySceneData {
         this.backgroundColor = []; // array associativo - this.backgroundColor["r"] = rValue (...)
 
         //lights
-        this.lights = new Object();
+        this.omniLights = new Object();
+        this.spotLights = new Object();
         this.numLights = 0;
 
         //textures
