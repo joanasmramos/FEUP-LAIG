@@ -185,14 +185,14 @@ class MySceneGraphAdapt {
      * @param {element} elem 
      */
     readRGBA(elem) {
-        var r, g, b, a;
+        var rgba = [];
 
-        r = this.reader.getFloat(elem, "r", true);
-        g = this.reader.getFloat(elem, "g", true);
-        b = this.reader.getFloat(elem, "b", true);
-        a = this.reader.getFloat(elem, "a", true);
+        rgba["r"] = this.reader.getFloat(elem, "r", true);
+        rgba["g"] = this.reader.getFloat(elem, "g", true);
+        rgba["b"] = this.reader.getFloat(elem, "b", true);
+        rgba["a"] = this.reader.getFloat(elem, "a", true);
 
-        return vec4.fromValues(r,g,b,a);
+        return rgba;
     }
 
     /**
@@ -212,8 +212,8 @@ class MySceneGraphAdapt {
      * @param {color} color
      */
     validate_RGBs(color) {
-        for (let i = 0; i < color.length; i++) {
-            if (!this.validate_RGB(color[i]))
+        for (var key in color) {
+            if(!this.validate_RGB(color[key]))
                 return false;
         }
         return true;
@@ -224,11 +224,9 @@ class MySceneGraphAdapt {
      * @param {colors} colors 
      */
     validateRGBAs(colors) {
-        for(let i=0; i<colors.lengt;i++) {
-            for(let j=0; j<colors[i].length; i++){
-                if(!this.validate_RGBs(colors[i][j]))
-                    return false;
-            }
+        for(let i=0; i<colors.length;i++) {
+            if(!this.validate_RGBs(colors[i]))
+                return false;
         }
 
         return true;
@@ -384,7 +382,7 @@ class MySceneGraphAdapt {
             id = this.reader.getString(perspectives[i], "id", true);
 
             if (!this.verifyString(id) || this.data.views[id] != null)
-                return "views - something wrong with perspectives";
+                return "views - something wrong with a perspective's id";
 
             near = this.reader.getFloat(perspectives[i], "near", true);
             far = this.reader.getFloat(perspectives[i], "far", true);
@@ -393,13 +391,13 @@ class MySceneGraphAdapt {
             toTag = perspectives[i].getElementsByTagName("to")[0];
 
             if (!this.verifyElems([fromTag, toTag]))
-                return "<views> - something wrong with perspectives";
+                return "<views> - something wrong with a perspective's from/to element";
 
             from = this.readXYZ(fromTag);
             to = this.readXYZ(toTag);
 
             if (!this.verifyStringsFloats([], [near, far, angle, from[0], from[1], from[2], to[0], to[1], to[2]]))
-                return "<views> - something wrong with perspectives";
+                return "<views> - something wrong with a perspective's children values";
 
             this.data.views[id] = new CGFcamera(angle, near, far, from, to);
     }
@@ -436,6 +434,8 @@ class MySceneGraphAdapt {
             this.data.backgroundColor = this.readRGBA(child1);
         }
         else return "<ambient> - something wrong with child elements";
+
+        var a = Object.keys(this.data.ambientLight).length;
 
         if(!this.validateRGBAs([this.data.ambientLight, this.data.backgroundColor]))
         return "<ambient> - something wrong, check values for RGBA";
@@ -551,7 +551,6 @@ class MySceneGraphAdapt {
 
         return null;
     }
-
 
     /**
      * Parses the <TEXTURES> block. 

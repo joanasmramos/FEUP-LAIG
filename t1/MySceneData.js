@@ -23,6 +23,7 @@ class MySceneData {
         this.id_lights ="";
         this.enabled ="";
         this.angle ="";
+        this.numLights = "";
 
         //textures
         this.id_texture = "";
