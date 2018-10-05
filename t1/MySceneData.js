@@ -33,5 +33,8 @@ class MySceneData {
         this.ambient_material = ["", "", "", ""];
         this.diffuse_material = ["", "", "", ""];
         this.specular_material = ["", "", "", ""];
+
+        //transformations
+        this.transformations = [];
     }
 }

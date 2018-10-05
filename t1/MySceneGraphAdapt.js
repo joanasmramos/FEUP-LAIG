@@ -16,8 +16,8 @@ var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
-/*
 var TRANSFORMATIONS_INDEX = 6;
+/*
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
 */
@@ -166,7 +166,7 @@ class MySceneGraphAdapt {
      * Readz x, y and z from a DOM element, returns an associative array with xyz
      * @param {element} elem 
      */
-    readXYZarray(elem){
+    readXYZarray(elem) {
         var xyz = [];
 
         xyz["x"] = this.reader.getFloat(elem, "x", true);
@@ -213,7 +213,7 @@ class MySceneGraphAdapt {
     validate_RGB(color) {
         if (!this.verifyElement(color) || !this.verifyFloat(color) || color < 0 || color > 1) {
             return false;
-        } 
+        }
 
         return true;
     }
@@ -224,7 +224,7 @@ class MySceneGraphAdapt {
      */
     validate_RGBs(color) {
         for (var key in color) {
-            if(!this.validate_RGB(color[key]))
+            if (!this.validate_RGB(color[key]))
                 return false;
         }
         return true;
@@ -235,8 +235,8 @@ class MySceneGraphAdapt {
      * @param {colors} colors 
      */
     validateRGBAs(colors) {
-        for(let i=0; i<colors.length;i++) {
-            if(!this.validate_RGBs(colors[i]))
+        for (let i = 0; i < colors.length; i++) {
+            if (!this.validate_RGBs(colors[i]))
                 return false;
         }
 
@@ -248,8 +248,8 @@ class MySceneGraphAdapt {
      * @param {array} arr
      */
     verifyAssocArr(arr) {
-        for(var key in arr) {
-            if(!this.verifyFloat(arr[key]))
+        for (var key in arr) {
+            if (!this.verifyFloat(arr[key]))
                 return false;
         }
 
@@ -351,6 +351,20 @@ class MySceneGraphAdapt {
                 return error;
         }
 
+        // <transformations>
+        if ((index = nodeNames.indexOf("transformations")) == -1)
+            return "tag <transformations> missing";
+        else {
+            if (index != TRANSFORMATIONS_INDEX)
+                this.onXMLMinorError("tag <transformations> out of order");
+
+            //Parse transformations block
+            if ((error = this.parseTransformations(rootChildren[index])) != null)
+                return error;
+        }
+
+
+
         //VI ATÉ AQUI
         //------------------------------------------------------------------
 
@@ -378,7 +392,7 @@ class MySceneGraphAdapt {
         this.idRoot = this.reader.getString(sceneNode, 'root');
         this.data.axisLength = this.reader.getFloat(sceneNode, 'axis_length');
 
-        if(!this.verifyStringsFloats([this.idRoot], [this.data.axisLength]))
+        if (!this.verifyStringsFloats([this.idRoot], [this.data.axisLength]))
             return "<scene> - something wrong with attributes";
 
         this.log("Parsed scene");
@@ -422,9 +436,9 @@ class MySceneGraphAdapt {
                 return "<views> - something wrong with a perspective's children values";
 
             this.data.views[id] = new CGFcamera(angle, near, far, from, to);
-    }
+        }
 
-    //TO DO: orthos
+        //TO DO: orthos
 
         this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
 
@@ -434,7 +448,7 @@ class MySceneGraphAdapt {
         this.log("Parsed views");
 
         return null;
-    }    
+    }
 
     /**
      * Parses the <ambient> block. 
@@ -444,14 +458,14 @@ class MySceneGraphAdapt {
         var child1 = ambientsNode.firstElementChild;
         var child2 = child1.nextElementSibling;
 
-        if(!this.verifyElems([child1, child2]))
+        if (!this.verifyElems([child1, child2]))
             return "<ambient> - something wrong with child elements";
-        
-        if(child1.nodeName == "ambient" && child2.nodeName == "background") {
+
+        if (child1.nodeName == "ambient" && child2.nodeName == "background") {
             this.data.ambientLight = this.readRGBA(child1);
             this.data.backgroundColor = this.readRGBA(child2);
         }
-        else if(child1.nodeName == "background" && child2.nodeName == "ambient") {
+        else if (child1.nodeName == "background" && child2.nodeName == "ambient") {
             this.data.ambientLight = this.readRGBA(child2);
             this.data.backgroundColor = this.readRGBA(child1);
         }
@@ -459,8 +473,8 @@ class MySceneGraphAdapt {
 
         var a = Object.keys(this.data.ambientLight).length;
 
-        if(!this.validateRGBAs([this.data.ambientLight, this.data.backgroundColor]))
-        return "<ambient> - something wrong, check values for RGBA";
+        if (!this.validateRGBAs([this.data.ambientLight, this.data.backgroundColor]))
+            return "<ambient> - something wrong, check values for RGBA";
 
         this.log("Parsed ambient");
 
@@ -477,7 +491,7 @@ class MySceneGraphAdapt {
 
         if (omni.length == 0 && spot.length == 0)
             return "You must define an omni/spot light in the <lights> tag";
-        
+
         var id;
         var locationTag, ambientTag, diffuseTag, specularTag, targetTag;
 
@@ -487,16 +501,16 @@ class MySceneGraphAdapt {
 
             if (!(this.verifyString(id) || this.data.omniLights[id] != null))
                 return "<lights> - something wrong with omni's id";
-            
+
             this.data.omniLights[id] = new Object();
             this.data.omniLights[id].enabled = this.reader.getFloat(omni[i], 'enabled', true);
 
-            if(this.data.omniLights[id].enabled == 1)
+            if (this.data.omniLights[id].enabled == 1)
                 this.data.omniLights[id].enabled = true;
-            else if(this.data.omniLights[id].enabled == 0)
-                    this.data.omniLights[id].enabled = false;
+            else if (this.data.omniLights[id].enabled == 0)
+                this.data.omniLights[id].enabled = false;
             else return "<lights> - something wrong with omni's enable values";
-            
+
             locationTag = omni[i].getElementsByTagName('location')[0];
             ambientTag = omni[i].getElementsByTagName('ambient')[0];
             diffuseTag = omni[i].getElementsByTagName("diffuse")[0];
@@ -512,11 +526,11 @@ class MySceneGraphAdapt {
 
             if (!this.verifyAssocArr(this.data.omniLights[id].location))
                 return "<lights> - something wrong with omni's xyzw values";
-            
+
             if (!this.validateRGBAs([this.data.omniLights[id].ambient, this.data.omniLights[id].diffuse, this.data.omniLights[id].specular]))
                 return "<lights> - something wrong with omni's rgb values";
 
-            if(++this.data.numLights >= 8) 
+            if (++this.data.numLights >= 8)
                 return "<lights> - you can't have more than 8 lights";
         }
 
@@ -526,21 +540,21 @@ class MySceneGraphAdapt {
 
             if (!(this.verifyString(id) || this.data.spotLights[id] != null))
                 return "<lights> - something wrong with spots's id";
-            
+
             this.data.spotLights[id] = new Object();
             this.data.spotLights[id].enabled = this.reader.getFloat(spot[i], 'enabled', true);
             this.data.spotLights[id].angle = this.reader.getFloat(spot[i], 'angle', true);
             this.data.spotLights[id].exponent = this.reader.getFloat(spot[i], 'exponent', true);
 
-            if(this.data.spotLights[id].enabled == 1)
+            if (this.data.spotLights[id].enabled == 1)
                 this.data.spotLights[id].enabled = true;
-            else if(this.data.spotLights[id].enabled == 0)
-                    this.data.spotLights[id].enabled = false;
+            else if (this.data.spotLights[id].enabled == 0)
+                this.data.spotLights[id].enabled = false;
             else return "<lights> - something wrong with spots's enable values";
 
-            if(!this.verifyStringsFloats([], [this.data.spotLights[id].angle, this.data.spotLights[id].exponent]))
+            if (!this.verifyStringsFloats([], [this.data.spotLights[id].angle, this.data.spotLights[id].exponent]))
                 return "<lights> - something wrong with spot's attributes";
-            
+
             locationTag = spot[i].getElementsByTagName('location')[0];
             targetTag = spot[i].getElementsByTagName('target')[0];
             ambientTag = spot[i].getElementsByTagName('ambient')[0];
@@ -554,9 +568,9 @@ class MySceneGraphAdapt {
             this.data.spotLights[id].target = this.readXYZarray(targetTag);
 
             this.data.spotLights[id].direction = [];
-            this.data.spotLights[id].direction["x"] = this.data.spotLights[id].target["x"]-this.data.spotLights[id].location["x"];
-            this.data.spotLights[id].direction["y"] = this.data.spotLights[id].target["y"]-this.data.spotLights[id].location["y"];
-            this.data.spotLights[id].direction["z"] = this.data.spotLights[id].target["z"]-this.data.spotLights[id].location["z"];
+            this.data.spotLights[id].direction["x"] = this.data.spotLights[id].target["x"] - this.data.spotLights[id].location["x"];
+            this.data.spotLights[id].direction["y"] = this.data.spotLights[id].target["y"] - this.data.spotLights[id].location["y"];
+            this.data.spotLights[id].direction["z"] = this.data.spotLights[id].target["z"] - this.data.spotLights[id].location["z"];
 
             this.data.spotLights[id].ambient = this.readRGBA(ambientTag);
             this.data.spotLights[id].diffuse = this.readRGBA(diffuseTag);
@@ -564,11 +578,11 @@ class MySceneGraphAdapt {
 
             if (!this.verifyAssocArr(this.data.spotLights[id].location) || !this.verifyAssocArr(this.data.spotLights[id].target))
                 return "<lights> - something wrong with spot's xyzw values";
-            
+
             if (!this.validateRGBAs([this.data.spotLights[id].ambient, this.data.spotLights[id].diffuse, this.data.spotLights[id].specular]))
                 return "<lights> - something wrong with spot's rgb values";
 
-            if(++this.data.numLights >= 8) 
+            if (++this.data.numLights >= 8)
                 return "<lights> - you can't have more than 8 lights";
         }
 
@@ -591,16 +605,93 @@ class MySceneGraphAdapt {
         for (let i = 0; i < textures.length; i++) {
             id = this.reader.getString(textures[i], 'id', true);
 
-            if(!this.verifyString(id) || this.data.textures[id] != null)
+            if (!this.verifyString(id) || this.data.textures[id] != null)
                 return "<textures> - something wrong with texture's id";
-            
+
             this.data.textures[id] = this.reader.getString(textures[i], 'file', true);
 
-            if(!this.verifyString(this.data.textures[id]))
+            if (!this.verifyString(this.data.textures[id]))
                 return "<textures> - something wrong with texture's file";
         }
 
         this.log("Parsed textures");
+        return null;
+    }
+
+
+    /**
+ * Parses the <transformations> block.
+ * @param {nodes block element} transformationNode
+ */
+    parseTransformations(transformationsNode) {
+        var transformation = transformationsNode.getElementsByTagName('transformation');
+
+        if (transformation.length == 0)
+            return "You must define at least one transformation in the <transformations> tag";
+
+        var id;
+        var translateTag, rotateTag, scaleTag;
+        var vector, axis, angle;
+
+        for (let i = 0; i < transformation.length; i++) {
+            id = this.reader.getString(transformation[i], "id", true);
+
+            if (!(this.verifyString(id) || this.data.transformations[id] != null))
+                return "<transformations> - something wrong with the transformation id";
+
+            this.data.transformations[id] = new Object();
+
+            if (this.transformation[id].length == 0) {
+                return "a transformation needs to have an effective action (translate/rotate/scale)";
+            }
+            else {
+
+                var identMatrix = mat4.create();
+                //creating identitymatrix
+
+                for (let j = 0; j < transformation[id].length; i++) {
+
+                    switch (transformation[id].nodeName[j]) {
+                        case "translate":
+                            translateTag = transformation[id].getElementsByTagName("translate")[0];
+                            vector = this.readXYZ(translateTag);
+
+                            mat4.translate(identMatrix, identMatrix, vector);
+                            break;
+                        case "rotate":
+                            rotateTag = transformation[id].getElementsByTagName("rotate")[0];
+                            axis = this.transformation[id].nodeName[j].getAttribute('axis');
+                            angle = this.reader.getFloat(transformation[id].nodeName[j], 'angle', true);
+                            vec3.set(vector, axis, angle);
+
+                            mat4.rotate(identMatrix,identMatrix,vector);
+                            break;
+                        case "scale":
+                            scaleTag = transformation[id].getElementsByTagName("scale")[0];
+                            vector = this.readXYZ(scaleTag);
+
+                            mat4.scale(identMatrix,identMatrix,vector);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
+        }
+        /*
+
+            if (!this.verifyAssocArr(this.data.omniLights[id].location))
+                return "<lights> - something wrong with omni's xyzw values";
+    
+            if (!this.validateRGBAs([this.data.omniLights[id].ambient, this.data.omniLights[id].diffuse, this.data.omniLights[id].specular]))
+                return "<lights> - something wrong with omni's rgb values";
+        }
+        */
+        this.log("Parsed transformations");
+
+
         return null;
     }
 
