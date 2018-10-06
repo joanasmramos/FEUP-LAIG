@@ -724,7 +724,7 @@ class MySceneGraphAdapt {
             }
             else {
 
-                var identMatrix = mat4.create();
+                this.data.transformations[id] = mat4.create();
                 //creating identitymatrix
 
                 for (let j = 0; j < exact_transformation.length; i++) {
@@ -738,11 +738,23 @@ class MySceneGraphAdapt {
                             break;
                         case "rotate":
                             rotateTag = exact_transformation.getElementsByTagName("rotate")[0];
-                            axis = exact_transformation.nodeName[j].getAttribute('axis');
+                            axis = this.reader.getString(exact_transformation.nodeName[j], 'axis', true);
                             angle = this.reader.getFloat(exact_transformation.nodeName[j], 'angle', true);
-                            vec3.set(vector, axis, angle);
-                            //falta a questão do eixo do axis c mais um switch
-                            mat4.rotate(identMatrix, identMatrix, vector);
+                            switch (axis) {
+                                case 'x':
+                                    axis = [1, 0, 0];
+                                    break;
+                                case 'y':
+                                    axis = [0, 1, 0];
+                                    break;
+
+                                case 'z':
+                                    axis = [0, 0, 1];
+                                    break;
+                            }
+
+                            vector = vec3.set(vector, axis, angle);
+                            mat4.rotate(identMatrix, identMatrix, DEGREE_TO_RAD * angle, vector);
                             break;
                         case "scale":
                             scaleTag = exact_transformation.getElementsByTagName("scale")[0];
@@ -825,112 +837,112 @@ class MySceneGraphAdapt {
         return null;
     }
 
-    
 
 
-/**
-     * Parses the <primitives> node.
-     * @param {primitives block element} 
-     */
-parsePrimitives(primitivesNode) {
 
-    var primitive = primitivesNode.getElementsByTagName('primitive');
+    /**
+         * Parses the <primitives> node.
+         * @param {primitives block element} 
+         */
+    parsePrimitives(primitivesNode) {
 
-    if (primitive.length == 0)
-        return "You must define an material in the <primitives> tag";
+        var primitive = primitivesNode.getElementsByTagName('primitive');
 
-    var id;
-    var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
+        if (primitive.length == 0)
+            return "You must define an material in the <primitives> tag";
 
-    for (let i = 0; i < primitive.length; i++) {
-        id = this.reader.getString(primitive[i], "id", true);
+        var id;
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
 
-        if (!this.verifyString(id) || this.data.materials[id] != null)
-            return "<primitives> - something wrong with primitives' id";
-        this.data.primitives[id] = new Object();
+        for (let i = 0; i < primitive.length; i++) {
+            id = this.reader.getString(primitive[i], "id", true);
 
-        if (!this.verifyString(this.data.primitives[id]))
-            return "<primitives> - something wrong with primitives' id";
-            
-    //TODO TESTAR LIMITE DE 1 SÓ OBJETO POR BLOCO PRIMITIVA
-    //ISTO NAO ESTÁ BEM
-        switch (this.data.primitives[id].nodeName) {
-            case 'rectangle':
-                rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
+            if (!this.verifyString(id) || this.data.materials[id] != null)
+                return "<primitives> - something wrong with primitives' id";
+            this.data.primitives[id] = new Object();
 
-                if (!this.verifyElems([rectangleTag]))
-                    return "<primitives> - something wrong with primitives children";
+            if (!this.verifyString(this.data.primitives[id]))
+                return "<primitives> - something wrong with primitives' id";
 
-                this.data.primitives[id].rectangle = this.readXYZW(rectangleTag);
-                if (!this.verifyAssocArr(this.data.primitives[id].rectangle))
-                    return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
+            //TODO TESTAR LIMITE DE 1 SÓ OBJETO POR BLOCO PRIMITIVA
+            //ISTO NAO ESTÁ BEM
+            switch (this.data.primitives[id].) {
+                case 'rectangle':
+                    rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
 
-                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
-                break;
+                    if (!this.verifyElems([rectangleTag]))
+                        return "<primitives> - something wrong with primitives children";
 
-            case 'triangle':
-                triangleTag = primitive[id].getElementsByTagName('triangle')[0];
+                    this.data.primitives[id].rectangle = this.readXYZW(rectangleTag);
+                    if (!this.verifyAssocArr(this.data.primitives[id].rectangle))
+                        return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
-                if (!this.verifyElems([triangleTag]))
-                    return "<primitives> - something wrong with primitives children";
+                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    break;
 
-                this.data.primitives[id].triangle = this.readTrianglearray(triangleTag);
-                if (!this.verifyAssocArr(this.data.primitives[id].triangle))
-                    return "<primitives> - something wrong with triangles's x1;y1;z1;x2;y2;z2;x3;y3,z3 values";
+                case 'triangle':
+                    triangleTag = primitive[id].getElementsByTagName('triangle')[0];
 
-                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
-                break;
+                    if (!this.verifyElems([triangleTag]))
+                        return "<primitives> - something wrong with primitives children";
 
-            case 'cylinder':
-                cylinderTag = primitive[id].getElementsByTagName('cylinder')[0];
+                    this.data.primitives[id].triangle = this.readTrianglearray(triangleTag);
+                    if (!this.verifyAssocArr(this.data.primitives[id].triangle))
+                        return "<primitives> - something wrong with triangles's x1;y1;z1;x2;y2;z2;x3;y3,z3 values";
 
-                if (!this.verifyElems([cylinderTag]))
-                    return "<primitives> - something wrong with primitives children";
+                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    break;
 
-                this.data.primitives[id].cylinder = this.readCylinderarray(cylinderTag);
-                if (!this.verifyAssocArr(this.data.primitives[id].cylinder))
-                    return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
+                case 'cylinder':
+                    cylinderTag = primitive[id].getElementsByTagName('cylinder')[0];
 
-                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO-
-                break;
+                    if (!this.verifyElems([cylinderTag]))
+                        return "<primitives> - something wrong with primitives children";
 
-            case 'sphere':
-                sphereTag = primitive[id].getElementsByTagName('sphere')[0];
+                    this.data.primitives[id].cylinder = this.readCylinderarray(cylinderTag);
+                    if (!this.verifyAssocArr(this.data.primitives[id].cylinder))
+                        return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
 
-                if (!this.verifyElems([sphereTag]))
-                    return "<primitives> - something wrong with primitives children";
+                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO-
+                    break;
 
-                this.data.primitives[id].sphere = this.readSpherearray(sphereTag);
-                if (!this.verifyAssocArr(this.data.primitives[id].sphere))
-                    return "<primitives> - something wrong with spheres's radius;slices;stacks values";
+                case 'sphere':
+                    sphereTag = primitive[id].getElementsByTagName('sphere')[0];
+
+                    if (!this.verifyElems([sphereTag]))
+                        return "<primitives> - something wrong with primitives children";
+
+                    this.data.primitives[id].sphere = this.readSpherearray(sphereTag);
+                    if (!this.verifyAssocArr(this.data.primitives[id].sphere))
+                        return "<primitives> - something wrong with spheres's radius;slices;stacks values";
 
 
-                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
-                break;
+                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    break;
 
-            case 'torus':
-                torusTag = primitive[id].getElementsByTagName('torus')[0];
+                case 'torus':
+                    torusTag = primitive[id].getElementsByTagName('torus')[0];
 
-                if (!this.verifyElems([torusTag]))
-                    return "<primitives> - something wrong with primitives children";
+                    if (!this.verifyElems([torusTag]))
+                        return "<primitives> - something wrong with primitives children";
 
-                this.data.primitives[id].torus = this.readTorusarray(torusTag);
-                if (!this.verifyAssocArr(this.data.primitives[id].torus))
-                    return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
+                    this.data.primitives[id].torus = this.readTorusarray(torusTag);
+                    if (!this.verifyAssocArr(this.data.primitives[id].torus))
+                        return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
 
-                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
-                break;
+                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
+
+            }
 
         }
 
+        this.log("Parsed primitives");
+        return null;
     }
-
-    this.log("Parsed primitives");
-    return null;
-}
     /**
      * Parses the <NODES> block.
      * @param {nodes block element} nodesNode
