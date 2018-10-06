@@ -42,6 +42,7 @@ class MySceneGraphAdapt {
 
         this.nodes = [];
         this.idRoot = null;                    // The id of the root element.
+        this.primitives = [];
 
         // File reading
         this.reader = new CGFXMLreader();
@@ -862,6 +863,7 @@ class MySceneGraphAdapt {
 
         var id;
         var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
+        var rectangle = [];
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -885,11 +887,12 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([rectangleTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].rectangle = this.readRectanglearray(rectangleTag);
-                    if (!this.verifyAssocArr(this.data.primitives[id].rectangle))
+                    rectangle = this.readRectanglearray(rectangleTag);
+                    if (!this.verifyAssocArr(rectangle))
                         return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
-                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    this.primitives[id] = new MyQuad(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
+                    
                     break;
 
                 case 'triangle':
