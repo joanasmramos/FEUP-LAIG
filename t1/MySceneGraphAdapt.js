@@ -834,7 +834,7 @@ class MySceneGraphAdapt {
      */
 parsePrimitives(primitivesNode) {
 
-    var primitive = materialsNode.getElementsByTagName('primitive');
+    var primitive = primitivesNode.getElementsByTagName('primitive');
 
     if (primitive.length == 0)
         return "You must define an material in the <primitives> tag";
@@ -847,13 +847,13 @@ parsePrimitives(primitivesNode) {
 
         if (!this.verifyString(id) || this.data.materials[id] != null)
             return "<primitives> - something wrong with primitives' id";
-        this.data.primitive[id] = new Object();
+        this.data.primitives[id] = new Object();
 
         if (!this.verifyString(this.data.primitives[id]))
             return "<primitives> - something wrong with primitives' id";
             
     //TODO TESTAR LIMITE DE 1 SÓ OBJETO POR BLOCO PRIMITIVA
-
+    //ISTO NAO ESTÁ BEM
         switch (this.data.primitives[id].nodeName) {
             case 'rectangle':
                 rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
