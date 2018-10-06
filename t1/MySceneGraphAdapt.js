@@ -134,7 +134,7 @@ class MySceneGraphAdapt {
         }
         return true;
     }
-    
+
     /**
     * Verifies if an array of elements is valid (not null)
     * @param {Elements to verify} elems 
@@ -252,88 +252,6 @@ class MySceneGraphAdapt {
         }
 
         return true;
-    }
-
-    /**
-     * Reads x,y and z coordinates from a Rectangle element, returns associative array with xy_rect
-     * @param {element} elem 
-     */
-    readRectanglearray(elem) {
-        var xy_rect = [];
-
-        xy_rect["x1"] = this.reader.getFloat(elem, "x1", true);
-        xy_rect["y1"] = this.reader.getFloat(elem, "y1", true);
-        xy_rect["x2"] = this.reader.getFloat(elem, "x2", true);
-        xy_rect["y2"] = this.reader.getFloat(elem, "y2", true);
-
-        return xy_rect;
-    }
-
-    /**
- * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
- * @param {element} elem 
- */
-    readSpherearray(elem) {
-        var rss = [];
-
-        rss["radius"] = this.reader.getFloat(elem, "radius", true);
-        rss["slices"] = this.reader.getInteger(elem, "slices", true);
-        rss["stacks"] = this.reader.getInteger(elem, "stacks", true);
-
-        return rss;
-    }
-
-    /**
-     * Reads x,y and z coordinates from a Triangle element, returns associative array with xyz_rect
-     * @param {element} elem 
-     */
-    readTrianglearray(elem) {
-        var xyz_rect = [];
-
-        xyz_rect["x1"] = this.reader.getFloat(elem, "x1", true);
-        xyz_rect["y1"] = this.reader.getFloat(elem, "y1", true);
-        xyz_rect["z1"] = this.reader.getFloat(elem, "z1", true);
-        xyz_rect["x2"] = this.reader.getFloat(elem, "x2", true);
-        xyz_rect["y2"] = this.reader.getFloat(elem, "y2", true);
-        xyz_rect["z2"] = this.reader.getFloat(elem, "z2", true);
-        xyz_rect["x3"] = this.reader.getFloat(elem, "x3", true);
-        xyz_rect["y3"] = this.reader.getFloat(elem, "y3", true);
-        xyz_rect["z3"] = this.reader.getFloat(elem, "z3", true);
-
-        return xyz_rect;
-    }
-
-    /**
- * Reads from a Cylinder element, returns associative array with components
- * @param {element} elem 
- */
-    readCylinderarray(elem) {
-        var bthss_cylinder = [];
-
-        bthss_cylinder["base"] = this.reader.getFloat(elem, "base", true);
-        bthss_cylinder["top"] = this.reader.getFloat(elem, "top", true);
-        bthss_cylinder["height"] = this.reader.getFloat(elem, "height", true);
-        bthss_cylinder["slices"] = this.reader.getInteger(elem, "slices", true);
-        bthss_cylinder["stacks"] = this.reader.getInteger(elem, "stacks", true);
-
-
-        return bthss_cylinder;
-    }
-
-    /**
-* Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
-* @param {element} elem 
-*/
-    readTorusarray(elem) {
-        var torus_property = [];
-
-        torus_property["inner"] = this.reader.getFloat(elem, "inner", true);
-        torus_property["outer"] = this.reader.getFloat(elem, "outer", true);
-        torus_property["slices"] = this.reader.getInteger(elem, "slices", true);
-        torus_property["loops"] = this.reader.getInteger(elem, "loops", true);
-
-
-        return torus_property;
     }
 
     /**
@@ -803,12 +721,11 @@ class MySceneGraphAdapt {
      * Parses the <materials> node.
      * @param {materials block element} materialsNode
      */
-
     parseMaterials(materialsNode) {
         var material = materialsNode.getElementsByTagName('material');
 
         if (material.length == 0)
-            return "You must define an material in the <materials> tag";
+            return "You must define a material in the <materials> tag";
 
         var id;
         var emissionTag, ambientTag, diffuseTag, specularTag;
@@ -852,6 +769,88 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Reads x,y and z coordinates from a Rectangle element, returns associative array with xy_rect
+     * @param {element} elem 
+     */
+    readRectanglearray(elem) {
+        var xy_rect = [];
+
+        xy_rect["x1"] = this.reader.getFloat(elem, "x1", true);
+        xy_rect["y1"] = this.reader.getFloat(elem, "y1", true);
+        xy_rect["x2"] = this.reader.getFloat(elem, "x2", true);
+        xy_rect["y2"] = this.reader.getFloat(elem, "y2", true);
+
+        return xy_rect;
+    }
+
+    /**
+ * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
+ * @param {element} elem 
+ */
+    readSpherearray(elem) {
+        var rss = [];
+
+        rss["radius"] = this.reader.getFloat(elem, "radius", true);
+        rss["slices"] = this.reader.getInteger(elem, "slices", true);
+        rss["stacks"] = this.reader.getInteger(elem, "stacks", true);
+
+        return rss;
+    }
+
+    /**
+     * Reads x,y and z coordinates from a Triangle element, returns associative array with xyz_rect
+     * @param {element} elem 
+     */
+    readTrianglearray(elem) {
+        var xyz_rect = [];
+
+        xyz_rect["x1"] = this.reader.getFloat(elem, "x1", true);
+        xyz_rect["y1"] = this.reader.getFloat(elem, "y1", true);
+        xyz_rect["z1"] = this.reader.getFloat(elem, "z1", true);
+        xyz_rect["x2"] = this.reader.getFloat(elem, "x2", true);
+        xyz_rect["y2"] = this.reader.getFloat(elem, "y2", true);
+        xyz_rect["z2"] = this.reader.getFloat(elem, "z2", true);
+        xyz_rect["x3"] = this.reader.getFloat(elem, "x3", true);
+        xyz_rect["y3"] = this.reader.getFloat(elem, "y3", true);
+        xyz_rect["z3"] = this.reader.getFloat(elem, "z3", true);
+
+        return xyz_rect;
+    }
+
+    /**
+ * Reads from a Cylinder element, returns associative array with components
+ * @param {element} elem 
+ */
+    readCylinderarray(elem) {
+        var bthss_cylinder = [];
+
+        bthss_cylinder["base"] = this.reader.getFloat(elem, "base", true);
+        bthss_cylinder["top"] = this.reader.getFloat(elem, "top", true);
+        bthss_cylinder["height"] = this.reader.getFloat(elem, "height", true);
+        bthss_cylinder["slices"] = this.reader.getInteger(elem, "slices", true);
+        bthss_cylinder["stacks"] = this.reader.getInteger(elem, "stacks", true);
+
+
+        return bthss_cylinder;
+    }
+
+    /**
+* Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
+* @param {element} elem 
+*/
+    readTorusarray(elem) {
+        var torus_property = [];
+
+        torus_property["inner"] = this.reader.getFloat(elem, "inner", true);
+        torus_property["outer"] = this.reader.getFloat(elem, "outer", true);
+        torus_property["slices"] = this.reader.getInteger(elem, "slices", true);
+        torus_property["loops"] = this.reader.getInteger(elem, "loops", true);
+
+
+        return torus_property;
+    }
+
+    /**
          * Parses the <primitives> node.
          * @param {primitives block element} 
          */
@@ -859,7 +858,7 @@ class MySceneGraphAdapt {
 
         var primitive = primitivesNode.getElementsByTagName('primitive');
         if (primitive.length == 0)
-            return "You must define an material in the <primitives> tag";
+            return "You must define a primitive in the <primitives> tag";
 
         var id;
         var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
