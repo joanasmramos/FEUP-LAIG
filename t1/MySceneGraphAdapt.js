@@ -16,11 +16,10 @@ var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
-var TRANSFORMATIONS_INDEX = 6;
-/*
+//var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
-*/
+//var COMPONENTS_INDEX = 8;
+
 var R_INDEX = 0;
 var G_INDEX = 1;
 var B_INDEX = 2;
@@ -415,6 +414,18 @@ class MySceneGraphAdapt {
 
             //Parse MATERIALS block
             if ((error = this.parseMaterials(rootChildren[index])) != null)
+                return error;
+        }
+
+        // <primitives>
+        if ((index = nodeNames.indexOf("primitives")) == -1)
+            return "tag <primitives> missing";
+        else {
+            if (index != PRIMITIVES_INDEX)
+                this.onXMLMinorError("tag <primitives> out of order");
+
+            //Parse primitives block
+            if ((error = this.parsePrimitives(rootChildren[index])) != null)
                 return error;
         }
 
