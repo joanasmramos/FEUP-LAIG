@@ -257,6 +257,72 @@ class MySceneGraphAdapt {
     }
 
     /**
+ * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
+ * @param {element} elem 
+ */
+    readSpherearray(elem) {
+        var rss = [];
+
+        rss["radius"] = this.reader.getFloat(elem, "radius", true);
+        rss["slices"] = this.reader.getInteger(elem, "slices", true);
+        rss["stacks"] = this.reader.getInteger(elem, "stacks", true);
+
+        return rss;
+    }
+
+    /**
+     * Reads x,y and z coordinates from a Triangle element, returns associative array with xyz_rect
+     * @param {element} elem 
+     */
+    readTrianglearray(elem) {
+        var xyz_rect = [];
+
+        xyz_rect["x1"] = this.reader.getFloat(elem, "x1", true);
+        xyz_rect["y1"] = this.reader.getFloat(elem, "y1", true);
+        xyz_rect["z1"] = this.reader.getFloat(elem, "z1", true);
+        xyz_rect["x2"] = this.reader.getFloat(elem, "x2", true);
+        xyz_rect["y2"] = this.reader.getFloat(elem, "y2", true);
+        xyz_rect["z2"] = this.reader.getFloat(elem, "z2", true);
+        xyz_rect["x3"] = this.reader.getFloat(elem, "x3", true);
+        xyz_rect["y3"] = this.reader.getFloat(elem, "y3", true);
+        xyz_rect["z3"] = this.reader.getFloat(elem, "z3", true);
+
+        return xyz_rect;
+    }
+    /**
+ * Reads x,y and z coordinates from a Cylinder element, returns associative array with components
+ * @param {element} elem 
+ */
+    readCylinderarray(elem) {
+        var bthss_cylinder = [];
+
+        bthss_cylinder["base"] = this.reader.getFloat(elem, "base", true);
+        bthss_cylinder["top"] = this.reader.getFloat(elem, "top", true);
+        bthss_cylinder["height"] = this.reader.getFloat(elem, "height", true);
+        bthss_cylinder["slices"] = this.reader.getInteger(elem, "slices", true);
+        bthss_cylinder["stacks"] = this.reader.getInteger(elem, "stacks", true);
+
+
+        return bthss_cylinder;
+    }
+
+    /**
+* Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
+* @param {element} elem 
+*/
+    readTorusarray(elem) {
+        var torus_property = [];
+
+        torus_property["inner"] = this.reader.getFloat(elem, "inner", true);
+        torus_property["outer"] = this.reader.getFloat(elem, "outer", true);
+        torus_property["slices"] = this.reader.getInteger(elem, "slices", true);
+        torus_property["loops"] = this.reader.getInteger(elem, "loops", true);
+
+
+        return torus_property;
+    }
+
+    /**
      * Parses the XML file, processing each block.
      * @param {XML root element} rootElement
      */
@@ -338,7 +404,7 @@ class MySceneGraphAdapt {
             if ((error = this.parseTextures(rootChildren[index])) != null)
                 return error;
         }
-        
+
 
         // <materials>
         if ((index = nodeNames.indexOf("materials")) == -1)
@@ -639,8 +705,10 @@ class MySceneGraphAdapt {
                 return "<transformations> - something wrong with the transformation id";
 
             this.data.transformations[id] = new Object();
+            var exact_transformation = transformation[i].children;
 
-            if (this.data.transformations[id].length == 0) {
+
+            if (exact_transformation.length == 0) {
                 return "a transformation needs to have an effective action (translate/rotate/scale)";
             }
             else {
@@ -662,7 +730,7 @@ class MySceneGraphAdapt {
                             axis = exact_transformation.nodeName[j].getAttribute('axis');
                             angle = this.reader.getFloat(exact_transformation.nodeName[j], 'angle', true);
                             vec3.set(vector, axis, angle);
-
+                            //falta a questão do eixo do axis c mais um switch
                             mat4.rotate(identMatrix, identMatrix, vector);
                             break;
                         case "scale":
@@ -746,6 +814,112 @@ class MySceneGraphAdapt {
         return null;
     }
 
+    
+
+
+/**
+     * Parses the <primitives> node.
+     * @param {primitives block element} 
+     */
+parsePrimitives(primitivesNode) {
+
+    var primitive = materialsNode.getElementsByTagName('primitive');
+
+    if (primitive.length == 0)
+        return "You must define an material in the <primitives> tag";
+
+    var id;
+    var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
+
+    for (let i = 0; i < primitive.length; i++) {
+        id = this.reader.getString(primitive[i], "id", true);
+
+        if (!this.verifyString(id) || this.data.materials[id] != null)
+            return "<primitives> - something wrong with primitives' id";
+        this.data.primitive[id] = new Object();
+
+        if (!this.verifyString(this.data.primitives[id]))
+            return "<primitives> - something wrong with primitives' id";
+            
+    //TODO TESTAR LIMITE DE 1 SÓ OBJETO POR BLOCO PRIMITIVA
+
+        switch (this.data.primitives[id].nodeName) {
+            case 'rectangle':
+                rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
+
+                if (!this.verifyElems([rectangleTag]))
+                    return "<primitives> - something wrong with primitives children";
+
+                this.data.primitives[id].rectangle = this.readXYZW(rectangleTag);
+                if (!this.verifyAssocArr(this.data.primitives[id].rectangle))
+                    return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
+
+                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                break;
+
+            case 'triangle':
+                triangleTag = primitive[id].getElementsByTagName('triangle')[0];
+
+                if (!this.verifyElems([triangleTag]))
+                    return "<primitives> - something wrong with primitives children";
+
+                this.data.primitives[id].triangle = this.readTrianglearray(triangleTag);
+                if (!this.verifyAssocArr(this.data.primitives[id].triangle))
+                    return "<primitives> - something wrong with triangles's x1;y1;z1;x2;y2;z2;x3;y3,z3 values";
+
+                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                break;
+
+            case 'cylinder':
+                cylinderTag = primitive[id].getElementsByTagName('cylinder')[0];
+
+                if (!this.verifyElems([cylinderTag]))
+                    return "<primitives> - something wrong with primitives children";
+
+                this.data.primitives[id].cylinder = this.readCylinderarray(cylinderTag);
+                if (!this.verifyAssocArr(this.data.primitives[id].cylinder))
+                    return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
+
+                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO-
+                break;
+
+            case 'sphere':
+                sphereTag = primitive[id].getElementsByTagName('sphere')[0];
+
+                if (!this.verifyElems([sphereTag]))
+                    return "<primitives> - something wrong with primitives children";
+
+                this.data.primitives[id].sphere = this.readSpherearray(sphereTag);
+                if (!this.verifyAssocArr(this.data.primitives[id].sphere))
+                    return "<primitives> - something wrong with spheres's radius;slices;stacks values";
+
+
+                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                break;
+
+            case 'torus':
+                torusTag = primitive[id].getElementsByTagName('torus')[0];
+
+                if (!this.verifyElems([torusTag]))
+                    return "<primitives> - something wrong with primitives children";
+
+                this.data.primitives[id].torus = this.readTorusarray(torusTag);
+                if (!this.verifyAssocArr(this.data.primitives[id].torus))
+                    return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
+
+                //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                break;
+
+            default:
+                break;
+
+        }
+
+    }
+
+    this.log("Parsed primitives");
+    return null;
+}
     /**
      * Parses the <NODES> block.
      * @param {nodes block element} nodesNode
@@ -791,3 +965,4 @@ class MySceneGraphAdapt {
     }
 
 }
+
