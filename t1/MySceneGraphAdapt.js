@@ -3,9 +3,6 @@ var DEGREE_TO_RAD = Math.PI / 180;
 /*
 ERROS:
 // escrever aqui se existir algum problema com a versão atual
-*//*
-RELEMBRAR:
-NÃO PODEMOS FAZER LIGHTS[1] = NOVA LIGHT (na xmlscene), APENAS DAR SET DAS COISAS
 */
 
 // Order of the groups in the XML document.
@@ -20,6 +17,7 @@ var MATERIALS_INDEX = 5;
 var PRIMITIVES_INDEX = 7;
 //var COMPONENTS_INDEX = 8;
 
+// pra que é isto?
 var R_INDEX = 0;
 var G_INDEX = 1;
 var B_INDEX = 2;
@@ -136,6 +134,7 @@ class MySceneGraphAdapt {
         }
         return true;
     }
+    
     /**
     * Verifies if an array of elements is valid (not null)
     * @param {Elements to verify} elems 
@@ -255,7 +254,7 @@ class MySceneGraphAdapt {
         return true;
     }
 
-        /**
+    /**
      * Reads x,y and z coordinates from a Rectangle element, returns associative array with xy_rect
      * @param {element} elem 
      */
@@ -269,6 +268,7 @@ class MySceneGraphAdapt {
 
         return xy_rect;
     }
+
     /**
  * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
  * @param {element} elem 
@@ -302,6 +302,7 @@ class MySceneGraphAdapt {
 
         return xyz_rect;
     }
+
     /**
  * Reads from a Cylinder element, returns associative array with components
  * @param {element} elem 
@@ -708,7 +709,6 @@ class MySceneGraphAdapt {
         return null;
     }
 
-
     /**
  * Parses the <transformations> block.
  * @param {nodes block element} transformationNode
@@ -851,9 +851,6 @@ class MySceneGraphAdapt {
         return null;
     }
 
-
-
-
     /**
          * Parses the <primitives> node.
          * @param {primitives block element} 
@@ -959,6 +956,7 @@ class MySceneGraphAdapt {
         this.log("Parsed primitives");
         return null;
     }
+
     /**
      * Parses the <NODES> block.
      * @param {nodes block element} nodesNode
@@ -985,7 +983,6 @@ class MySceneGraphAdapt {
     onXMLMinorError(message) {
         console.warn("Warning: " + message);
     }
-
 
     /**
      * Callback to be executed on any message.
