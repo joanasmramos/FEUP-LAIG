@@ -255,6 +255,20 @@ class MySceneGraphAdapt {
         return true;
     }
 
+        /**
+     * Reads x,y and z coordinates from a Rectangle element, returns associative array with xy_rect
+     * @param {element} elem 
+     */
+    readRectanglearray(elem) {
+        var xy_rect = [];
+
+        xy_rect["x1"] = this.reader.getFloat(elem, "x1", true);
+        xy_rect["y1"] = this.reader.getFloat(elem, "y1", true);
+        xy_rect["x2"] = this.reader.getFloat(elem, "x2", true);
+        xy_rect["y2"] = this.reader.getFloat(elem, "y2", true);
+
+        return xy_rect;
+    }
     /**
  * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
  * @param {element} elem 
@@ -289,7 +303,7 @@ class MySceneGraphAdapt {
         return xyz_rect;
     }
     /**
- * Reads x,y and z coordinates from a Cylinder element, returns associative array with components
+ * Reads from a Cylinder element, returns associative array with components
  * @param {element} elem 
  */
     readCylinderarray(elem) {
@@ -847,7 +861,6 @@ class MySceneGraphAdapt {
     parsePrimitives(primitivesNode) {
 
         var primitive = primitivesNode.getElementsByTagName('primitive');
-
         if (primitive.length == 0)
             return "You must define an material in the <primitives> tag";
 
@@ -855,6 +868,7 @@ class MySceneGraphAdapt {
         var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
 
         for (let i = 0; i < primitive.length; i++) {
+            var children = primitive[i].children;
             id = this.reader.getString(primitive[i], "id", true);
 
             if (!this.verifyString(id) || this.data.materials[id] != null)
@@ -863,17 +877,19 @@ class MySceneGraphAdapt {
 
             if (!this.verifyString(this.data.primitives[id]))
                 return "<primitives> - something wrong with primitives' id";
+            
+            if(children.length > 1)
+                return "You can only define 1 primitive per block."
 
-            //TODO TESTAR LIMITE DE 1 SÓ OBJETO POR BLOCO PRIMITIVA
             //ISTO NAO ESTÁ BEM
-            switch (this.data.primitives[id].) {
+            switch (children[0].nodeName) {
                 case 'rectangle':
                     rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
 
                     if (!this.verifyElems([rectangleTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].rectangle = this.readXYZW(rectangleTag);
+                    this.data.primitives[id].rectangle = this.readRectanglearray(rectangleTag);
                     if (!this.verifyAssocArr(this.data.primitives[id].rectangle))
                         return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
