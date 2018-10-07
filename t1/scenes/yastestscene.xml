@@ -81,10 +81,17 @@
             <translate x="0" y="1.5" z="2.5" />
             <rotate axis="y" angle="90" />
         </transformation>
-        <transformation id="pilar">
-            <translate x="0.25" y="1.5" z="0.25" />
+        <transformation id="pilar_base">
+            <translate x="0" y="1.5" z="0" />
             <scale x="0.5" y="3" z="0.5" />
         </transformation>
+        <transformation id="pilar1">
+          <translate x="0.25" y="0" z="0.25" />
+        </transformation>
+        <transformation id="pilar2">
+          <translate x="4.75" y="0" z="0.25" />
+        </transformation>
+
     </transformations>
 
     <primitives>
@@ -104,13 +111,40 @@
        <children>
            <componentref id="parede1" />
            <componentref id="parede2" />
-           <componentref id="pilar" />
+           <componentref id="pilar1" />
+           <componentref id="pilar2" />
        </children>
    </component>
 
-   <component id="pilar">
+   <component id="pilar2">
        <transformation>
-          <transformationref id="pilar" />
+          <transformationref id="pilar2" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="pilar_base" />
+       </children>
+   </component>
+
+   <component id="pilar1">
+       <transformation>
+          <transformationref id="pilar1" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="pilar_base" />
+       </children>
+   </component>
+
+   <component id="pilar_base">
+       <transformation>
+          <transformationref id="pilar_base" />
        </transformation>
        <materials>
            <material id="inherit" />
