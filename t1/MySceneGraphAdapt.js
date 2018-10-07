@@ -881,7 +881,7 @@ class MySceneGraphAdapt {
                         return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
                     if(this.primitives[id] != null) 
-                        return "<primitves> - something wrong with primitive's id";
+                        return "<primitives> - something wrong with primitive's id";
                     
                     this.primitives[id] = new MyRectangle(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
                     
@@ -1219,12 +1219,36 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
+    processComponent(comp, trf, mat, text) {
+        this.scene.pushMatrix();
+
+        var idMaterial, appearance;
+      
+        //TO DO: atualizar materiais, texturas, transformações
+
+        primitiveChildren = this.nodes[comp].primitiveref;
+        componentChildren = this.nodes[comp].componentref;
+
+        if(primitiveChildren.length>0) {
+            for(let i=0; i<primitiveChildren.length; i++)
+                this.data.primitives[primitiveChildren[i]].display();
+        }
+        else {
+            for(let i=0; i<componentChildren.length; i++) {
+                this.processComponent(componentChildren[i]);
+            }
+        }
+
+        this.scene.popMatrix();
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        // entry point for graph rendering
-        //TODO: Render loop starting at root of graph
+        var appearance = new CGFappearance(this.scene);
+        appearance.apply();
+        this.processComponent(this.idRoot, "none");
     }
 
 }
