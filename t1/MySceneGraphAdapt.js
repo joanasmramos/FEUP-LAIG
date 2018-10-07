@@ -1221,19 +1221,20 @@ class MySceneGraphAdapt {
 
     processComponent(comp, trf, mat, text) {
         this.scene.pushMatrix();
-
         var idMaterial, appearance;
       
         //TO DO: atualizar materiais, texturas, transformações
 
-        primitiveChildren = this.nodes[comp].primitiveref;
-        componentChildren = this.nodes[comp].componentref;
-
+        var primitiveChildren = this.nodes[comp].primitiveref;
+        var componentChildren = this.nodes[comp].componentref;
+        this.scene.multMatrix(this.nodes[id].transformations.id);
         if(primitiveChildren.length>0) {
             for(let i=0; i<primitiveChildren.length; i++)
                 this.data.primitives[primitiveChildren[i]].display();
         }
         else {
+            
+            this.scene.multMatrix(this.nodes[id].transformations.mat);
             for(let i=0; i<componentChildren.length; i++) {
                 this.processComponent(componentChildren[i]);
             }
@@ -1248,7 +1249,8 @@ class MySceneGraphAdapt {
     displayScene() {
         var appearance = new CGFappearance(this.scene);
         appearance.apply();
-        this.processComponent(this.idRoot, "none");
+
+        this.processComponent(this.idRoot, "none").display();
     }
 
 }
