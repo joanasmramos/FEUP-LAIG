@@ -974,7 +974,7 @@ class MySceneGraphAdapt {
     /**
      * Parses <materials> block (<component>'s child)
      * @param {component's id} compId 
-     * @param {<materials>} materialsTag 
+     * @param {materials tag} materialsTag 
      */
     parseCompMaterials(compId, materialsTag) {
         var materials = materialsTag.getElementsByTagName('material'); // array com todas as <material> filhas de <materials>
@@ -987,12 +987,38 @@ class MySceneGraphAdapt {
         for(let i=0; i<materials.length; i++) {
             id = this.reader.getString(materials[i], 'id', true);
             if(!this.verifyString(id) || this.data.materials[id] == null)
-                return "<components> - something wrong with material's id";
+                if(id != "inherit")
+                    return "<components> - something wrong with material's id";
             
-            this.nodes[id].materials = [];
-            this.nodes[id].materials.push(id);
+            this.nodes[compId].materials = [];
+            this.nodes[compId].materials.push(id);
         }
 
+    }
+
+    /**
+     * Parses <texture> block (<component>'s child)
+     * @param {component's id} compId 
+     * @param {texture tag} textureTag 
+     */
+    parseCompTexture(compId, textureTag) {
+        var id, s, t;
+
+        id = this.reader.getString(textureTag, 'id', true);
+        if(!this.verifyString(id) || this.data.textures[id] == null)
+            if(id!="inherit" && id!="none")
+                return "<components> - something's wrong with texture's id";
+        
+        s = this.reader.getFloat(textureTag, 'length_s', true);
+        t = this.reader.getFloat(textureTag, 'length_t', true);
+
+        if(!this.verifyStringsFloats([], [s, t]))
+            return "<components> - somethings's wrong with texture's length";
+
+        this.nodes[compId].texture = [];
+        this.nodes[compId].texture.id = id;
+        this.nodes[compId].texture.lengthS = s;
+        this.nodes[compId].texture.lengthT = t;
     }
 
     /**
@@ -1026,10 +1052,15 @@ class MySceneGraphAdapt {
             if(!this.verifyElems([transformationTag, materialsTag, textureTag, childrenTag]))
                 return "<components> - something wrong with component's children";
 
-            //TO DO: <transformation>, volto mais tarde
+            //TO DO: <transformation>, volto a isso mais tarde
 
             // <materials>
             var error = this.parseCompMaterials(id, materialsTag);
+            if(error != null)
+                return error;
+
+            // <texture>
+            error = this.parseCompTexture(id, textureTag);
             if(error != null)
                 return error;
 
