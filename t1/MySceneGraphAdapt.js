@@ -633,10 +633,11 @@ class MySceneGraphAdapt {
         var id;
         var translateTag, rotateTag, scaleTag;
         var vector, axis, angle;
+        this.data.transformations = [];
         for (let i = 0; i < transformation.length; i++) { 
 
             id = this.reader.getString(transformation[i], "id", true);
-            var children = transformation[i].children;
+            var children = transformation[i].children; //translates rotates scales
 
             if (!(this.verifyString(id) || this.data.transformations[id] != null))
                 return "<transformations> - something wrong with the transformation id";
@@ -644,8 +645,11 @@ class MySceneGraphAdapt {
             if (children.length == 0) 
                 return "<transformations> - a transformation needs to have an effective action (translate/rotate/scale)";
 
-            this.data.transformations[id] = mat4.create();
+            var identity = mat4.create();
             //creating identitymatrix
+
+            this.data.transformations[id] = new Array();
+            var result = mat4.create();
 
             for(let j=0; j<children.length; j++) {
                 switch (children[j].nodeName) {
@@ -653,12 +657,13 @@ class MySceneGraphAdapt {
                         translateTag = transformation[i].getElementsByTagName("translate")[0];
                         vector = this.readXYZ(translateTag);
     
-                        mat4.translate(this.data.transformations[id], this.data.transformations[id], vector);
+                        mat4.translate(result, identity, vector);
+                        this.data.transformations[id].push(result);
                         break;
                     case "rotate":
                         rotateTag = transformation[i].getElementsByTagName("rotate")[0];
-                        axis = this.reader.getString(children[j].nodeName, 'axis', true);
-                        angle = this.reader.getFloat(children[j].nodeName, 'angle', true);
+                        axis = this.reader.getString(children[j], 'axis', true);
+                        angle = this.reader.getFloat(children[j], 'angle', true);
                         switch (axis) {
                             case 'x':
                                 axis = [1, 0, 0];
@@ -672,14 +677,16 @@ class MySceneGraphAdapt {
                                 break;
                         }
     
-                        vector = vec3.set(axis[0], axis[1], axis[2]);
-                        mat4.rotate(this.data.transformations[id], this.data.transformations[id], DEGREE_TO_RAD * angle, vector);
+                        vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                        mat4.rotate(result, identity, DEGREE_TO_RAD * angle, vector);
+                        this.data.transformations[id].push(result);
                         break;
                     case "scale":
                         scaleTag = transformation[i].getElementsByTagName("scale")[0];
                         vector = this.readXYZ(scaleTag);
     
-                        mat4.scale(this.data.transformations[id], this.data.transformations[id], vector);
+                        mat4.scale(result, identity, vector);
+                        this.data.transformations[id].push(result);
                         break;
                     default:
                         break;
@@ -771,9 +778,9 @@ class MySceneGraphAdapt {
     }
 
     /**
- * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
- * @param {element} elem 
- */
+     * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
+     * @param {element} elem 
+     */
     readSpherearray(elem) {
         var rss = [];
 
@@ -805,9 +812,9 @@ class MySceneGraphAdapt {
     }
 
     /**
- * Reads from a Cylinder element, returns associative array with components
- * @param {element} elem 
- */
+     * Reads from a Cylinder element, returns associative array with components
+     * @param {element} elem 
+     */
     readCylinderarray(elem) {
         var bthss_cylinder = [];
 
@@ -822,9 +829,9 @@ class MySceneGraphAdapt {
     }
 
     /**
-* Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
-* @param {element} elem 
-*/
+    * Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
+    * @param {element} elem 
+    */
     readTorusarray(elem) {
         var torus_property = [];
 
@@ -838,9 +845,9 @@ class MySceneGraphAdapt {
     }
 
     /**
-         * Parses the <primitives> node.
-         * @param {primitives block element} 
-         */
+     * Parses the <primitives> node.
+     * @param {primitives block element} 
+     */
     parsePrimitives(primitivesNode) {
 
         var primitive = primitivesNode.getElementsByTagName('primitive');
@@ -1063,12 +1070,14 @@ class MySceneGraphAdapt {
         var id;
         var transformationTag, materialsTag, textureTag, childrenTag;
 
-        for(let i=0; i<=components.length; i++){
+        for(let i=0; i<components.length; i++){
             // id do component
             id = this.reader.getString(components[i], 'id', true);
 
             if(!this.verifyString(id) || this.nodes[id]!=null)
                 return "<components> - something wrong with component's id";
+
+            this.nodes[id] = new Object();
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
@@ -1116,7 +1125,7 @@ class MySceneGraphAdapt {
         if (!root)
             return "<components> - there's no such root"; 
 
-        this.log("Parsed nodes");
+        this.log("Parsed components");
         return null;
     }
 

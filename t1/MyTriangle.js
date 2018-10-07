@@ -33,11 +33,19 @@ class MyQuad extends CGFobject {
 		];
 
 
-        //alterar isto
+        var p1, p2, p3, a, b, norm;
+        p1=vec3.fromValues(this.x1, this.y1, this.z1);
+        p2=vec3.fromValues(this.x2, this.y2, this.z2);
+        p3=vec3.fromValues(this.x3, this.y3, this.z3);
+
+        vec3.subtract(a, p2, p1);
+        vec3.subtract(b, p3, p1);
+        vec3.cross(norm, a, b);
+
 		this.normals = [
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
+			norm[0], norm[1], norm[2],
+			norm[0], norm[1], norm[2],
+			norm[0], norm[1], norm[2]
 		];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
