@@ -880,7 +880,7 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
                     
-                    this.primitives[id] = new MyQuad(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
+                    this.primitives[id] = new MyRectangle(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
                     
                     break;
 

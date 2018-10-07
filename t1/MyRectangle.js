@@ -48,6 +48,7 @@ class MyRectangle extends CGFobject {
 			x4, y4, 0
 		];
 
+		// isto funciona para o NOSSO, mas acho que não é suposto ser assim
 		this.indices = [
 			0, 2, 1,
 			0, 1, 3
