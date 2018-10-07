@@ -35,7 +35,9 @@
     </lights>
 
     <textures>
-        <texture id="unique_tex" file="images/trunk.jpg" />
+        <texture id="brickwall" file="images/brickwall.jpg" />
+        <texture id="pilar" file="images/pilar.jpg" />
+        <texture id="frame" file="images/frame.jpg" />
     </textures>
 
     <materials>
@@ -112,6 +114,18 @@
         <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive >
+        <primitive id="triangle">
+            <triangle x1="0" y1="0" z1="-1" x2="0" y2="1" z2="0" x3="0" y3="0" z3="1"/>
+        </primitive>
+        <primitive id="cylinder">
+            <cylinder base="1" top="1" height="1" stacks="100" slices="100"/>
+        </primitive>
+        <primitive id="sphere">
+            <sphere radius="1" stacks="32" slices="64"/>
+        </primitive>
+        <primitive id="torus">
+            <torus inner="1" outer="2" slices="32" loops="1"/>
+        </primitive>
     </primitives >
 
  <components>
@@ -130,6 +144,9 @@
            <componentref id="quadro1" />
            <componentref id="quadro2" />
            <componentref id="quadro3" />
+           <componentref id="floor"/>
+           <componentref id="chandelier2"/>
+           <componentref id="chandelier1"/>
        </children>
    </component>
 
@@ -179,7 +196,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="frame" length_s="1" length_t="1" />
        <children>
            <componentref id="trf_cubo" />
        </children>
@@ -218,7 +235,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="pilar" length_s="1" length_t="1" />
        <children>
            <componentref id="trf_cubo" />
        </children>
@@ -231,7 +248,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <componentref id="trf_cubo1" />
            <componentref id="trf_cubo2" />
@@ -249,7 +266,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -262,7 +279,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -275,7 +292,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -288,7 +305,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -301,7 +318,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -314,7 +331,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <primitiveref id="rectangle" />
        </children>
@@ -352,11 +369,145 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="none" length_s="1" length_t="1" />
+        <texture id="brickwall" length_s="1" length_t="1" />
         <children>
             <primitiveref id="rectangle" />
         </children>
     </component>
+
+    <component id="floor">
+    <transformation>
+    <rotate axis="x" angle="90"/>
+        <translate x="0" y="0" z="0" />
+        <scale x="15" y="15" z="5" />
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="5.0" length_t="5.0"/>
+    <children>
+        <primitiveref id="rectangle"/>
+    </children>
+</component>
+
+<component id="chandelier2">
+    <transformation>
+    <translate x="5" y="0" z="0" />
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="5.0" length_t="5.0"/>
+    <children>
+        <componentref id="chandelier_base"/>
+        <componentref id="chandelier_bigbase-0"/>
+        <componentref id="chandelier_bigbase-1"/>
+        <componentref id="chandelier_small_stem-0"/>
+        <componentref id="chandelier_small_stem-1"/>
+        <componentref id="chandelier_small_stem-2"/>
+    </children>
+</component>
+
+<component id="chandelier1">
+    <transformation>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="5.0" length_t="5.0"/>
+    <children>
+        <componentref id="chandelier_base"/>
+         <componentref id="chandelier_bigbase-0"/>
+        <componentref id="chandelier_bigbase-1"/>
+        <componentref id="chandelier_small_stem-0"/>
+        <componentref id="chandelier_small_stem-1"/>
+        <componentref id="chandelier_small_stem-2"/>
+    </children>
+</component>
+
+<component id="chandelier_base">
+    <transformation>
+        <translate x="6" y="0" z="1" />
+        <scale x="0.04" y="1.5" z="0.04"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
+
+<component id="chandelier_bigbase-0">
+    <transformation>
+        <translate x="6" y="0" z="1" />
+        <scale x="0.25" y="0.07" z="0.25"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
+
+<component id="chandelier_bigbase-1">
+    <transformation>
+        <translate x="6" y="1.5" z="1" />
+        <scale x="0.3" y="0.06" z="0.3"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
+
+<component id="chandelier_small_stem-0">
+    <transformation>
+        <translate x="6" y="1.5" z="1" />
+        <scale x="0.02" y="0.3" z="0.02"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
+
+<component id="chandelier_small_stem-1">
+    <transformation>
+        <translate x="5.8" y="1.5" z="1" />
+        <scale x="0.03" y="0.5" z="0.03"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
+
+<component id="chandelier_small_stem-2">
+    <transformation>
+        <translate x="6.2" y="1.5" z="1" />
+        <scale x="0.03" y="0.5" z="0.03"/>
+    </transformation>
+    <materials>
+        <material id="inherit"/>
+    </materials>
+    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
 
  </components>
 
