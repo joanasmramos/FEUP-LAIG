@@ -13,15 +13,9 @@ var AMBIENT_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
-//var TRANSFORMATIONS_INDEX = 6;
+var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
 var COMPONENTS_INDEX = 8;
-
-// pra que é isto?
-var R_INDEX = 0;
-var G_INDEX = 1;
-var B_INDEX = 2;
-var A_INDEX = 3;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -637,20 +631,17 @@ class MySceneGraphAdapt {
             return "You must define at least one transformation in the <transformations> tag";
 
         var id;
-        var translateTag, scaleTag;
+        var translateTag, rotateTag, scaleTag;
         var vector, axis, angle;
+        for (let i = 0; i < transformation.length; i++) { 
 
-        for (let i = 0; i < transformation.length; i++) {
             id = this.reader.getString(transformation[i], "id", true);
+            var children = transformation[i].children;
 
             if (!(this.verifyString(id) || this.data.transformations[id] != null))
                 return "<transformations> - something wrong with the transformation id";
 
-            this.data.transformations[id] = new Object();
-            var exact_transformation = transformation[i].children;
-
-
-            if (exact_transformation.length == 0) {
+            if (children.length == 0) {
                 return "a transformation needs to have an effective action (translate/rotate/scale)";
             }
             else {
@@ -658,19 +649,17 @@ class MySceneGraphAdapt {
                 this.data.transformations[id] = mat4.create();
                 //creating identitymatrix
 
-                for (let j = 0; j < exact_transformation.length; i++) {
-
-                    switch (exact_transformation.nodeName[j]) {
+                    switch (children[i].nodeName) {
                         case "translate":
-                            translateTag = exact_transformation.getElementsByTagName("translate")[0];
+                            translateTag = transformation[i].getElementsByTagName("translate")[0];
                             vector = this.readXYZ(translateTag);
 
-                            mat4.translate(identMatrix, identMatrix, vector);
+                            mat4.translate(this.data.transformations[id], this.data.transformations[id], vector);
                             break;
                         case "rotate":
-                            rotateTag = exact_transformation.getElementsByTagName("rotate")[0];
-                            axis = this.reader.getString(exact_transformation.nodeName[j], 'axis', true);
-                            angle = this.reader.getFloat(exact_transformation.nodeName[j], 'angle', true);
+                            rotateTag = transformation[i].getElementsByTagName("rotate")[0];
+                            axis = this.reader.getString(children[i].nodeName, 'axis', true);
+                            angle = this.reader.getFloat(children[i].nodeName, 'angle', true);
                             switch (axis) {
                                 case 'x':
                                     axis = [1, 0, 0];
@@ -684,19 +673,18 @@ class MySceneGraphAdapt {
                                     break;
                             }
 
-                            vector = vec3.set(vector, axis, angle);
-                            mat4.rotate(identMatrix, identMatrix, DEGREE_TO_RAD * angle, vector);
+                            vector = vec3.set(axis[0], axis[1], axis[2]);
+                            mat4.rotate(this.data.transformations[id], this.data.transformations[id], DEGREE_TO_RAD * angle, vector);
                             break;
                         case "scale":
-                            scaleTag = exact_transformation.getElementsByTagName("scale")[0];
+                            scaleTag = transformation[i].getElementsByTagName("scale")[0];
                             vector = this.readXYZ(scaleTag);
 
-                            mat4.scale(identMatrix, identMatrix, vector);
+                            mat4.scale(this.data.transformations[id], this.data.transformations[id], vector);
                             break;
                         default:
                             break;
                     }
-                }
             }
 
 

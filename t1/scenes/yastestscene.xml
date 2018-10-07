@@ -49,7 +49,14 @@
 
     <transformations>
         <transformation id="unique_trf">
-            <translate x="0" y="0" z="0" />
+            <translate x="0" y="2" z="0" />
+            <rotate axis="y" angle="20"/>
+            <scale x="0" y="33" z="0" />
+        </transformation>
+        <transformation id="unique_trf2">
+            <translate x="0" y="2" z="0" />
+            <rotate axis="z" angle="30"/>
+            <scale x="0" y="43" z="0" />
         </transformation>
     </transformations>
 
