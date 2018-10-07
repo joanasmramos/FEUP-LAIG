@@ -1065,7 +1065,7 @@ class MySceneGraphAdapt {
      * Parses the <components> block.
      * @param {components block element} componentsNode
      */
-    parseNodes(componentsNode) {
+    parseComponents(componentsNode) {
         var components = componentsNode.getElementsByTagName('component'); // array com todas as <component> filhas de <components>
 
         if(components.length == 0)
