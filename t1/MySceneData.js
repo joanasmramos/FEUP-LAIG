@@ -32,7 +32,6 @@ class MySceneData {
         //transformations
         this.transformations = [];
 
-        //primitives
-        this.primitives = new Object();
+        
     }
 }

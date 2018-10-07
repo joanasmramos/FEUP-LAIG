@@ -858,11 +858,7 @@ class MySceneGraphAdapt {
             var children = primitive[i].children;
             id = this.reader.getString(primitive[i], "id", true);
 
-            if (!this.verifyString(id) || this.data.materials[id] != null)
-                return "<primitives> - something wrong with primitives' id";
-            this.data.primitives[id] = new Object();
-
-            if (!this.verifyString(this.data.primitives[id]))
+            if (!this.verifyString(id))
                 return "<primitives> - something wrong with primitives' id";
             
             if(children.length > 1)
@@ -974,6 +970,9 @@ class MySceneGraphAdapt {
         var rotate = transformationTag.getElementsByTagName("rotate");
         var scale = transformationTag.getElementsByTagName("scale");
 
+        if(transformationTag.children.length == 0)
+            return;
+
         if((transformationref.length > 0 && (translate.length > 0 || rotate.length > 0 || scale.length > 0)) || transformationref.length > 1)
             return "<components> something wrong with component's transformations";
 
@@ -986,6 +985,7 @@ class MySceneGraphAdapt {
                 return "<components> no such transformation";
             
             this.nodes[compId].transformations.id = id;
+            this.nodes[compId].transformations.mat = this.data.transformations[id];
         }
         else {
             var children = transformationTag.children;
@@ -1219,19 +1219,23 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
-    processComponent(comp, trf, mat, text) {
+    processComponent(comp, trf) {
         this.scene.pushMatrix();
-
-        var idMaterial, appearance;
       
-        //TO DO: atualizar materiais, texturas, transformações
+        //TO DO: atualizar materiais, texturas
+        if(this.nodes[comp].transformations.mat == null)
+            this.scene.multMatrix(trf);
+        else
+            this.scene.multMatrix(this.nodes[comp].transformations.mat);
+        
 
-        primitiveChildren = this.nodes[comp].primitiveref;
-        componentChildren = this.nodes[comp].componentref;
+        var primitiveChildren = this.nodes[comp].primitiveref;
+        var componentChildren = this.nodes[comp].componentref;
 
         if(primitiveChildren.length>0) {
-            for(let i=0; i<primitiveChildren.length; i++)
-                this.data.primitives[primitiveChildren[i]].display();
+            for(let i=0; i<primitiveChildren.length; i++) {
+                this.primitives[primitiveChildren[i]].display();
+            }
         }
         else {
             for(let i=0; i<componentChildren.length; i++) {
@@ -1248,7 +1252,8 @@ class MySceneGraphAdapt {
     displayScene() {
         var appearance = new CGFappearance(this.scene);
         appearance.apply();
-        this.processComponent(this.idRoot, "none");
+        this.nodes[this.idRoot].transformations.mat = mat4.create();
+        this.processComponent(this.idRoot, mat4.create());
     }
 
 }
