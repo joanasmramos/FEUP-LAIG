@@ -15,7 +15,7 @@ var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 //var TRANSFORMATIONS_INDEX = 6;
 var PRIMITIVES_INDEX = 7;
-//var COMPONENTS_INDEX = 8;
+var COMPONENTS_INDEX = 8;
 
 // pra que é isto?
 var R_INDEX = 0;
@@ -41,6 +41,7 @@ class MySceneGraphAdapt {
         this.scene.data = this.data;
 
         this.nodes = [];
+        this.nodeIds = [];
         this.idRoot = null;                    // The id of the root element.
         this.primitives = [];
 
@@ -375,18 +376,15 @@ class MySceneGraphAdapt {
                 return error;
         }
 
-        //VI ATÉ AQUI
-        //------------------------------------------------------------------
-
-        // <NODES>
-        if ((index = nodeNames.indexOf("NODES")) == -1)
-            return "tag <NODES> missing";
+        // <components>
+        if ((index = nodeNames.indexOf("components")) == -1)
+            return "tag <components> missing";
         else {
-            if (index != NODES_INDEX)
-                this.onXMLMinorError("tag <NODES> out of order");
+            if (index != COMPONENTS_INDEX)
+                this.onXMLMinorError("tag <components> out of order");
 
-            //Parse NODES block
-            if ((error = this.parseNodes(rootChildren[index])) != null)
+            //Parse components block
+            if ((error = this.parseComponents(rootChildren[index])) != null)
                 return error;
         }
 
@@ -925,7 +923,7 @@ class MySceneGraphAdapt {
                     if (!this.verifyAssocArr(cylinder))
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
 
-                    //TODO: MyCylinder (adaptar ficheiro)
+                    //TODO: MyCylinder (adaptar ficheiro, com base no xml considerar um tapered cylinder)
                     break;
 
                 case 'sphere':
@@ -974,11 +972,71 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses the <NODES> block.
-     * @param {nodes block element} nodesNode
+     * Parses <materials> block (<component>'s child)
+     * @param {component's id} compId 
+     * @param {<materials>} materialsTag 
      */
-    parseNodes(nodesNode) {
-        // TODO: Parse block
+    parseCompMaterials(compId, materialsTag) {
+        var materials = materialsTag.getElementsByTagName('material'); // array com todas as <material> filhas de <materials>
+
+        if(!this.verifyElement(materials))
+            return "<components> - something wrong with materials";
+
+        var id;
+        
+        for(let i=0; i<materials.length; i++) {
+            id = this.reader.getString(materials[i], 'id', true);
+            if(!this.verifyString(id) || this.data.materials[id] == null)
+                return "<components> - something wrong with material's id";
+            
+            this.nodes[id].materials = [];
+            this.nodes[id].materials.push(id);
+        }
+
+    }
+
+    /**
+     * Parses the <components> block.
+     * @param {components block element} componentsNode
+     */
+    parseNodes(componentsNode) {
+        var components = componentsNode.getElementsByTagName('component'); // array com todas as <component> filhas de <components>
+
+        if(components.length == 0)
+            return "<components> - you must define at least one component";
+
+        var id;
+        var transformationTag, materialsTag, textureTag, childrenTag;
+
+        for(let i=0; i<=components.length; i++){
+            // id do component
+            id = this.reader.getString(components[i], 'id', true);
+
+            if(!this.verifyString(id) || this.nodes[id]!=null)
+                return "<components> - something wrong with component's id";
+            
+            this.nodeIds.push(id);
+
+            // children
+            transformationTag = components[i].getElementsByTagName('transformation')[0];
+            materialsTag = components[i].getElementsByTagName('materials')[0];
+            textureTag = components[i].getElementsByTagName('texture')[0];
+            childrenTag = components[i].getElementsByTagName('children')[0];
+
+            if(!this.verifyElems([transformationTag, materialsTag, textureTag, childrenTag]))
+                return "<components> - something wrong with component's children";
+
+            //TO DO: <transformation>, volto mais tarde
+
+            // <materials>
+            var error = this.parseCompMaterials(id, materialsTag);
+            if(error != null)
+                return error;
+
+        }
+
+
+        //TO DO: fazer verificação dos ids (nenhum repetido, algum corresponde ao root)
         this.log("Parsed nodes");
         return null;
     }
