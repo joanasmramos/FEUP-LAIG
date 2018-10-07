@@ -628,7 +628,7 @@ class MySceneGraphAdapt {
         var transformation = transformationsNode.getElementsByTagName('transformation');
 
         if (transformation.length == 0)
-            return "You must define at least one transformation in the <transformations> tag";
+            return "<transformations> - you must define at least one transformation in the <transformations> tag";
 
         var id;
         var translateTag, rotateTag, scaleTag;
@@ -641,51 +641,51 @@ class MySceneGraphAdapt {
             if (!(this.verifyString(id) || this.data.transformations[id] != null))
                 return "<transformations> - something wrong with the transformation id";
 
-            if (children.length == 0) {
-                return "a transformation needs to have an effective action (translate/rotate/scale)";
+            if (children.length == 0) 
+                return "<transformations> - a transformation needs to have an effective action (translate/rotate/scale)";
+
+            this.data.transformations[id] = mat4.create();
+            //creating identitymatrix
+
+            for(let j=0; j<children.length; j++) {
+                switch (children[j].nodeName) {
+                    case "translate":
+                        translateTag = transformation[i].getElementsByTagName("translate")[0];
+                        vector = this.readXYZ(translateTag);
+    
+                        mat4.translate(this.data.transformations[id], this.data.transformations[id], vector);
+                        break;
+                    case "rotate":
+                        rotateTag = transformation[i].getElementsByTagName("rotate")[0];
+                        axis = this.reader.getString(children[j].nodeName, 'axis', true);
+                        angle = this.reader.getFloat(children[j].nodeName, 'angle', true);
+                        switch (axis) {
+                            case 'x':
+                                axis = [1, 0, 0];
+                                break;
+                            case 'y':
+                                axis = [0, 1, 0];
+                                break;
+    
+                            case 'z':
+                                axis = [0, 0, 1];
+                                break;
+                        }
+    
+                        vector = vec3.set(axis[0], axis[1], axis[2]);
+                        mat4.rotate(this.data.transformations[id], this.data.transformations[id], DEGREE_TO_RAD * angle, vector);
+                        break;
+                    case "scale":
+                        scaleTag = transformation[i].getElementsByTagName("scale")[0];
+                        vector = this.readXYZ(scaleTag);
+    
+                        mat4.scale(this.data.transformations[id], this.data.transformations[id], vector);
+                        break;
+                    default:
+                        break;
+                }
             }
-            else {
 
-                this.data.transformations[id] = mat4.create();
-                //creating identitymatrix
-
-                    switch (children[i].nodeName) {
-                        case "translate":
-                            translateTag = transformation[i].getElementsByTagName("translate")[0];
-                            vector = this.readXYZ(translateTag);
-
-                            mat4.translate(this.data.transformations[id], this.data.transformations[id], vector);
-                            break;
-                        case "rotate":
-                            rotateTag = transformation[i].getElementsByTagName("rotate")[0];
-                            axis = this.reader.getString(children[i].nodeName, 'axis', true);
-                            angle = this.reader.getFloat(children[i].nodeName, 'angle', true);
-                            switch (axis) {
-                                case 'x':
-                                    axis = [1, 0, 0];
-                                    break;
-                                case 'y':
-                                    axis = [0, 1, 0];
-                                    break;
-
-                                case 'z':
-                                    axis = [0, 0, 1];
-                                    break;
-                            }
-
-                            vector = vec3.set(axis[0], axis[1], axis[2]);
-                            mat4.rotate(this.data.transformations[id], this.data.transformations[id], DEGREE_TO_RAD * angle, vector);
-                            break;
-                        case "scale":
-                            scaleTag = transformation[i].getElementsByTagName("scale")[0];
-                            vector = this.readXYZ(scaleTag);
-
-                            mat4.scale(this.data.transformations[id], this.data.transformations[id], vector);
-                            break;
-                        default:
-                            break;
-                    }
-            }
 
 
         }
