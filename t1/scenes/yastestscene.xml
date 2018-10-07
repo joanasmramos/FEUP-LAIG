@@ -1,9 +1,9 @@
 <yas>
-    <scene root="unique_comp" axis_length="5" />
+    <scene root="root" axis_length="1" />
 
     <views default="unique_persp" >
 
-        <perspective id="unique_persp" near="0.1" far="500" angle="0.4">
+        <perspective id="unique_persp" near="0.1" far="500" angle="20">
             <from x="15" y="15" z="15" />
             <to x="0" y="0" z="0" />
         </perspective>
@@ -35,12 +35,12 @@
     </lights>
 
     <textures>
-        <texture id="unique_tex" file="images/trunk-image.jpg" />
+        <texture id="unique_tex" file="images/trunk.jpg" />
     </textures>
 
     <materials>
         <material id="unique_mat" shininess = "1" >
-            <emission r="0.92" g="0.58" b="0.58" a="1" />
+            <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.3" g="0.3" b="0.3" a="1" />
@@ -48,30 +48,213 @@
     </materials>
 
     <transformations>
-        <transformation id="unique_trf">
-            <translate x="0" y="2" z="0" />
+        <transformation id="trf_cubo1">
+            <translate x="0" y="0.5" z="0" />
+            <rotate axis="x" angle="-90" />
+        </transformation>
+         <transformation id="trf_cubo2">
+            <translate x="0" y="-0.5" z="0" />
+            <rotate axis="x" angle="90" />
+        </transformation>
+        <transformation id="trf_cubo3">
+            <translate x="0" y="0" z="0.5" />
+        </transformation>
+        <transformation id="trf_cubo4">
+            <translate x="0" y="0" z="-0.5" />
+            <rotate axis="x" angle="-180" />
+        </transformation>
+        <transformation id="trf_cubo5">
+            <translate x="-0.5" y="0" z="0" />
+            <rotate axis="y" angle="-90" />
+        </transformation>
+        <transformation id="trf_cubo6">
+            <translate x="0.5" y="0" z="0" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+        <transformation id="parede_base">
+            <scale x="5" y="3" z="1" />
+        </transformation>
+        <transformation id="parede1">
+            <translate x="2.5" y="1.5" z="0" />
+        </transformation>
+        <transformation id="parede2">
+            <translate x="0" y="1.5" z="2.5" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+        <transformation id="pilar">
+            <translate x="0.25" y="1.5" z="0.25" />
+            <scale x="0.5" y="3" z="0.5" />
         </transformation>
     </transformations>
 
     <primitives>
-        <primitive id="unique_prim">
+        <primitive id="rectangle">
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive >
     </primitives >
 
  <components>
-    <component id="unique_comp">
+   <component id="root">
+       <transformation>
+       </transformation>
+       <materials>
+           <material id="unique_mat" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="parede1" />
+           <componentref id="parede2" />
+           <componentref id="pilar" />
+       </children>
+   </component>
+
+   <component id="pilar">
+       <transformation>
+          <transformationref id="pilar" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo" />
+       </children>
+   </component>
+
+   <component id="trf_cubo">
+       <transformation>
+
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo1" />
+           <componentref id="trf_cubo2" />
+           <componentref id="trf_cubo3" />
+           <componentref id="trf_cubo4" />
+           <componentref id="trf_cubo5" />
+           <componentref id="trf_cubo6" />
+       </children>
+   </component>
+
+   <component id="trf_cubo1">
+       <transformation>
+           <transformationref id="trf_cubo1" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="trf_cubo2">
+       <transformation>
+           <transformationref id="trf_cubo2" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="trf_cubo3">
+       <transformation>
+           <transformationref id="trf_cubo3" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="trf_cubo4">
+       <transformation>
+           <transformationref id="trf_cubo4" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="trf_cubo5">
+       <transformation>
+           <transformationref id="trf_cubo5" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="trf_cubo6">
+       <transformation>
+           <transformationref id="trf_cubo6" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <primitiveref id="rectangle" />
+       </children>
+   </component>
+
+   <component id="parede2">
+       <transformation>
+           <transformationref id="parede2" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="parede_base" />
+       </children>
+   </component>
+
+    <component id="parede1">
         <transformation>
-            <transformationref id="unique_trf" />
+            <transformationref id="parede1" />
         </transformation>
         <materials>
-            <material id="unique_mat" />
+            <material id="inherit" />
         </materials>
-        <texture id="unique_tex" length_s="1" length_t="1" />
+        <texture id="none" length_s="1" length_t="1" />
         <children>
-            <primitiveref id="unique_prim" />
+            <componentref id="parede_base" />
         </children>
     </component>
+    <component id="parede_base">
+        <transformation>
+            <transformationref id="parede_base" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" length_s="1" length_t="1" />
+        <children>
+            <primitiveref id="rectangle" />
+        </children>
+    </component>
+
  </components>
 
 </yas>

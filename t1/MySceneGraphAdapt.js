@@ -690,6 +690,7 @@ class MySceneGraphAdapt {
             }
 
             this.data.transformations[id] = result;
+            console.log(this.data.transformations[id]);
 
         }
         /*
@@ -1223,12 +1224,13 @@ class MySceneGraphAdapt {
         this.scene.pushMatrix();
       
         //TO DO: atualizar materiais, texturas
-        if(this.nodes[comp].transformations.mat == null)
-            this.scene.multMatrix(trf);
-        else
+        if(this.nodes[comp].transformations.mat != null)
+            //this.scene.multMatrix(trf);
+        //else
             this.scene.multMatrix(this.nodes[comp].transformations.mat);
         
-
+        console.log(this.nodes[comp].transformations.mat);
+    
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
         if(primitiveChildren.length>0) {
@@ -1236,12 +1238,9 @@ class MySceneGraphAdapt {
                 this.primitives[primitiveChildren[i]].display();
             }
         }
-        else {
             
-            this.scene.multMatrix(this.nodes[id].transformations.mat);
-            for(let i=0; i<componentChildren.length; i++) {
-                this.processComponent(componentChildren[i]);
-            }
+        for(let i=0; i<componentChildren.length; i++) {
+            this.processComponent(componentChildren[i]);
         }
 
         this.scene.popMatrix();
