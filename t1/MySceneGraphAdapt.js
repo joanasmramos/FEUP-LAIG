@@ -863,7 +863,7 @@ class MySceneGraphAdapt {
 
         var id;
         var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
-        var rectangle = [];
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [];
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -879,7 +879,7 @@ class MySceneGraphAdapt {
             if(children.length > 1)
                 return "You can only define 1 primitive per block."
 
-            //ISTO NAO ESTÁ BEM
+            
             switch (children[0].nodeName) {
                 case 'rectangle':
                     rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
@@ -891,6 +891,9 @@ class MySceneGraphAdapt {
                     if (!this.verifyAssocArr(rectangle))
                         return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
+                    if(this.primitives[id] != null) 
+                        return "<primitves> - something wrong with primitive's id";
+                    
                     this.primitives[id] = new MyQuad(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
                     
                     break;
@@ -901,11 +904,15 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([triangleTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].triangle = this.readTrianglearray(triangleTag);
-                    if (!this.verifyAssocArr(this.data.primitives[id].triangle))
+                    triangle = this.readTrianglearray(triangleTag);
+                    if (!this.verifyAssocArr(triangle))
                         return "<primitives> - something wrong with triangles's x1;y1;z1;x2;y2;z2;x3;y3,z3 values";
 
-                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    if(this.primitives[id] != null) 
+                        return "<primitves> - something wrong with primitive's id";
+                    
+                    //TO DO: MyTriangle (criar ficheiro)
+                    
                     break;
 
                 case 'cylinder':
@@ -914,11 +921,11 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([cylinderTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].cylinder = this.readCylinderarray(cylinderTag);
-                    if (!this.verifyAssocArr(this.data.primitives[id].cylinder))
+                    cylinder = this.readCylinderarray(cylinderTag);
+                    if (!this.verifyAssocArr(cylinder))
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
 
-                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO-
+                    //TODO: MyCylinder (adaptar ficheiro)
                     break;
 
                 case 'sphere':
@@ -927,12 +934,14 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([sphereTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].sphere = this.readSpherearray(sphereTag);
-                    if (!this.verifyAssocArr(this.data.primitives[id].sphere))
+                    sphere = this.readSpherearray(sphereTag);
+                    if (!this.verifyAssocArr(sphere))
                         return "<primitives> - something wrong with spheres's radius;slices;stacks values";
 
+                    if(this.primitives[id] != null) 
+                        return "<primitves> - something wrong with primitive's id";
 
-                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+                    //TODO: MySphere (criar ficheiro)
                     break;
 
                 case 'torus':
@@ -941,11 +950,16 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([torusTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.data.primitives[id].torus = this.readTorusarray(torusTag);
-                    if (!this.verifyAssocArr(this.data.primitives[id].torus))
+                    this.torus = this.readTorusarray(torusTag);
+                    if (!this.verifyAssocArr(torus))
                         return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
 
-                    //TODO: CRIAR FUNÇÃO PARA ASSOCIAR AO DISPLAY E CRIAR O OBJETO
+
+                    if(this.primitives[id] != null) 
+                        return "<primitves> - something wrong with primitive's id";
+
+                    //TODO: MyTorus (talvez não pra já?)
+
                     break;
 
                 default:
