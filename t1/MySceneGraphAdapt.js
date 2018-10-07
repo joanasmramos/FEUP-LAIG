@@ -1231,13 +1231,14 @@ class MySceneGraphAdapt {
 
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
-
         if(primitiveChildren.length>0) {
             for(let i=0; i<primitiveChildren.length; i++) {
                 this.primitives[primitiveChildren[i]].display();
             }
         }
         else {
+            
+            this.scene.multMatrix(this.nodes[id].transformations.mat);
             for(let i=0; i<componentChildren.length; i++) {
                 this.processComponent(componentChildren[i]);
             }
