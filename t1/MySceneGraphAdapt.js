@@ -910,8 +910,9 @@ class MySceneGraphAdapt {
                     cylinder = this.readCylinderarray(cylinderTag);
                     if (!this.verifyAssocArr(cylinder))
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
-
-                    //TODO: MyCylinder (adaptar ficheiro, com base no xml considerar um tapered cylinder)
+                    //semtampa
+                    this.primitives[id] = new MyCylinder (this.scene, cylinder["base"], cylinder["top"], cylinder["height"], cylinder["slices"], cylinder["stacks"]);
+                    
                     break;
 
                 case 'sphere':
