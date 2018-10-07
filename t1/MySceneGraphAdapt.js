@@ -979,8 +979,8 @@ class MySceneGraphAdapt {
     parseCompMaterials(compId, materialsTag) {
         var materials = materialsTag.getElementsByTagName('material'); // array com todas as <material> filhas de <materials>
 
-        if(!this.verifyElement(materials))
-            return "<components> - something wrong with materials";
+        if(materials.length == 0)
+            return "<components> - you must define at least one material";
 
         var id;
         
@@ -1007,18 +1007,58 @@ class MySceneGraphAdapt {
         id = this.reader.getString(textureTag, 'id', true);
         if(!this.verifyString(id) || this.data.textures[id] == null)
             if(id!="inherit" && id!="none")
-                return "<components> - something's wrong with texture's id";
+                return "<components> - something wrong with texture's id";
         
         s = this.reader.getFloat(textureTag, 'length_s', true);
         t = this.reader.getFloat(textureTag, 'length_t', true);
 
         if(!this.verifyStringsFloats([], [s, t]))
-            return "<components> - somethings's wrong with texture's length";
+            return "<components> - somethings wrong with texture's length";
 
         this.nodes[compId].texture = [];
         this.nodes[compId].texture.id = id;
         this.nodes[compId].texture.lengthS = s;
         this.nodes[compId].texture.lengthT = t;
+    }
+
+    /**
+     * Parses <children> block (<component>'s child)
+     * @param {component's id} compId 
+     * @param {children tag} childrenTag 
+     */
+    parseCompChildren(compId, childrenTag) {
+        var componentref, primitiveref;
+
+        componentref = childrenTag.getElementsByTagName('componentref');
+        primitiveref = childrenTag.getElementsByTagName('primitiveref');
+
+        if(componentref.length==0 && primitiveref.length == 0)
+            return "<components> - your components must have children";
+        
+        for(let i=0; i<componentref.length; i++) {
+            var id;
+
+            id = this.reader.getString(componentref[i], 'id', true);
+            if(!this.verifyString(id))
+                return "<components> - something wrong with componentref's id";
+
+            this.nodes[compId].componentref = [];
+            this.nodes[compId].componentref.push(id);
+        }
+
+        for(let i=0; i<primitiveref.length; i++) {
+            var id;
+
+            id=this.reader.getString(primitiveref[i], 'id', true);
+            if(!this.verifyString(id))
+                return "<components> - something wrong with primitiveref's id";
+
+            if(this.primitives[id] == null)
+                return "<components> - something wrong with primitiveref (there's no such primitive)";
+
+            this.nodes[compId].primitiveref = [];
+            this.nodes[compId].primitiveref.push(id);
+        }
     }
 
     /**
@@ -1040,10 +1080,8 @@ class MySceneGraphAdapt {
 
             if(!this.verifyString(id) || this.nodes[id]!=null)
                 return "<components> - something wrong with component's id";
-            
-            this.nodeIds.push(id);
 
-            // children
+            // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
             materialsTag = components[i].getElementsByTagName('materials')[0];
             textureTag = components[i].getElementsByTagName('texture')[0];
@@ -1064,10 +1102,31 @@ class MySceneGraphAdapt {
             if(error != null)
                 return error;
 
+            // <children>
+
+            error = this.parseCompChildren(id, childrenTag);
+            if(error != null)
+                return error;
+            
+
+            for(let i=0; i<this.nodeIds.length; i++) {
+                if(this.nodeIds[i] == id)
+                    return "<components> - repeated id in a component";
+            }
+
+            this.nodeIds.push(id);
         }
 
 
-        //TO DO: fazer verificação dos ids (nenhum repetido, algum corresponde ao root)
+        //TO DO: fazer verificação dos ids da children
+        var root = false;
+        for(let i=0; i<this.nodeIds.length; i++) {
+            if(this.nodeIds[i] == this.idRoot)
+                root = true;
+        }
+        if (!root)
+            return "<components> - there's no such root"; 
+
         this.log("Parsed nodes");
         return null;
     }
