@@ -18,7 +18,7 @@
     <lights>
 
         <omni id="unique_omni" enabled="1" >
-            <location x="2" y="2" z="0" w="1" />
+            <location x="2" y="3" z="0" w="1" />
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.8" g="0.8" b="0.8" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
@@ -91,6 +91,20 @@
         <transformation id="pilar2">
           <translate x="4.75" y="0" z="0.25" />
         </transformation>
+        <transformation id="caixilho_base">
+          <scale x="0.1" y="2" z="0.1" />
+        </transformation>
+        <transformation id="quadro1">
+          <translate x="2" y="1" z="0.05" />
+        </transformation>
+        <transformation id="quadro2">
+          <translate x="1" y="0" z="0" />
+        </transformation>
+        <transformation id="quadro3">
+          <translate x="3.05" y="0" z="0" />
+          <rotate axis="z" angle="90" />
+          <scale x="1" y="0.55" z="1" />
+        </transformation>
 
     </transformations>
 
@@ -113,6 +127,61 @@
            <componentref id="parede2" />
            <componentref id="pilar1" />
            <componentref id="pilar2" />
+           <componentref id="quadro1" />
+           <componentref id="quadro2" />
+           <componentref id="quadro3" />
+       </children>
+   </component>
+
+   <component id="quadro3">
+       <transformation>
+          <transformationref id="quadro3" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="quadro1" />
+       </children>
+   </component>
+
+   <component id="quadro2">
+       <transformation>
+          <transformationref id="quadro2" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="quadro1" />
+       </children>
+   </component>
+
+   <component id="quadro1">
+       <transformation>
+          <transformationref id="quadro1" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="caixilho_base" />
+       </children>
+   </component>
+
+   <component id="caixilho_base">
+       <transformation>
+          <transformationref id="caixilho_base" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo" />
        </children>
    </component>
 
