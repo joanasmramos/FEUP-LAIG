@@ -648,20 +648,17 @@ class MySceneGraphAdapt {
             var identity = mat4.create();
             //creating identitymatrix
 
-            this.data.transformations[id] = new Array();
             var result = mat4.create();
 
             for(let j=0; j<children.length; j++) {
                 switch (children[j].nodeName) {
                     case "translate":
-                        translateTag = transformation[i].getElementsByTagName("translate")[0];
-                        vector = this.readXYZ(translateTag);
+                        vector = this.readXYZ(children[j]);
     
-                        mat4.translate(result, identity, vector);
-                        this.data.transformations[id].push(result);
+                        mat4.translate(result, result, vector);
+                        //this.data.transformations[id].push(result);
                         break;
                     case "rotate":
-                        rotateTag = transformation[i].getElementsByTagName("rotate")[0];
                         axis = this.reader.getString(children[j], 'axis', true);
                         angle = this.reader.getFloat(children[j], 'angle', true);
                         switch (axis) {
@@ -678,22 +675,21 @@ class MySceneGraphAdapt {
                         }
     
                         vector = vec3.fromValues(axis[0], axis[1], axis[2]);
-                        mat4.rotate(result, identity, DEGREE_TO_RAD * angle, vector);
-                        this.data.transformations[id].push(result);
+                        mat4.rotate(result, result, DEGREE_TO_RAD * angle, vector);
+                        //this.data.transformations[id].push(result);
                         break;
                     case "scale":
-                        scaleTag = transformation[i].getElementsByTagName("scale")[0];
-                        vector = this.readXYZ(scaleTag);
+                        vector = this.readXYZ(children[j]);
     
-                        mat4.scale(result, identity, vector);
-                        this.data.transformations[id].push(result);
+                        mat4.scale(result, result, vector);
+                        //this.data.transformations[id].push(result);
                         break;
                     default:
                         break;
                 }
             }
 
-
+            this.data.transformations[id] = result;
 
         }
         /*
@@ -968,6 +964,74 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Parses <transformation> block (<component>'s child)
+     * @param {component's id} compId 
+     * @param {transformation tag} transformationTag 
+     */
+    parseCompTransformation(compId,transformationTag) {
+        var transformationref = transformationTag.getElementsByTagName("transformationref");
+        var translate = transformationTag.getElementsByTagName("translate");
+        var rotate = transformationTag.getElementsByTagName("rotate");
+        var scale = transformationTag.getElementsByTagName("scale");
+
+        if((transformationref.length > 0 && (translate.length > 0 || rotate.length > 0 || scale.length > 0)) || transformationref.length > 1)
+            return "<components> something wrong with component's transformations";
+
+        this.nodes[compId].transformations = new Object();
+
+        if(transformationref.length > 0) {
+            var id = this.reader.getString(transformationref[0], "id", true);
+
+            if(this.data.transformations[id] == null)
+                return "<components> no such transformation";
+            
+            this.nodes[compId].transformations.id = id;
+        }
+        else {
+            var children = transformationTag.children;
+            var result = mat4.create();
+
+            for(let i=0; i<children.length; i++){
+                switch(children[i].nodeName) {
+                    case "translate":
+                        var vector = this.readXYZ(children[i]);
+    
+                        mat4.translate(result, result, vector);
+                        break;
+                    case "rotate":
+                        var axis = this.reader.getString(children[i], 'axis', true);
+                        var angle = this.reader.getFloat(children[i], 'angle', true);
+                        switch (axis) {
+                            case 'x':
+                                axis = [1, 0, 0];
+                                break;
+                            case 'y':
+                                axis = [0, 1, 0];
+                                break;
+    
+                            case 'z':
+                                axis = [0, 0, 1];
+                                break;
+                        }
+    
+                        var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
+                        mat4.rotate(result, result, DEGREE_TO_RAD * angle, vector);
+                        break;
+                    case "scale":
+                        vector = this.readXYZ(children[i]);
+    
+                        mat4.scale(result, result, vector);
+                        break;
+                    default:
+                        break;
+                }
+
+            this.nodes[compId].transformations.mat = result;
+            }
+        }
+    }
+
+    /**
      * Parses <materials> block (<component>'s child)
      * @param {component's id} compId 
      * @param {materials tag} materialsTag 
@@ -1088,10 +1152,12 @@ class MySceneGraphAdapt {
             if(!this.verifyElems([transformationTag, materialsTag, textureTag, childrenTag]))
                 return "<components> - something wrong with component's children";
 
-            //TO DO: <transformation>, volto a isso mais tarde
+            var error = this.parseCompTransformation(id, transformationTag);
+            if(error != null)
+                return error;
 
             // <materials>
-            var error = this.parseCompMaterials(id, materialsTag);
+            error = this.parseCompMaterials(id, materialsTag);
             if(error != null)
                 return error;
 
@@ -1114,7 +1180,6 @@ class MySceneGraphAdapt {
 
             this.nodeIds.push(id);
         }
-
 
         //TO DO: fazer verificação dos ids da children
         var root = false;
