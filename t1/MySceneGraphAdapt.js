@@ -545,7 +545,7 @@ class MySceneGraphAdapt {
 
             this.data.spotLights[id] = new Object();
             this.data.spotLights[id].enabled = this.reader.getFloat(spot[i], 'enabled', true);
-            this.data.spotLights[id].angle = this.reader.getFloat(spot[i], 'angle', true);
+            this.data.spotLights[id].angle = DEGREE_TO_RAD * this.reader.getFloat(spot[i], 'angle', true);
             this.data.spotLights[id].exponent = this.reader.getFloat(spot[i], 'exponent', true);
 
             if (this.data.spotLights[id].enabled == 1)
