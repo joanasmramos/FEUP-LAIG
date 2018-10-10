@@ -437,7 +437,7 @@ class MySceneGraphAdapt {
             if (!this.verifyStringsFloats([], [near, far, angle, from[0], from[1], from[2], to[0], to[1], to[2]]))
                 return "<views> - something wrong with a perspective's children values";
 
-            this.data.views[id] = new CGFcamera(angle, near, far, from, to);
+            this.data.views[id] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, from, to);
         }
 
         //TO DO: orthos
@@ -690,7 +690,6 @@ class MySceneGraphAdapt {
             }
 
             this.data.transformations[id] = result;
-            console.log(this.data.transformations[id]);
 
         }
         /*
@@ -977,8 +976,6 @@ class MySceneGraphAdapt {
         if((transformationref.length > 0 && (translate.length > 0 || rotate.length > 0 || scale.length > 0)) || transformationref.length > 1)
             return "<components> something wrong with component's transformations";
 
-        this.nodes[compId].transformations = new Object();
-
         if(transformationref.length > 0) {
             var id = this.reader.getString(transformationref[0], "id", true);
 
@@ -1096,6 +1093,9 @@ class MySceneGraphAdapt {
         if(componentref.length==0 && primitiveref.length == 0)
             return "<components> - your components must have children";
         
+        this.nodes[compId].componentref = [];
+        this.nodes[compId].primitiveref = [];
+
         for(let i=0; i<componentref.length; i++) {
             var id;
 
@@ -1103,7 +1103,6 @@ class MySceneGraphAdapt {
             if(!this.verifyString(id))
                 return "<components> - something wrong with componentref's id";
 
-            this.nodes[compId].componentref = [];
             this.nodes[compId].componentref.push(id);
         }
 
@@ -1117,7 +1116,6 @@ class MySceneGraphAdapt {
             if(this.primitives[id] == null)
                 return "<components> - something wrong with primitiveref (there's no such primitive)";
 
-            this.nodes[compId].primitiveref = [];
             this.nodes[compId].primitiveref.push(id);
         }
     }
@@ -1143,6 +1141,7 @@ class MySceneGraphAdapt {
                 return "<components> - something wrong with component's id";
 
             this.nodes[id] = new Object();
+            this.nodes[id].transformations = new Object();
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
@@ -1225,11 +1224,9 @@ class MySceneGraphAdapt {
       
         //TO DO: atualizar materiais, texturas
         if(this.nodes[comp].transformations.mat != null)
-            //this.scene.multMatrix(trf);
-        //else
             this.scene.multMatrix(this.nodes[comp].transformations.mat);
         
-        console.log(this.nodes[comp].transformations.mat);
+        //console.log(this.nodes[comp].transformations.mat);
     
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
