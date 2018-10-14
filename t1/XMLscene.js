@@ -112,7 +112,6 @@ class XMLscene extends CGFscene {
         this.setGlobalAmbientLight(this.data.ambientLight["r"], this.data.ambientLight["g"], this.data.ambientLight["b"], this.data.ambientLight["a"]);
         this.gl.clearColor(this.data.backgroundColor["r"], this.data.backgroundColor["g"], this.data.backgroundColor["b"], this.data.backgroundColor["a"]);
 
-        // <lights>
         this.initLights();
 
         // Adds lights group.
@@ -175,7 +174,6 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
-
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
         }

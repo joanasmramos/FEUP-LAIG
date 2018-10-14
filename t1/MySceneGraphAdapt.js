@@ -631,7 +631,6 @@ class MySceneGraphAdapt {
             return "<transformations> - you must define at least one transformation in the <transformations> tag";
 
         var id;
-        var translateTag, rotateTag, scaleTag;
         var vector, axis, angle;
         this.data.transformations = [];
         for (let i = 0; i < transformation.length; i++) { 
@@ -644,9 +643,6 @@ class MySceneGraphAdapt {
 
             if (children.length == 0) 
                 return "<transformations> - a transformation needs to have an effective action (translate/rotate/scale)";
-
-            var identity = mat4.create();
-            //creating identitymatrix
 
             var result = mat4.create();
 
@@ -927,7 +923,7 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
 
-                    //TODO: MySphere (criar ficheiro)
+                    this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
                     break;
 
                 case 'torus':

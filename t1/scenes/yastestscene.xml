@@ -142,6 +142,7 @@
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>
+           <componentref id="sphere"/>
            <componentref id="parede1" />
            <componentref id="parede2" />
            <componentref id="pilar1" />
@@ -154,6 +155,19 @@
            <componentref id="chandelier1"/>
        </children>
    </component>
+
+    <component id="sphere">
+        <transformation>
+            <translate x="2" y="2" z="2" />
+       </transformation>
+        <materials>
+            <material id="inherit"/>
+        </materials>
+        <texture id="none" length_s="1.0" length_t="1.0"/>
+        <children>
+            <primitiveref id="sphere"/>
+        </children>
+    </component>
 
    <component id="quadro3">
        <transformation>
