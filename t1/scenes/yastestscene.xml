@@ -129,7 +129,7 @@
             <sphere radius="1" stacks="32" slices="64"/>
         </primitive>
         <primitive id="torus">
-            <torus inner="1" outer="2" slices="32" loops="1"/>
+            <torus inner="1" outer="2" slices="64" loops="32"/>
         </primitive>
     </primitives >
 
@@ -142,7 +142,6 @@
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>
-           <!--<componentref id="sphere"/>-->
            <componentref id="parede1" />
            <componentref id="parede2" />
            <componentref id="pilar1" />
@@ -155,19 +154,6 @@
            <componentref id="chandelier1"/>
        </children>
    </component>
-
-    <!--<component id="sphere">
-        <transformation>
-            <translate x="2" y="2" z="2" />
-       </transformation>
-        <materials>
-            <material id="inherit"/>
-        </materials>
-        <texture id="none" length_s="1.0" length_t="1.0"/>
-        <children>
-            <primitiveref id="sphere"/>
-        </children>
-    </component> -->
 
    <component id="quadro3">
        <transformation>
@@ -437,7 +423,7 @@
     <texture id="none" length_s="5.0" length_t="5.0"/>
     <children>
         <componentref id="chandelier_base"/>
-         <componentref id="chandelier_bigbase-0"/>
+        <componentref id="chandelier_bigbase-0"/>
         <componentref id="chandelier_bigbase-1"/>
         <componentref id="chandelier_small_stem-0"/>
         <componentref id="chandelier_small_stem-1"/>
@@ -449,6 +435,7 @@
     <transformation>
         <translate x="6" y="0" z="1" />
         <scale x="0.04" y="1.5" z="0.04"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -463,6 +450,7 @@
     <transformation>
         <translate x="6" y="0" z="1" />
         <scale x="0.25" y="0.07" z="0.25"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -477,6 +465,7 @@
     <transformation>
         <translate x="6" y="1.5" z="1" />
         <scale x="0.3" y="0.06" z="0.3"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -491,6 +480,7 @@
     <transformation>
         <translate x="6" y="1.5" z="1" />
         <scale x="0.02" y="0.3" z="0.02"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -505,6 +495,7 @@
     <transformation>
         <translate x="5.8" y="1.5" z="1" />
         <scale x="0.03" y="0.5" z="0.03"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -519,6 +510,7 @@
     <transformation>
         <translate x="6.2" y="1.5" z="1" />
         <scale x="0.03" y="0.5" z="0.03"/>
+        <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
         <material id="inherit"/>

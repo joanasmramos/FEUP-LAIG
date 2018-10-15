@@ -923,7 +923,7 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
 
-                    //this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
+                    this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
                     break;
 
                 case 'torus':
@@ -932,7 +932,7 @@ class MySceneGraphAdapt {
                     if (!this.verifyElems([torusTag]))
                         return "<primitives> - something wrong with primitives children";
 
-                    this.torus = this.readTorusarray(torusTag);
+                    torus = this.readTorusarray(torusTag);
                     if (!this.verifyAssocArr(torus))
                         return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
 
@@ -940,7 +940,7 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
 
-                    //TODO: MyTorus (talvez não pra já?)
+                    this.primitives[id] = new MyTorus(this.scene, torus["inner"], torus["outer"], torus["slices"], torus["loops"]);
 
                     break;
 

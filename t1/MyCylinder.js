@@ -75,10 +75,4 @@ class MyCylinder extends CGFobject
 		this.initGLBuffers();
 	};
 
-	display(){
-		this.scene.pushMatrix();
-			this.scene.rotate(-Math.PI/2, 1, 0, 0);
-			super.display();
-		this.scene.popMatrix();
-	}
 };
