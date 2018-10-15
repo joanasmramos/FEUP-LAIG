@@ -117,6 +117,7 @@ class XMLscene extends CGFscene {
         // Adds lights group.
         this.interface.addOmniLightsGroup(this.data.omniLights);
         this.interface.addSpotLightsGroup(this.data.spotLights);
+        this.interface.addViewsGroup(this.data.views);
 
         this.sceneInited = true;
     }
@@ -183,13 +184,5 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
-        // ---- END Background, camera and axis setup
-/*
-        this.sceneInited.pushMatrix();
-        this.sceneInited.multMatrix(this.transformationMatrix);
-
-        //components,primitives here
-        this.sceneInited.popMatrix();
-        */
     }
 }

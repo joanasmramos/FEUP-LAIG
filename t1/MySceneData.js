@@ -31,7 +31,5 @@ class MySceneData {
 
         //transformations
         this.transformations = [];
-
-        
     }
 }

@@ -20,6 +20,16 @@ class MyQuad extends CGFobject {
 		this.initBuffers();
 	};
 
+	setTexCoords(){
+		var a, b, c;
+
+		a = Math.sqrt(pow(this.x2 - this.x1, 2) + pow(this.y2 - this.y1, 2) + pow(this.z2 - this.z1, 2) )
+
+		this.texCoords = [
+
+		];
+	}
+
 	initBuffers() {
 
 		this.vertices = [

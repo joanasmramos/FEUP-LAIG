@@ -36,7 +36,6 @@ class MyInterface extends CGFinterface {
 
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
-                //this.scene.omniValues[key] = lights[key].enabled;
                 group.add(this.scene.omniValues, key);
             }
         }
@@ -53,9 +52,13 @@ class MyInterface extends CGFinterface {
 
         for (var key in lights) {
             if (lights.hasOwnProperty(key)) {
-                //this.scene.spotValues[key] = lights[key].enabled;
                 group.add(this.scene.spotValues, key);
             }
         }
+    }
+
+    addViewsGroup(views) {
+
+        
     }
 }
