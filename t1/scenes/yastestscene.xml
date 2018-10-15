@@ -142,7 +142,7 @@
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>
-           <componentref id="sphere"/>
+           <!--<componentref id="sphere"/>-->
            <componentref id="parede1" />
            <componentref id="parede2" />
            <componentref id="pilar1" />
@@ -156,7 +156,7 @@
        </children>
    </component>
 
-    <component id="sphere">
+    <!--<component id="sphere">
         <transformation>
             <translate x="2" y="2" z="2" />
        </transformation>
@@ -167,7 +167,7 @@
         <children>
             <primitiveref id="sphere"/>
         </children>
-    </component>
+    </component> -->
 
    <component id="quadro3">
        <transformation>

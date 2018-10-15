@@ -923,7 +923,7 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
 
-                    this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
+                    //this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
                     break;
 
                 case 'torus':
@@ -1215,7 +1215,7 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
-    processComponent(comp, trf) {
+    processComponent(comp) {
         this.scene.pushMatrix();
       
         //TO DO: atualizar materiais, texturas
@@ -1246,7 +1246,7 @@ class MySceneGraphAdapt {
         var appearance = new CGFappearance(this.scene);
         appearance.apply();
         this.nodes[this.idRoot].transformations.mat = mat4.create();
-        this.processComponent(this.idRoot, mat4.create());
+        this.processComponent(this.idRoot);
     }
 
 }
