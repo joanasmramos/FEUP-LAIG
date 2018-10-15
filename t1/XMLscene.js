@@ -115,8 +115,7 @@ class XMLscene extends CGFscene {
         this.initLights();
 
         // Adds lights group.
-        this.interface.addOmniLightsGroup(this.data.omniLights);
-        this.interface.addSpotLightsGroup(this.data.spotLights);
+        this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
         this.interface.addViewsGroup(this.data.views);
 
         this.sceneInited = true;

@@ -26,32 +26,22 @@ class MyInterface extends CGFinterface {
     }
 
     /**
-     * Adds a folder for omni lights control
+     * Adds a folder for lights control
      * @param {array} lights
      */
-    addOmniLightsGroup(lights) {
+    addLightsGroup(omniLights, spotLights) {
 
-        var group = this.gui.addFolder("Omni lights");
+        var group = this.gui.addFolder("Lights");
         group.open();
 
-        for (var key in lights) {
-            if (lights.hasOwnProperty(key)) {
+        for (var key in omniLights) {
+            if (omniLights.hasOwnProperty(key)) {
                 group.add(this.scene.omniValues, key);
             }
         }
-    }
 
-    /**
-     * Adds a folder for spotlights control
-     * @param {array} lights
-     */
-    addSpotLightsGroup(lights) {
-
-        var group = this.gui.addFolder("Spotlights");
-        group.open();
-
-        for (var key in lights) {
-            if (lights.hasOwnProperty(key)) {
+        for (var key in spotLights) {
+            if (spotLights.hasOwnProperty(key)) {
                 group.add(this.scene.spotValues, key);
             }
         }
