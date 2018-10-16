@@ -34,7 +34,7 @@ class MySceneGraphAdapt {
         this.data = new MySceneData();
         this.scene.data = this.data;
 
-        this.nodes = [];
+        this.nodes = new Object();
         this.nodeIds = [];
         this.idRoot = null;                    // The id of the root element.
         this.primitives = [];
@@ -1006,8 +1006,7 @@ class MySceneGraphAdapt {
             if(this.data.transformations[id] == null)
                 return "<components> no such transformation";
             
-            this.nodes[compId].transformations.id = id;
-            this.nodes[compId].transformations.mat = this.data.transformations[id];
+            this.nodes[compId].transformationMat = this.data.transformations[id];
         }
         else {
             var children = transformationTag.children;
@@ -1048,7 +1047,7 @@ class MySceneGraphAdapt {
                         break;
                 }
 
-            this.nodes[compId].transformations.mat = result;
+            this.nodes[compId].transformationMat = result;
             }
         }
     }
@@ -1072,7 +1071,6 @@ class MySceneGraphAdapt {
                 if(id != "inherit")
                     return "<components> - something wrong with material's id";
             
-            this.nodes[compId].materials = [];
             this.nodes[compId].materials.push(id);
         }
 
@@ -1097,10 +1095,9 @@ class MySceneGraphAdapt {
         if(!this.verifyStringsFloats([], [s, t]))
             return "<components> - somethings wrong with texture's length";
 
-        this.nodes[compId].texture = [];
-        this.nodes[compId].texture.id = id;
-        this.nodes[compId].texture.lengthS = s;
-        this.nodes[compId].texture.lengthT = t;
+        this.nodes[compId].texture = id;
+        this.nodes[compId].lengthS = s;
+        this.nodes[compId].lengthT = t;
     }
 
     /**
@@ -1116,9 +1113,6 @@ class MySceneGraphAdapt {
 
         if(componentref.length==0 && primitiveref.length == 0)
             return "<components> - your components must have children";
-        
-        this.nodes[compId].componentref = [];
-        this.nodes[compId].primitiveref = [];
 
         for(let i=0; i<componentref.length; i++) {
             var id;
@@ -1164,8 +1158,7 @@ class MySceneGraphAdapt {
             if(!this.verifyString(id) || this.nodes[id]!=null)
                 return "<components> - something wrong with component's id";
 
-            this.nodes[id] = new Object();
-            this.nodes[id].transformations = new Object();
+            this.nodes[id] = new MySceneComponent();
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
@@ -1203,6 +1196,9 @@ class MySceneGraphAdapt {
             }
 
             this.nodeIds.push(id);
+            
+            var a = this.nodes[id];
+            this.log("");
         }
 
         //TO DO: fazer verificação dos ids da children
@@ -1247,8 +1243,8 @@ class MySceneGraphAdapt {
         this.scene.pushMatrix();
       
         //TO DO: atualizar materiais, texturas
-        if(this.nodes[comp].transformations.mat != null)
-            this.scene.multMatrix(this.nodes[comp].transformations.mat);
+        if(this.nodes[comp].transformationMat != null)
+            this.scene.multMatrix(this.nodes[comp].transformationMat);
         
         //console.log(this.nodes[comp].transformations.mat);
     
@@ -1273,7 +1269,7 @@ class MySceneGraphAdapt {
     displayScene() {
         var appearance = new CGFappearance(this.scene);
         appearance.apply();
-        this.nodes[this.idRoot].transformations.mat = mat4.create();
+        this.nodes[this.idRoot].transformationMat = mat4.create();
         this.processComponent(this.idRoot);
     }
 
