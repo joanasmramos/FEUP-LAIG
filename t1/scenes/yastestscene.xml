@@ -1,16 +1,17 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="unique_persp" >
+    <views default="ORTHOtest" >
 
         <perspective id="unique_persp" near="0.1" far="500" angle="20">
             <from x="15" y="15" z="15" />
             <to x="0" y="0" z="0" />
         </perspective>
-        <perspective id="inside_persp" near="0.3" far="500" angle="10">
-            <from x="20" y="5" z="20" />
+        
+        <ortho id="ORTHOtest" near="0.1" far="500" left="-10" right="10" top="5" bottom="-5" >
+            <from x="15" y="15" z="15" />
             <to x="0" y="0" z="0" />
-        </perspective>
+        </ortho>
 
     </views>
 

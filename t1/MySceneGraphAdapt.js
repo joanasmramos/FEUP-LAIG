@@ -413,7 +413,7 @@ class MySceneGraphAdapt {
         if (perspectives.length == 0 && orthos.length == 0)
             return "<views> - you must define at least one perspective/ortho view";
 
-        var id, near, far, angle, from, to, fromTag, toTag;
+        var id, near, far, angle, left, right, top, bottom, from, to, up, fromTag, toTag;
 
         //read perspectives
         for (let i = 0; i < perspectives.length; i++) {
@@ -441,11 +441,39 @@ class MySceneGraphAdapt {
         }
 
         //TO DO: orthos
+        for (let i = 0; i < orthos.length; i++) {
+            id = this.reader.getString(orthos[i], "id", true);
+
+            if (!this.verifyString(id) || this.data.views[id] != null)
+                return "views - something wrong with a ortho's id";
+
+            near = this.reader.getFloat(orthos[i], "near", true);
+            far = this.reader.getFloat(orthos[i], "far", true);
+            left = this.reader.getFloat(orthos[i], "left", true);
+            right = this.reader.getFloat(orthos[i], "right", true);
+            top = this.reader.getFloat(orthos[i], "top", true);
+            bottom = this.reader.getFloat(orthos[i], "bottom", true);
+            fromTag = orthos[i].getElementsByTagName("from")[0];
+            toTag = orthos[i].getElementsByTagName("to")[0];
+
+            if (!this.verifyElems([fromTag, toTag]))
+                return "<views> - something wrong with a ortho's from/to element";
+
+            from = this.readXYZ(fromTag);
+            to = this.readXYZ(toTag);            
+            up = [0,1,0];
+
+            if (!this.verifyStringsFloats([], [near, far, left, right, top, bottom, from[0], from[1], from[2], to[0], to[1], to[2],
+            up[0], up[1], up[2]]))
+                return "<views> - something wrong with a ortho's children values";
+
+            this.data.views[id] = new CGFcameraOrtho(left, right, bottom, top, near, far, from, to, up);
+        }
 
         this.data.defaultView = this.reader.getString(viewsNode, 'default', true);
 
         if (!this.verifyString(this.data.defaultView) || this.data.views[this.data.defaultView] == null)
-            return "views - something wrong with perspectives";
+            return "views - something wrong with orthos";
 
         this.log("Parsed views");
 
