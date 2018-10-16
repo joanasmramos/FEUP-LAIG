@@ -1,10 +1,10 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="ORTHOtest" >
+    <views default="Perspective" >
 
-        <perspective id="unique_persp" near="0.1" far="500" angle="20">
-            <from x="15" y="15" z="15" />
+        <perspective id="Perspective" near="0.1" far="500" angle="20">
+            <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
         
@@ -120,15 +120,16 @@
           <scale x="0.1" y="2" z="0.1" />
         </transformation>
         <transformation id="quadro1">
-          <translate x="3" y="1" z="0.05" />
+          <translate x="3" y="1.5" z="0.05" />
+          <scale x="1" y="1.5" z="1"/>
         </transformation>
         <transformation id="quadro2">
           <translate x="1" y="0" z="0" />
         </transformation>
         <transformation id="quadro3">
-          <translate x="3.05" y="0" z="0" />
+          <translate x="3.5" y="3" z="0.05" />
+          <scale x="0.55" y="1" z="1" />
           <rotate axis="z" angle="90" />
-          <scale x="1" y="0.55" z="1" />
         </transformation>
 
     </transformations>
@@ -184,7 +185,7 @@
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>
-           <componentref id="quadro1" />
+           <componentref id="caixilho_base" />
        </children>
    </component>
 
@@ -446,7 +447,7 @@
 
 <component id="chandelier2">
     <transformation>
-    <translate x="0.3" y="0" z="-0.5" />
+    <translate x="-1" y="0" z="-0.5" />
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -464,7 +465,7 @@
 
 <component id="chandelier1">
     <transformation>
-    <translate x="-3" y="0" z="-0.5" />
+    <translate x="-4" y="0" z="-0.5" />
     </transformation>
     <materials>
         <material id="inherit"/>
