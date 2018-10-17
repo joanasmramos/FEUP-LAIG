@@ -61,8 +61,8 @@
     </textures>
 
     <materials>
-        <material id="matte" shininess = "1" >
-            <emission r="0.3" g="0.3" b="0.3" a="1" />
+        <material id="unique_mat" shininess = "1" >
+            <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.3" g="0.3" b="0.3" a="1" />
@@ -136,7 +136,15 @@
           <scale x="0.55" y="1" z="1" />
           <rotate axis="z" angle="90" />
         </transformation>
-
+        <transformation id="hallway_wall1">
+            <translate x="5.62" y="4" z="-10.6" />
+            <scale x="0.8" y="2.68" z="0.8" />
+        </transformation>
+        <transformation id="hallway_wall2">
+            <translate x="0" y="4" z="-5.62" />
+            <scale x="1" y="2.68" z="1.5" />
+            <rotate axis="y" angle="90" />
+        </transformation>
     </transformations>
 
     <primitives>
@@ -162,7 +170,7 @@
        <transformation>
        </transformation>
        <materials>
-           <material id="matte" />
+           <material id="unique_mat" />
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>
@@ -178,6 +186,8 @@
            <componentref id="ceiling"/>
            <componentref id="chandelier2"/>
            <componentref id="chandelier1"/>
+           <componentref id="hallway_wall1" />
+           <componentref id="hallway_wall2" />
        </children>
    </component>
 
@@ -406,6 +416,7 @@
             <componentref id="parede_base" />
         </children>
     </component>
+
     <component id="parede_base">
         <transformation>
             <transformationref id="parede_base" />
@@ -575,6 +586,32 @@
         <primitiveref id="cylinder"/>
     </children>
 </component>
+
+  <component id="hallway_wall1">
+    <transformation>
+      <transformationref id="hallway_wall1" />
+      </transformation>
+         <materials>
+         <material id="inherit" />
+    </materials>
+    <texture id="none" length_s="1" length_t="1" />
+     <children>
+        <componentref id="parede_base" />
+    </children>
+ </component>
+
+   <component id="hallway_wall2">
+    <transformation>
+      <transformationref id="hallway_wall2" />
+      </transformation>
+         <materials>
+         <material id="inherit" />
+    </materials>
+    <texture id="none" length_s="1" length_t="1" />
+     <children>
+        <componentref id="parede_base" />
+    </children>
+ </component>
 
  </components>
 
