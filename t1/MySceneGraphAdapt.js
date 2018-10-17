@@ -440,7 +440,6 @@ class MySceneGraphAdapt {
             this.data.views[id] = new CGFcamera(DEGREE_TO_RAD * angle, near, far, from, to);
         }
 
-        //TO DO: orthos
         for (let i = 0; i < orthos.length; i++) {
             id = this.reader.getString(orthos[i], "id", true);
 

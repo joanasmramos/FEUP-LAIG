@@ -97,6 +97,11 @@ class XMLscene extends CGFscene {
         }
     }
 
+    selectView(id) {
+        this.camera = this.data.views[id];
+        this.interface.setActiveCamera(this.camera);
+    }
+
     /* Handler called when the graph is finally loaded. 
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
@@ -116,7 +121,7 @@ class XMLscene extends CGFscene {
 
         // Adds lights group.
         this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
-        this.interface.addViewsGroup(this.data.views);
+        this.interface.addViewsGroup();
 
         this.sceneInited = true;
     }

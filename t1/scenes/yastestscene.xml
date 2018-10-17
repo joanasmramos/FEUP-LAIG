@@ -149,20 +149,22 @@
           <rotate axis="z" angle="90" />
         </transformation>
         <transformation id="hallway_wall1">
-            <translate x="5.62" y="4" z="-10.6" />
-            <scale x="0.8" y="2.68" z="0.8" />
+            <translate x="0" y="0" z="-22" />
         </transformation>
         <transformation id="hallway_wall2">
-            <translate x="0" y="4" z="-5.62" />
-            <scale x="1" y="2.68" z="1.5" />
+            <translate x="3.5" y="4" z="-5.5" />
             <rotate axis="y" angle="90" />
         </transformation>
-        <transformation id="floor">
+       <transformation id="hallway_wall3">
+          <translate x="8" y="4" z="-5.5" />
+          <rotate axis="y" angle="-90" />
+      </transformation>
+      <transformation id="floor">
           <translate x="5.5" y="0" z="5.5" />
           <rotate axis="x" angle="-90"/>
           <scale x="11" y="11" z="1" />
-        </transformation>
-        <transformation id="ceiling">
+      </transformation>
+      <transformation id="ceiling">
           <translate x="5.5" y="8" z="5.5" />
           <rotate axis="x" angle="-90"/>
           <rotate axis="y" angle="180"/>
@@ -212,6 +214,7 @@
            <componentref id="chandelier1"/>
            <componentref id="hallway_wall1" />
            <componentref id="hallway_wall2" />
+           <componentref id="hallway_wall3" />
        </children>
    </component>
 
@@ -631,6 +634,20 @@
         <componentref id="parede_base" />
     </children>
  </component>
+
+   <component id="hallway_wall3">
+    <transformation>
+      <transformationref id="hallway_wall3" />
+      </transformation>
+         <materials>
+         <material id="inherit" />
+    </materials>
+    <texture id="none" length_s="1" length_t="1" />
+     <children>
+        <componentref id="parede_base" />
+    </children>
+ </component>
+
 
  </components>
 
