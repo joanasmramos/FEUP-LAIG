@@ -631,17 +631,19 @@ class MySceneGraphAdapt {
         if (textures.length == 0)
             return "<textures> - you must define at least one texture";
 
-        var id;
+        var id, file;
         for (let i = 0; i < textures.length; i++) {
             id = this.reader.getString(textures[i], 'id', true);
 
             if (!this.verifyString(id) || this.data.textures[id] != null)
                 return "<textures> - something wrong with texture's id";
 
-            this.data.textures[id] = this.reader.getString(textures[i], 'file', true);
+            file = this.reader.getString(textures[i], 'file', true);
 
-            if (!this.verifyString(this.data.textures[id]))
-                return "<textures> - something wrong with texture's file";
+            if (!this.verifyString(file))
+            return "<textures> - something wrong with texture's file";
+
+            this.data.textures[id] = new CGFtexture(this.scene, file);
         }
 
         this.log("Parsed textures");
@@ -1261,10 +1263,10 @@ class MySceneGraphAdapt {
         if(primitiveChildren.length>0) {
             for(let i=0; i<primitiveChildren.length; i++) {
                 if(!textureStack.isEmpty()) {
+                    material.setTexture(textureStack.top()[0]);
                     if(this.primitives[primitiveChildren[i]] instanceof MyRectangle){
                         this.primitives[primitiveChildren[i]].setTexCoords(textureStack.top()[1], textureStack.top()[2]);
                     }
-                    material.loadTexture(textureStack.top()[0]);
                 }
                 else {
                     material.setTexture(null);
@@ -1284,10 +1286,6 @@ class MySceneGraphAdapt {
             textureStack.pop();
         }
         this.scene.popMatrix();
-    }
-
-    loadTextures() {
-        
     }
 
     /**
