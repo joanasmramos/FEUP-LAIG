@@ -53,11 +53,11 @@
     </lights>
 
     <textures>
-        <texture id="brickwall" file="images/brickwall.jpg" />
-        <texture id="pilar" file="images/pilar.jpg" />
-        <texture id="frame" file="images/frame.jpg" />
-        <texture id="ceiling" file="images/floor.jpg" />
-        <texture id="floor" file="images/floor.jpg" />
+        <texture id="brickwall" file="scenes/images/brickwall.jpg" />
+        <texture id="pilar" file="scenes/images/pilar.jpg" />
+        <texture id="frame" file="scenes/images/frame.jpg" />
+        <texture id="ceiling" file="scenes/images/floor.jpg" />
+        <texture id="floor" file="scenes/images/floor.jpg" />
     </textures>
 
     <materials>

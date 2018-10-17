@@ -1085,17 +1085,20 @@ class MySceneGraphAdapt {
         var id, s, t;
 
         id = this.reader.getString(textureTag, 'id', true);
-        if(!this.verifyString(id) || this.data.textures[id] == null)
+        if(!this.verifyString(id) || this.data.textures[id] == null) {
             if(id!="inherit" && id!="none")
                 return "<components> - something wrong with texture's id";
-        
+            this.nodes[compId].texture = id;
+            }
+        else {
+            this.nodes[compId].texture = this.data.textures[id];
+        }
         s = this.reader.getFloat(textureTag, 'length_s', true);
         t = this.reader.getFloat(textureTag, 'length_t', true);
 
         if(!this.verifyStringsFloats([], [s, t]))
             return "<components> - somethings wrong with texture's length";
 
-        this.nodes[compId].texture = id;
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;
     }
@@ -1239,28 +1242,52 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
-    processComponent(comp) {
+    processComponent(comp, material) {
+        var textureStack = new MyStack();
         this.scene.pushMatrix();
       
         //TO DO: atualizar materiais, texturas
         if(this.nodes[comp].transformationMat != null)
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         
+        if (this.nodes[comp].texture != "none" && this.nodes[comp].texture != "inherit") {
+            textureStack.push([this.nodes[comp].texture, this.nodes[comp].lengthS, this.nodes[comp].lengthT]);
+        }
+
         //console.log(this.nodes[comp].transformations.mat);
     
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
         if(primitiveChildren.length>0) {
             for(let i=0; i<primitiveChildren.length; i++) {
+                if(!textureStack.isEmpty()) {
+                    if(this.primitives[primitiveChildren[i]] instanceof MyRectangle){
+                        this.primitives[primitiveChildren[i]].setTexCoords(textureStack.top()[1], textureStack.top()[2]);
+                    }
+                    material.loadTexture(textureStack.top()[0]);
+                }
+                else {
+                    material.setTexture(null);
+                }
+
+                material.apply();
+
                 this.primitives[primitiveChildren[i]].display();
             }
         }
             
         for(let i=0; i<componentChildren.length; i++) {
-            this.processComponent(componentChildren[i]);
+            this.processComponent(componentChildren[i], material);
         }
 
+        if(!textureStack.isEmpty()){
+            textureStack.pop();
+        }
         this.scene.popMatrix();
+    }
+
+    loadTextures() {
+        
     }
 
     /**
@@ -1270,7 +1297,7 @@ class MySceneGraphAdapt {
         var appearance = new CGFappearance(this.scene);
         appearance.apply();
         this.nodes[this.idRoot].transformationMat = mat4.create();
-        this.processComponent(this.idRoot);
+        this.processComponent(this.idRoot, appearance);
     }
 
 }

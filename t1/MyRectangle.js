@@ -7,15 +7,13 @@
 class MyRectangle extends CGFobject {
 	constructor(scene, x1, y1, x2, y2) {
 		super(scene);
-		//para as texturas dps
-		// this.minS = minS;
-		// this.maxS = maxS;
-		// this.minT = minT;
-		// this.maxT = maxT;
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y1 = y1;
 		this.y2 = y2;
+
+		this.sideS = x2-x1;
+		this.sideT = y2-y1;
 
 		this.initBuffers();
 	};
@@ -73,4 +71,13 @@ class MyRectangle extends CGFobject {
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	};
+
+	setTexCoords(lengthS, lengthT){
+		this.texCoords = [
+			0, 0,
+			this.sideS*lengthS, this.sideT*lengthT,
+			this.sideS*lengthS, 0,
+			0, this.sideT*lengthT
+		];
+	}
 };
