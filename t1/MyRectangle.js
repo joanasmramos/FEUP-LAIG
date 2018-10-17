@@ -74,9 +74,9 @@ class MyRectangle extends CGFobject {
 	setTexCoords(lengthS, lengthT){
 		this.texCoords = [
 			0, 0,
-			this.sideS*lengthS, this.sideT*lengthT,
-			this.sideS*lengthS, 0,
-			0, this.sideT*lengthT
+			this.sideS/lengthS, this.sideT/lengthT,
+			this.sideS/lengthS, 0,
+			0, this.sideT/lengthT
 		];
 	}
 };

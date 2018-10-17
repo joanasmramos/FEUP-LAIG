@@ -8,7 +8,7 @@
             <to x="0" y="0" z="0" />
         </perspective>
         
-        <ortho id="ORTHOtest" near="0.1" far="500" left="-10" right="10" top="5" bottom="-5" >
+        <ortho id="Ortho" near="0.1" far="500" left="-10" right="10" top="5" bottom="-5" >
             <from x="15" y="15" z="15" />
             <to x="0" y="0" z="0" />
         </ortho>
@@ -34,6 +34,13 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>
 
+        <omni id="General2" enabled="1" >
+            <location x="6" y="8" z="6" w="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
+        </omni>        
+
         <spot id="Spotlight" enabled="0" angle="20" exponent="2" >
             <location x="0" y="2" z="2" w="1" />
             <target x="2" y="0" z="2" />
@@ -58,6 +65,9 @@
         <texture id="frame" file="scenes/images/frame.jpg" />
         <texture id="ceiling" file="scenes/images/floor.jpg" />
         <texture id="floor" file="scenes/images/floor.jpg" />
+        <texture id="candle" file="scenes/images/candle.jpg" />
+        <texture id="stonewall" file="scenes/images/wall.jpg"/>
+        <texture id="metal" file="scenes/images/metal.jpg"/>
     </textures>
 
     <materials>
@@ -65,7 +75,14 @@
             <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
-            <specular r="0.3" g="0.3" b="0.3" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
+        </material>
+
+        <material id="metal" shininess="30">
+            <emission r="0.2" g="0.2" b="0.2" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+            <specular r="0.9" g="0.9" b="0.9" a="1" />           
         </material>
     </materials>
 
@@ -94,32 +111,27 @@
             <rotate axis="y" angle="90" />
         </transformation>
         <transformation id="parede_base">
-            <scale x="7.5" y="3" z="1" />
+            <scale x="11" y="8" z="1" />
         </transformation>
         <transformation id="parede1">
-            <translate x="5.62" y="4" z="0" />
-            <scale x="1.5" y="2.68" z="1" />
+            <translate x="5.5" y="4" z="0" />
         </transformation>
         <transformation id="parede2">
-            <translate x="0" y="4" z="5.62" />
-            <scale x="1" y="2.68" z="1.5" />
+            <translate x="0" y="4" z="5.5" />
             <rotate axis="y" angle="90" />
         </transformation>
         <transformation id="pilar_base">
-            <translate x="0" y="1.5" z="0" />
-            <scale x="0.5" y="3" z="0.5" />
+            <translate x="0" y="4" z="0" />
+            <scale x="0.5" y="8" z="0.5" />
         </transformation>
         <transformation id="pilar1">
           <translate x="0.25" y="0" z="0.25" />
-          <scale x="1" y="2.68" z="1"/>
         </transformation>
         <transformation id="pilar2">
-          <translate x="11" y="0" z="0.25" />
-          <scale x="1" y="2.68" z="1"/>
+          <translate x="10.75" y="0" z="0.25" />
         </transformation>
         <transformation id="pilar3">
-          <translate x="0.25" y="0" z="11" />
-          <scale x="1" y="2.68" z="1"/>
+          <translate x="0.25" y="0" z="10.75" />
         </transformation>
         <transformation id="caixilho_base">
           <scale x="0.1" y="2" z="0.1" />
@@ -145,6 +157,18 @@
             <scale x="1" y="2.68" z="1.5" />
             <rotate axis="y" angle="90" />
         </transformation>
+        <transformation id="floor">
+          <translate x="5.5" y="0" z="5.5" />
+          <rotate axis="x" angle="-90"/>
+          <scale x="11" y="11" z="1" />
+        </transformation>
+        <transformation id="ceiling">
+          <translate x="5.5" y="8" z="5.5" />
+          <rotate axis="x" angle="-90"/>
+          <rotate axis="y" angle="180"/>
+          <scale x="11" y="11" z="1" />
+        </transformation>
+
     </transformations>
 
     <primitives>
@@ -289,7 +313,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="pilar" length_s="1" length_t="1" />
+       <texture id="pilar" length_s="1" length_t="1" /> 
        <children>
            <componentref id="trf_cubo" />
        </children>
@@ -424,7 +448,7 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="brickwall" length_s="1" length_t="1" />
+        <texture id="stonewall" length_s="1" length_t="1" /> 
         <children>
             <primitiveref id="rectangle" />
         </children>
@@ -432,14 +456,12 @@
 
     <component id="floor">
         <transformation>
-            <translate x="5.6" y="0" z="5.6" />
-            <rotate axis="x" angle="-90"/>
-             <scale x="11.3" y="11.3" z="1" />
+            <transformationref id="floor"/>
         </transformation>
         <materials>
             <material id="inherit"/>
         </materials>
-        <texture id="floor" length_s="1" length_t="1"/>
+        <texture id="floor" length_s="1" length_t="1"/> 
         <children>
             <primitiveref id="rectangle"/>
         </children>
@@ -447,15 +469,12 @@
     
     <component id="ceiling">
         <transformation>
-            <translate x="5.6" y="8" z="5.6" />
-            <rotate axis="x" angle="-90"/>
-            <rotate axis="y" angle="180"/>
-            <scale x="11.3" y="11.3" z="1" />
+            <transformationref id="ceiling"/>
         </transformation>
         <materials>
             <material id="inherit"/>
         </materials>
-        <texture id="ceiling" length_s="1" length_t="1"/>
+        <texture id="ceiling" length_s="1" length_t="1"/> 
         <children>
             <primitiveref id="rectangle"/>
         </children>
@@ -468,7 +487,7 @@
     <materials>
         <material id="inherit"/>
     </materials>
-    <texture id="none" length_s="5.0" length_t="5.0"/>
+    <texture id="metal" length_s="5.0" length_t="5.0"/>
     <children>
         <componentref id="chandelier_base"/>
         <componentref id="chandelier_bigbase-0"/>
@@ -486,7 +505,7 @@
     <materials>
         <material id="inherit"/>
     </materials>
-    <texture id="none" length_s="5.0" length_t="5.0"/>
+    <texture id="metal" length_s="1" length_t="1"/>
     <children>
         <componentref id="chandelier_base"/>
         <componentref id="chandelier_bigbase-0"/>
@@ -504,9 +523,9 @@
         <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
-        <material id="inherit"/>
+        <material id="metal"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="inherit" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>
@@ -519,9 +538,9 @@
         <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
-        <material id="inherit"/>
+        <material id="metal"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="inherit" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>
@@ -534,9 +553,9 @@
         <rotate axis="x" angle="-90"/>
     </transformation>
     <materials>
-        <material id="inherit"/>
+        <material id="metal"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="inherit" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>
@@ -551,7 +570,7 @@
     <materials>
         <material id="inherit"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="candle" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>
@@ -566,7 +585,7 @@
     <materials>
         <material id="inherit"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="candle" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>
@@ -581,7 +600,7 @@
     <materials>
         <material id="inherit"/>
     </materials>
-    <texture id="none" length_s="1.0" length_t="1.0"/>
+    <texture id="candle" length_s="1" length_t="1"/>
     <children>
         <primitiveref id="cylinder"/>
     </children>

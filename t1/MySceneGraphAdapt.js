@@ -1252,50 +1252,55 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
-    processComponent(comp, material) {
-        var textureStack = new MyStack();
-        var materialStack = new MyStack();
+    processComponent(comp, fatherMat, fatherTex) {
+        var currentMat, currentTex;
         this.scene.pushMatrix();
       
         if(this.nodes[comp].transformationMat != null)
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         
-        if (this.nodes[comp].texture != "none" && this.nodes[comp].texture != "inherit") {
-            textureStack.push([this.nodes[comp].texture, this.nodes[comp].lengthS, this.nodes[comp].lengthT]);
+
+        switch(this.nodes[comp].materials[0]){
+            case "inherit":
+                currentMat = fatherMat;
+                break;
+            default:
+                currentMat = this.nodes[comp].materials[0];
+                break;
         }
 
-        //console.log(this.nodes[comp].transformations.mat);
+        switch(this.nodes[comp].texture) {
+            case "none":
+                currentTex = null;
+                break;
+            case "inherit":
+                currentTex = fatherTex;
+                break;
+            default:
+                currentTex = this.nodes[comp].texture;
+                break;
+        }
     
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
+
         if(primitiveChildren.length>0) {
             for(let i=0; i<primitiveChildren.length; i++) {
-                if(!textureStack.isEmpty()) {
-                    material.setTexture(textureStack.top()[0]);
-                    if(this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle ){
-                        this.primitives[primitiveChildren[i]].setTexCoords(textureStack.top()[1], textureStack.top()[2]);
-                    }
-                }
-                else {
-                    material.setTexture(null);
-                }
+                currentMat.setTexture(currentTex);
 
-                material.apply();
+                if(this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle ){
+                    this.primitives[primitiveChildren[i]].setTexCoords(this.nodes[comp].lengthS, this.nodes[comp].lengthT);
+                }   
+
+                currentMat.apply();
                 this.primitives[primitiveChildren[i]].display();
             }
         }
             
         for(let i=0; i<componentChildren.length; i++) {
-            this.processComponent(componentChildren[i], material);
+            this.processComponent(componentChildren[i], currentMat, currentTex);
         }
 
-        if(!materialStack.isEmpty()) {
-            materialStack.pop();
-        }
-
-        if(!textureStack.isEmpty()){
-            textureStack.pop();
-        }
         this.scene.popMatrix();
     }
 
@@ -1304,7 +1309,7 @@ class MySceneGraphAdapt {
      */
     displayScene() {
         this.nodes[this.idRoot].transformationMat = mat4.create();
-        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[0]);
+        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[0], this.nodes[this.idRoot].texture);
     }
 
 }
