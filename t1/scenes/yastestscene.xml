@@ -61,8 +61,8 @@
     </textures>
 
     <materials>
-        <material id="unique_mat" shininess = "1" >
-            <emission r="0" g="0" b="0" a="1" />
+        <material id="matte" shininess = "1" >
+            <emission r="0.3" g="0.3" b="0.3" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.3" g="0.3" b="0.3" a="1" />
@@ -162,7 +162,7 @@
        <transformation>
        </transformation>
        <materials>
-           <material id="unique_mat" />
+           <material id="matte" />
        </materials>
        <texture id="none" length_s="1" length_t="1" />
        <children>

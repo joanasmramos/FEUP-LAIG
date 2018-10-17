@@ -751,14 +751,12 @@ class MySceneGraphAdapt {
 
             if (!this.verifyString(id) || this.data.materials[id] != null)
                 return "<materials> - something wrong with materials' id";
-            this.data.materials[id] = new Object();
-            this.data.materials[id].shininess = this.reader.getFloat(material[i], 'shininess', true);
 
-            if (!this.verifyString(this.data.materials[id]))
-                return "<materials> - something wrong with materials' id";
+            var shininess = this.reader.getFloat(material[i], 'shininess', true);
 
-            if (!this.verifyStringsFloats([], [this.data.materials[id].shininess]))
-                return "<materials> - something wrong with materials's attributes";
+
+            if (!this.verifyFloat(shininess))
+                return "<materials> - something wrong with materials's shininess";
 
 
             emissionTag = material[id].getElementsByTagName('emission')[0];
@@ -771,13 +769,20 @@ class MySceneGraphAdapt {
                 return "<materials> - something wrong with material children";
 
 
-            this.data.materials[id].emission = this.readRGBA(emissionTag);
-            this.data.materials[id].ambient = this.readRGBA(ambientTag);
-            this.data.materials[id].diffuse = this.readRGBA(diffuseTag);
-            this.data.materials[id].specular = this.readRGBA(specularTag);
+            var emission = this.readRGBA(emissionTag);
+            var ambient = this.readRGBA(ambientTag);
+            var diffuse = this.readRGBA(diffuseTag);
+            var specular = this.readRGBA(specularTag);
 
-            if (!this.validateRGBAs([this.data.materials[id].emission, this.data.materials[id].ambient, this.data.materials[id].diffuse, this.data.materials[id].specular]))
+            if (!this.validateRGBAs([emission, ambient, diffuse, specular]))
                 return "<materials> - something wrong with material's rgb values";
+
+            this.data.materials[id] = new CGFappearance(this.scene);
+            this.data.materials[id].setShininess(shininess);
+            this.data.materials[id].setEmission(emission["r"], emission["g"], emission["b"], emission["a"]);
+            this.data.materials[id].setAmbient(ambient["r"], ambient["g"], ambient["b"], ambient["a"]);
+            this.data.materials[id].setDiffuse(diffuse["r"], diffuse["g"], diffuse["b"], diffuse["a"]);
+            this.data.materials[id].setSpecular(specular["r"], specular["g"], specular["b"], specular["a"]);
         }
 
         this.log("Parsed materials");
@@ -1066,14 +1071,17 @@ class MySceneGraphAdapt {
             return "<components> - you must define at least one material";
 
         var id;
-        
+
         for(let i=0; i<materials.length; i++) {
             id = this.reader.getString(materials[i], 'id', true);
             if(!this.verifyString(id) || this.data.materials[id] == null)
                 if(id != "inherit")
                     return "<components> - something wrong with material's id";
-            
-            this.nodes[compId].materials.push(id);
+                else {
+                    this.nodes[compId].materials.push(id);
+                    return;
+                }
+            this.nodes[compId].materials.push(this.data.materials[id]);
         }
 
     }
@@ -1246,9 +1254,9 @@ class MySceneGraphAdapt {
 
     processComponent(comp, material) {
         var textureStack = new MyStack();
+        var materialStack = new MyStack();
         this.scene.pushMatrix();
       
-        //TO DO: atualizar materiais, texturas
         if(this.nodes[comp].transformationMat != null)
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         
@@ -1264,7 +1272,7 @@ class MySceneGraphAdapt {
             for(let i=0; i<primitiveChildren.length; i++) {
                 if(!textureStack.isEmpty()) {
                     material.setTexture(textureStack.top()[0]);
-                    if(this.primitives[primitiveChildren[i]] instanceof MyRectangle){
+                    if(this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle ){
                         this.primitives[primitiveChildren[i]].setTexCoords(textureStack.top()[1], textureStack.top()[2]);
                     }
                 }
@@ -1273,13 +1281,16 @@ class MySceneGraphAdapt {
                 }
 
                 material.apply();
-
                 this.primitives[primitiveChildren[i]].display();
             }
         }
             
         for(let i=0; i<componentChildren.length; i++) {
             this.processComponent(componentChildren[i], material);
+        }
+
+        if(!materialStack.isEmpty()) {
+            materialStack.pop();
         }
 
         if(!textureStack.isEmpty()){
@@ -1292,10 +1303,8 @@ class MySceneGraphAdapt {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        var appearance = new CGFappearance(this.scene);
-        appearance.apply();
         this.nodes[this.idRoot].transformationMat = mat4.create();
-        this.processComponent(this.idRoot, appearance);
+        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[0]);
     }
 
 }
