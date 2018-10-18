@@ -38,16 +38,16 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>
 
-        <omni id="General 2" enabled="1" >
+        <omni id="General 2" enabled="0" >
             <location x="6" y="8" z="6" w="1" />
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>       
 
-        <spot id="FatLady_1" enabled="0" angle="20" exponent="2" >
+        <spot id="FatLady_1" enabled="0" angle="10" exponent="2" >
             <location x="3.5" y="2" z="0.5" w="1" />
-            <target x="10.5" y="9" z="0.6" />
+            <target x="3.5" y="3" z="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
             <specular r="0.5" g="0.5" b="0.5" a="1" />
