@@ -78,5 +78,7 @@ class MyRectangle extends CGFobject {
 			this.sideS/lengthS, 0,
 			0, this.sideT/lengthT
 		];
+
+		this.updateTexCoordsGLBuffers();
 	}
 };

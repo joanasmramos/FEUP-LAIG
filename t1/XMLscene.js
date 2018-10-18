@@ -12,7 +12,7 @@ class XMLscene extends CGFscene {
         super();
 
         this.interface = myinterface;
-        this.data = "";
+        this.data = null;
         this.lightValues = {};
         this.transformationMatrix;
     }
@@ -97,9 +97,24 @@ class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * 
+     * @param {View id} id 
+     */
     selectView(id) {
         this.camera = this.data.views[id];
         this.interface.setActiveCamera(this.camera);
+    }
+
+    /**
+     * 
+     */
+    switchComponentMaterials() {
+        for(var key in this.graph.nodes) {
+            this.graph.nodes[key].switchMaterial();
+        }
+
+        console.log("Switched materials!");
     }
 
     /* Handler called when the graph is finally loaded. 

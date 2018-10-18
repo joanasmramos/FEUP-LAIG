@@ -1274,12 +1274,12 @@ class MySceneGraphAdapt {
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         
 
-        switch(this.nodes[comp].materials[0]){
+        switch(this.nodes[comp].materials[this.nodes[comp].defaultMaterial]){
             case "inherit":
                 currentMat = fatherMat;
                 break;
             default:
-                currentMat = this.nodes[comp].materials[0];
+                currentMat = this.nodes[comp].materials[this.nodes[comp].defaultMaterial];
                 break;
         }
 
@@ -1323,7 +1323,7 @@ class MySceneGraphAdapt {
      */
     displayScene() {
         this.nodes[this.idRoot].transformationMat = mat4.create();
-        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[0], this.nodes[this.idRoot].texture);
+        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[this.nodes[this.idRoot].defaultMaterial], this.nodes[this.idRoot].texture);
     }
 
 }

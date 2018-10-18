@@ -28,6 +28,8 @@ class MyTriangle extends CGFobject {
 		this.texCoords = [
 
 		];
+
+		this.updateTexCoordsGLBuffers();
 	}
 
 	initBuffers() {
@@ -56,6 +58,12 @@ class MyTriangle extends CGFobject {
 			norm[0], norm[1], norm[2],
 			norm[0], norm[1], norm[2],
 			norm[0], norm[1], norm[2]
+		];
+
+		this.texCoords = [
+			0, 0, 0,
+			0, 0, 0,
+			0, 0, 0
 		];
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
