@@ -71,6 +71,7 @@
         <texture id="pilar" file="scenes/images/pilar.png" />
         <texture id="frame" file="scenes/images/frame.png" />
         <texture id="maincarpet" file="scenes/images/main_carpet.png" />
+        <texture id="bookshelf_1" file="scenes/images/bookshelf_1.png" />
         <texture id="ceiling" file="scenes/images/floor.jpg" />
         <texture id="floor" file="scenes/images/wooden_floors.png" />
         <texture id="candle" file="scenes/images/candle.jpg" />
@@ -166,7 +167,12 @@
         <rotate axis="z" angle="90" />
         <rotate axis="x" angle="90" />
           <scale x="0.07" y="6" z="5" />
-        </transformation>
+        </transformation>   
+        <transformation id="bookshelf_1">
+          <translate x="0.4" y="1" z="8.5" />
+        <rotate axis="x" angle="90" />
+          <scale x="0.4" y="3" z="1.9" />
+        </transformation> 
         <transformation id="hallway_wall2">
             <translate x="2.7" y="4" z="-5.5" />
             <rotate axis="y" angle="90" />
@@ -248,6 +254,7 @@
            <componentref id="quadro3" />
            <componentref id="fatlady_painting" />
            <componentref id="maincarpet" />
+           <componentref id="bookshelf_1" />
            <componentref id="floor"/>
            <componentref id="ceiling"/>
            <componentref id="chandelier2"/>
@@ -322,6 +329,19 @@
            <material id="inherit" />
        </materials>
        <texture id="maincarpet" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo" />
+       </children>
+   </component>
+
+      <component id="bookshelf_1">
+       <transformation>
+          <transformationref id="bookshelf_1" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="bookshelf_1" length_s="1" length_t="1" />
        <children>
            <componentref id="trf_cubo" />
        </children>
