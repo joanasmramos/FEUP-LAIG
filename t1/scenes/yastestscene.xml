@@ -1,18 +1,7 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Perspective" >
-
-        <perspective id="Perspective" near="0.1" far="500" angle="20">
-            <from x="20" y="20" z="20" />
-            <to x="0" y="0" z="0" />
-        </perspective>
-        
-        <ortho id="Ortho" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
-            <from x="20" y="1" z="20" />
-            <to x="0" y="0" z="0" />
-        </ortho>
-
+    <views default="Fat Lady Door" >
         <perspective id="Fat Lady Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
@@ -22,6 +11,16 @@
             <from x="5.5" y="1.5" z="-2" />
             <to x="5.5" y="1.5" z="-5" />
         </perspective>
+
+        <perspective id="Perspective" near="0.1" far="500" angle="20">
+            <from x="20" y="20" z="20" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+        
+        <ortho id="Orthographic" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
+            <from x="20" y="1" z="20" />
+            <to x="0" y="0" z="0" />
+        </ortho>
 
     </views>
 
@@ -46,20 +45,20 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>       
 
-        <spot id="Spotlight" enabled="0" angle="20" exponent="2" >
-            <location x="0" y="2" z="2" w="1" />
-            <target x="2" y="0" z="2" />
+        <spot id="FatLady_1" enabled="0" angle="20" exponent="2" >
+            <location x="3.5" y="2" z="0.5" w="1" />
+            <target x="10.5" y="9" z="0.6" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
-            <specular r="0.1" g="0.1" b="0.1" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
         </spot>
         
-        <spot id="Spotlight 2" enabled="0" angle="20" exponent="2" >
-            <location x="0.5" y="1" z="1" w="2" />
-            <target x="0" y="20" z="0" />
+        <spot id="FatLady_2" enabled="0" angle="20" exponent="2" >
+            <location x="7.5" y="2" z="0.5" w="1" />
+            <target x="10.5" y="9" z="0.6" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
-            <specular r="0.1" g="0.1" b="0.1" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
         </spot>
 
     </lights>
@@ -145,6 +144,16 @@
         </transformation>
         <transformation id="caixilho_base">
           <scale x="0.1" y="2.1" z="0.1" />
+        </transformation>
+        <transformation id="frame1_bkshelf">
+          <translate x="0.5" y="1" z="7" />
+        <rotate axis="y" angle="90" />
+          <scale x="0.9" y="0.9" z="4" />
+        </transformation>
+        <transformation id="frame2_bkshelf">
+          <translate x="0.4" y="2" z="9" />
+        <rotate axis="x" angle="-90" />
+          <scale x="4" y="2" z="1.5" />
         </transformation>
         <transformation id="quadro1">
           <translate x="4.5" y="1.5" z="0.05" />
@@ -259,6 +268,8 @@
            <componentref id="fatlady_painting" />
            <componentref id="maincarpet" />
            <componentref id="bookshelf_1" />
+           <componentref id="frame1_bkshelf"/>
+           <componentref id="frame2_bkshelf"/>
            <componentref id="floor"/>
            <componentref id="ceiling"/>
            <componentref id="chandelier2"/>
@@ -361,6 +372,31 @@
        <texture id="frame" length_s="1" length_t="1" />
        <children>
            <componentref id="trf_cubo" />
+       </children>
+   </component>
+
+      <component id="frame1_bkshelf">
+       <transformation>
+          <transformationref id="frame1_bkshelf" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="frame" length_s="1" length_t="1" />
+       <children>
+           <componentref id="caixilho_base" />
+       </children>
+   </component>
+        <component id="frame2_bkshelf">
+       <transformation>
+          <transformationref id="frame2_bkshelf" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="frame" length_s="1" length_t="1" />
+       <children>
+           <componentref id="caixilho_base" />
        </children>
    </component>
 
