@@ -881,8 +881,8 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag;
-        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [];
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, circleTag;
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], slices;
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -977,6 +977,21 @@ class MySceneGraphAdapt {
                     this.primitives[id] = new MyTorus(this.scene, torus["inner"], torus["outer"], torus["slices"], torus["loops"]);
 
                     break;
+
+                case circle:
+                    circleTag = primitive[id].getElementsByTagName('circle')[0];
+
+                    if(!this.verifyElement(circleTag))
+                        return "<primitives> - something wrong with primitives children";
+
+                    slices = this.reader.getInteger(elem, "slices", true);
+                    if(!this.verifyFloat(slices))
+                        return "<primitives> - something wrong with circle's slices";
+
+                    if(this.primitives[id] != null)
+                        return "<primitives> - something wrong with primitive's id";
+                    
+                    this.primitives[id] = new MyCircle(this.scene, slices);
 
                 default:
                     break;
