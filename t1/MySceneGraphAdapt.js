@@ -978,13 +978,13 @@ class MySceneGraphAdapt {
 
                     break;
 
-                case circle:
+                case 'circle':
                     circleTag = primitive[id].getElementsByTagName('circle')[0];
 
                     if(!this.verifyElement(circleTag))
                         return "<primitives> - something wrong with primitives children";
 
-                    slices = this.reader.getInteger(elem, "slices", true);
+                    slices = this.reader.getInteger(circleTag, "slices", true);
                     if(!this.verifyFloat(slices))
                         return "<primitives> - something wrong with circle's slices";
 
