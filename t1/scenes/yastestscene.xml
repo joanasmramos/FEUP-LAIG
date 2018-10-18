@@ -8,14 +8,19 @@
             <to x="0" y="0" z="0" />
         </perspective>
         
-        <ortho id="Ortho" near="0.1" far="500" left="-10" right="10" top="5" bottom="-5" >
-            <from x="15" y="15" z="15" />
+        <ortho id="Ortho" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
+            <from x="20" y="1" z="20" />
             <to x="0" y="0" z="0" />
         </ortho>
 
-        <perspective id="Door" near="0.1" far="500" angle="20">
+        <perspective id="FatLady_Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
+        </perspective>
+        
+        <perspective id="Hallway_Door" near="0.1" far="500" angle="40">
+            <from x="5.5" y="1.5" z="-2" />
+            <to x="5.5" y="1.5" z="-5" />
         </perspective>
 
     </views>
@@ -60,11 +65,14 @@
     </lights>
 
     <textures>
-        <texture id="brickwall" file="scenes/images/brickwall.jpg" />
-        <texture id="pilar" file="scenes/images/pilar.jpg" />
-        <texture id="frame" file="scenes/images/frame.jpg" />
+        <texture id="fatlady" file="scenes/images/fatlady.jpg" />
+        <texture id="brick_walls" file="scenes/images/brick_walls.png" />
+        <texture id="wooden_walls" file="scenes/images/wooden_walls.png" />
+        <texture id="pilar" file="scenes/images/pilar.png" />
+        <texture id="frame" file="scenes/images/frame.png" />
+        <texture id="maincarpet" file="scenes/images/main_carpet.png" />
         <texture id="ceiling" file="scenes/images/floor.jpg" />
-        <texture id="floor" file="scenes/images/floor.jpg" />
+        <texture id="floor" file="scenes/images/wooden_floors.png" />
         <texture id="candle" file="scenes/images/candle.jpg" />
         <texture id="stonewall" file="scenes/images/wall.jpg"/>
         <texture id="metal" file="scenes/images/metal.jpg"/>
@@ -122,43 +130,68 @@
         </transformation>
         <transformation id="pilar_base">
             <translate x="0" y="4" z="0" />
-            <scale x="0.5" y="8" z="0.5" />
+            <scale x="1" y="8" z="1" />
         </transformation>
         <transformation id="pilar1">
-          <translate x="0.25" y="0" z="0.25" />
+          <translate x="0.5" y="0" z="0.5" />
         </transformation>
         <transformation id="pilar2">
-          <translate x="10.75" y="0" z="0.25" />
+          <translate x="10.5" y="0" z="0.5" />
         </transformation>
         <transformation id="pilar3">
-          <translate x="0.25" y="0" z="10.75" />
+          <translate x="0.5" y="0" z="10.5" />
         </transformation>
         <transformation id="caixilho_base">
-          <scale x="0.1" y="2" z="0.1" />
+          <scale x="0.1" y="2.1" z="0.1" />
         </transformation>
         <transformation id="quadro1">
-          <translate x="3" y="1.5" z="0.05" />
+          <translate x="4.5" y="1.5" z="0.05" />
           <scale x="1" y="1.5" z="1"/>
         </transformation>
         <transformation id="quadro2">
-          <translate x="1" y="0" z="0" />
+          <translate x="2" y="0" z="0" />
         </transformation>
         <transformation id="quadro3">
-          <translate x="3.5" y="3" z="0.05" />
-          <scale x="0.55" y="1" z="1" />
+          <translate x="5.5" y="3.05" z="0.05" />
           <rotate axis="z" angle="90" />
-        </transformation>
-        <transformation id="hallway_wall1">
-            <translate x="0" y="0" z="-22" />
+        </transformation>   
+        <transformation id="fatlady_painting">
+          <translate x="5.5" y="1.5" z="0.03" />
+        <rotate axis="z" angle="180" />
+        <rotate axis="y" angle="90" />
+          <scale x="0.2" y="3" z="1.9" />
+        </transformation>   
+        <transformation id="maincarpet">
+          <translate x="5.5" y="0" z="5.5" />
+        <rotate axis="z" angle="90" />
+        <rotate axis="x" angle="90" />
+          <scale x="0.07" y="6" z="5" />
         </transformation>
         <transformation id="hallway_wall2">
-            <translate x="3.5" y="4" z="-5.5" />
+            <translate x="2.7" y="4" z="-5.5" />
             <rotate axis="y" angle="90" />
         </transformation>
        <transformation id="hallway_wall3">
-          <translate x="8" y="4" z="-5.5" />
+          <translate x="8.3" y="4" z="-5.5" />
           <rotate axis="y" angle="-90" />
       </transformation>
+       <transformation id="hallway_floor">
+          <rotate axis="x" angle="-90"/>
+          <translate x="5.5 " y="5.5" z="0" />
+          <scale x="0.51" y="1.38" z="1"/>
+      </transformation>
+    <transformation id="hallway_ceiling">
+          <rotate axis="x" angle="90"/>
+          <translate x="5.5 " y="-5.5" z="-8" />
+          <scale x="0.51" y="1.38" z="1"/>
+    </transformation>
+        <transformation id="hallway_pilar1">
+          <translate x="2.95" y="0" z="-0.26" />
+          <scale x="0.5" y="1" z="0.5"/>
+        </transformation>
+        <transformation id="hallway_pilar2">
+          <translate x="5.1" y="0" z="-0" />
+        </transformation>
       <transformation id="floor">
           <translate x="5.5" y="0" z="5.5" />
           <rotate axis="x" angle="-90"/>
@@ -169,7 +202,12 @@
           <rotate axis="x" angle="-90"/>
           <rotate axis="y" angle="180"/>
           <scale x="11" y="11" z="1" />
-        </transformation>
+    </transformation>
+     <transformation id="hogwarts_room">
+         <translate x="5.5" y="0" z="-19" />
+         <rotate axis="x" angle="-90"/>
+         <scale x="6" y="9" z="8"/>
+</transformation>
 
     </transformations>
 
@@ -189,7 +227,7 @@
         <primitive id="torus">
             <torus inner="1" outer="2" slices="64" loops="32"/>
         </primitive>
-    </primitives >
+    </primitives>
 
  <components>
    <component id="root">
@@ -208,13 +246,19 @@
            <componentref id="quadro1" />
            <componentref id="quadro2" />
            <componentref id="quadro3" />
+           <componentref id="fatlady_painting" />
+           <componentref id="maincarpet" />
            <componentref id="floor"/>
            <componentref id="ceiling"/>
            <componentref id="chandelier2"/>
            <componentref id="chandelier1"/>
-           <componentref id="hallway_wall1" />
            <componentref id="hallway_wall2" />
            <componentref id="hallway_wall3" />
+           <componentref id="hallway_floor" />
+           <componentref id="hallway_ceiling" />
+           <componentref id="hallway_pilar1" />
+           <componentref id="hallway_pilar2" />
+           <componentref id="hogwarts_room" />
        </children>
    </component>
 
@@ -254,6 +298,32 @@
        <texture id="none" length_s="1" length_t="1" />
        <children>
            <componentref id="caixilho_base" />
+       </children>
+   </component>
+
+   <component id="fatlady_painting">
+       <transformation>
+          <transformationref id="fatlady_painting" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="fatlady" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo" />
+       </children>
+   </component>
+
+      <component id="maincarpet">
+       <transformation>
+          <transformationref id="maincarpet" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="maincarpet" length_s="1" length_t="1" />
+       <children>
+           <componentref id="trf_cubo" />
        </children>
    </component>
 
@@ -425,7 +495,7 @@
        <materials>
            <material id="inherit" />
        </materials>
-       <texture id="none" length_s="1" length_t="1" />
+       <texture id="inherit" length_s="1" length_t="1" />
        <children>
            <componentref id="parede_base" />
        </children>
@@ -438,7 +508,7 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="none" length_s="1" length_t="1" />
+        <texture id="inherit" length_s="1" length_t="1" />
         <children>
             <componentref id="parede_base" />
         </children>
@@ -451,7 +521,7 @@
         <materials>
             <material id="inherit" />
         </materials>
-        <texture id="stonewall" length_s="1" length_t="1" /> 
+        <texture id="brick_walls" length_s="1" length_t="1" /> 
         <children>
             <primitiveref id="rectangle" />
         </children>
@@ -485,7 +555,7 @@
 
 <component id="chandelier2">
     <transformation>
-    <translate x="-1" y="0" z="-0.5" />
+    <translate x="1.5" y="0" z="-0.5" />
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -503,7 +573,7 @@
 
 <component id="chandelier1">
     <transformation>
-    <translate x="-4" y="0" z="-0.5" />
+    <translate x="-2.5" y="0" z="-0.5" />
     </transformation>
     <materials>
         <material id="inherit"/>
@@ -609,19 +679,6 @@
     </children>
 </component>
 
-  <component id="hallway_wall1">
-    <transformation>
-      <transformationref id="hallway_wall1" />
-      </transformation>
-         <materials>
-         <material id="inherit" />
-    </materials>
-    <texture id="none" length_s="1" length_t="1" />
-     <children>
-        <componentref id="parede_base" />
-    </children>
- </component>
-
    <component id="hallway_wall2">
     <transformation>
       <transformationref id="hallway_wall2" />
@@ -648,7 +705,69 @@
     </children>
  </component>
 
+   <component id="hallway_floor">
+    <transformation>
+      <transformationref id="hallway_floor" />
+      </transformation>
+         <materials>
+         <material id="inherit" />
+    </materials>
+    <texture id="none" length_s="1" length_t="1" />
+     <children>
+        <componentref id="parede_base" />
+    </children>
+ </component>
 
+   <component id="hallway_ceiling">
+    <transformation>
+      <transformationref id="hallway_ceiling" />
+      </transformation>
+         <materials>
+         <material id="inherit" />
+    </materials>
+    <texture id="none" length_s="1" length_t="1" />
+     <children>
+        <componentref id="parede_base" />
+    </children>
+ </component>
+
+    <component id="hallway_pilar1">
+       <transformation>
+          <transformationref id="hallway_pilar1" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="pilar_base" />
+       </children>
+   </component>
+    <component id="hallway_pilar2">
+       <transformation>
+          <transformationref id="hallway_pilar2" />
+       </transformation>
+       <materials>
+           <material id="inherit" />
+       </materials>
+       <texture id="none" length_s="1" length_t="1" />
+       <children>
+           <componentref id="hallway_pilar1" />
+       </children>
+   </component>
+
+<component id="hogwarts_room">
+    <transformation>
+      <transformationref id="hogwarts_room" />
+    </transformation>
+    <materials>
+        <material id="metal"/>
+    </materials>
+    <texture id="wooden_walls" length_s="1" length_t="1"/>
+    <children>
+        <primitiveref id="cylinder"/>
+    </children>
+</component>
  </components>
 
 </yas>
