@@ -926,7 +926,9 @@ class MySceneGraphAdapt {
                     if(this.primitives[id] != null) 
                         return "<primitves> - something wrong with primitive's id";
                     
-                    //TO DO: MyTriangle (criar ficheiro)
+                    this.primitives[id] = new MyTriangle(this.scene, triangle["x1"], triangle["y1"], triangle["z1"],
+                                                                     triangle["x2"], triangle["y2"], triangle["z2"],
+                                                                     triangle["x3"], triangle["y3"], triangle["z3"]);
                     
                     break;
 
