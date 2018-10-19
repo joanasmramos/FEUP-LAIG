@@ -232,7 +232,7 @@
             <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
         </primitive >
         <primitive id="triangle">
-            <triangle x1="0" y1="0" z1="-1" x2="0" y2="1" z2="0" x3="0" y3="0" z3="1"/>
+            <triangle x1="5" y1="5" z1="5" x2="3" y2="3" z2="5" x3="7" y3="3" z3="5"/>
         </primitive>
         <primitive id="cylinder">
             <cylinder base="1" top="1" height="1" stacks="100" slices="100"/>
@@ -281,6 +281,7 @@
            <componentref id="hallway_pilar1" />
            <componentref id="hallway_pilar2" />
            <componentref id="hogwarts_room" />
+           <primitiveref id="triangle"/>
        </children>
    </component>
 

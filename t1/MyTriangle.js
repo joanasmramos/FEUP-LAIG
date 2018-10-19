@@ -18,18 +18,6 @@ class MyTriangle extends CGFobject {
         this.z3 = z3;
 
 		this.initBuffers();
-	};
-
-	setTexCoords(){
-		var a, b, c;
-
-		a = Math.sqrt(pow(this.x2 - this.x1, 2) + pow(this.y2 - this.y1, 2) + pow(this.z2 - this.z1, 2) )
-
-		this.texCoords = [
-
-		];
-
-		this.updateTexCoordsGLBuffers();
 	}
 
 	initBuffers() {
@@ -48,7 +36,9 @@ class MyTriangle extends CGFobject {
         var p1, p2, p3, a, b, norm;
         p1=vec3.fromValues(this.x1, this.y1, this.z1);
         p2=vec3.fromValues(this.x2, this.y2, this.z2);
-        p3=vec3.fromValues(this.x3, this.y3, this.z3);
+		p3=vec3.fromValues(this.x3, this.y3, this.z3);
+		
+		a = [0,0,0], b = [0,0,0], norm = [0,0,0];
 
         vec3.subtract(a, p2, p1);
         vec3.subtract(b, p3, p1);
@@ -68,5 +58,24 @@ class MyTriangle extends CGFobject {
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
-	};
+	}
+
+	setTexCoords(lengths, lengtht){
+		var a, b, c, cosb, beta;
+
+		a = Math.sqrt(Math.pow(this.x1 - this.x3, 2) + Math.pow(this.y1 - this.y3, 2) + Math.pow(this.z1 - this.z3, 2) );
+		b = Math.sqrt(Math.pow(this.x2 - this.x1, 2) + Math.pow(this.y2 - this.y1, 2) + Math.pow(this.z2 - this.z1, 2) );
+		c = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2) + Math.pow(this.z3 - this.z2, 2) );
+
+		cosb = (Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2))/(2*a*c);
+		beta = Math.acos(this.cosb);
+
+		this.texCoords = [
+			(c-a*cosb) / lengths, (a*Math.sin(beta))/ lengtht,
+			0, 0,
+			c/lengths, 0
+		];
+
+		this.updateTexCoordsGLBuffers();
+	}
 };
