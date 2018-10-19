@@ -165,6 +165,21 @@
         <transformation id="quadro3">
           <translate x="5.5" y="3.05" z="0.05" />
           <rotate axis="z" angle="90" />
+        </transformation>
+        <transformation id="quadro4">
+          <translate x="0" y="-3.1" z="0" />
+        </transformation>
+        <transformation id="painting_frame1">
+          <translate x="0.5" y="2.5" z="0.05" />
+        </transformation>   
+        <transformation id="painting_frame2">
+          <translate x="1.5" y="1.5" z="0.05" />
+        </transformation>   
+        <transformation id="painting_frame3">
+          <translate x="2.5" y="1.5" z="0.05" />
+        </transformation>   
+        <transformation id="painting_frame4">
+          <translate x="3.5" y="1.5" z="0.05" />
         </transformation>   
         <transformation id="fatlady_painting">
           <translate x="5.5" y="1.5" z="0.03" />
@@ -265,6 +280,11 @@
            <componentref id="quadro1" />
            <componentref id="quadro2" />
            <componentref id="quadro3" />
+           <componentref id="quadro4" />
+           <componentref id="painting_frame1" />
+           <componentref id="painting_frame2" />
+           <componentref id="painting_frame3" />
+           <componentref id="painting_frame4" />
            <componentref id="fatlady_painting" />
            <componentref id="maincarpet" />
            <componentref id="bookshelf_1" />
@@ -283,6 +303,19 @@
            <componentref id="hogwarts_room" />
        </children>
    </component>
+
+    <component id="quadro4">
+        <transformation>
+            <transformationref id="quadro4" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="none" length_s="1" length_t="1" />
+        <children>
+            <componentref id="quadro3" />
+        </children>
+    </component>
 
     <component id="quadro3">
         <transformation>
@@ -322,7 +355,63 @@
             <componentref id="caixilho_base" />
         </children>
     </component>
-
+    <component id="painting_frame1">
+        <transformation>
+            <transformationref id="painting_frame1" />
+        </transformation>
+        <materials>
+            <material id="unique_mat"/>
+        </materials>
+        <texture id="frame" length_s="5.0" length_t="5.0"/>
+        <children>
+            <componentref id="quadro1"/>
+            <componentref id="quadro2"/>
+            <componentref id="quadro3"/>
+            <componentref id="quadro4"/>
+        </children>
+    <component id="painting_frame2">
+        <transformation>
+            <transformationref id="painting_frame2" />
+        </transformation>
+        <materials>
+            <material id="unique_mat"/>
+        </materials>
+        <texture id="frame" length_s="5.0" length_t="5.0"/>
+        <children>
+            <componentref id="quadro1"/>
+            <componentref id="quadro2"/>
+            <componentref id="quadro3"/>
+            <componentref id="quadro4"/>
+        </children>
+    <component id="painting_frame3">
+        <transformation>
+            <transformationref id="painting_frame3" />
+        </transformation>
+        <materials>
+            <material id="unique_mat"/>
+        </materials>
+        <texture id="frame" length_s="5.0" length_t="5.0"/>
+        <children>
+            <componentref id="quadro1"/>
+            <componentref id="quadro2"/>
+            <componentref id="quadro3"/>
+            <componentref id="quadro4"/>
+        </children>
+    <component id="painting_frame4">
+        <transformation>
+            <transformationref id="painting_frame4" />
+        </transformation>
+        <materials>
+            <material id="unique_mat"/>
+        </materials>
+        <texture id="frame" length_s="5.0" length_t="5.0"/>
+        <children>
+            <componentref id="quadro1"/>
+            <componentref id="quadro2"/>
+            <componentref id="quadro3"/>
+            <componentref id="quadro4"/>
+        </children>
+    </component>
     <component id="fatlady_painting">
         <transformation>
             <transformationref id="fatlady_painting" />
