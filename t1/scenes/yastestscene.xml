@@ -43,14 +43,14 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>
 
-        <omni id="General 2" enabled="0" >
+        <omni id="General 2" enabled="1" >
             <location x="6" y="8" z="6" w="1" />
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>       
 
-        <spot id="FatLady_1" enabled="0" angle="10" exponent="2" >
+        <spot id="FatLady 1" enabled="0" angle="10" exponent="2" >
             <location x="3.5" y="2" z="0.5" w="1" />
             <target x="3.5" y="3" z="1" />
             <ambient r="0" g="0" b="0" a="1" />
@@ -58,7 +58,7 @@
             <specular r="0.5" g="0.5" b="0.5" a="1" />
         </spot>
         
-        <spot id="FatLady_2" enabled="0" angle="20" exponent="2" >
+        <spot id="FatLady 2" enabled="0" angle="20" exponent="2" >
             <location x="7.5" y="2" z="0.5" w="1" />
             <target x="10.5" y="9" z="-5.5" />
             <ambient r="0" g="0" b="0" a="1" />
@@ -66,7 +66,7 @@
             <specular r="0.5" g="0.5" b="0.5" a="1" />
         </spot>
 
-        <omni id="Hallway_1" enabled="0" >
+        <omni id="Hallway 1" enabled="0" >
             <location x="3.5" y="2" z="-5.5" w="1" />
             <target x="7.5" y="3" z="-5.5" />
             <ambient r="0" g="0" b="0" a="1" />
@@ -74,7 +74,7 @@
             <specular r="0.5" g="0.5" b="0.5" a="1" />
         </omni>    
 
-        <omni id="Hallway_2" enabled="0" >
+        <omni id="Hallway 2" enabled="0" >
             <location x="7.5" y="2" z="-5.5" w="1" />
             <target x="3.5" y="3" z="1" />
             <ambient r="0" g="0" b="0" a="1" />
@@ -101,6 +101,7 @@
         <texture id="candle" file="scenes/images/candle.jpg" />
         <texture id="stonewall" file="scenes/images/wall.jpg"/>
         <texture id="metal" file="scenes/images/metal.jpg"/>
+        <texture id="teste" file="scenes/images/teste.jpg"/>
     </textures>
 
     <materials>
@@ -125,193 +126,234 @@
             <translate x="0" y="0.5" z="0" />
             <rotate axis="x" angle="-90" />
         </transformation>
-         <transformation id="trf_cubo2">
+
+        <transformation id="trf_cubo2">
             <translate x="0" y="-0.5" z="0" />
             <rotate axis="x" angle="90" />
         </transformation>
+
         <transformation id="trf_cubo3">
             <translate x="0" y="0" z="0.5" />
         </transformation>
+
         <transformation id="trf_cubo4">
             <translate x="0" y="0" z="-0.5" />
             <rotate axis="x" angle="-180" />
         </transformation>
+
         <transformation id="trf_cubo5">
             <translate x="-0.5" y="0" z="0" />
             <rotate axis="y" angle="-90" />
         </transformation>
+
         <transformation id="trf_cubo6">
             <translate x="0.5" y="0" z="0" />
             <rotate axis="y" angle="90" />
         </transformation>
+
         <transformation id="parede_base">
             <scale x="11" y="8" z="1" />
         </transformation>
+
         <transformation id="parede1">
             <translate x="5.5" y="4" z="0" />
         </transformation>
+
         <transformation id="parede2">
             <translate x="0" y="4" z="5.5" />
             <rotate axis="y" angle="90" />
         </transformation>
+
         <transformation id="pilar_base">
             <translate x="0" y="4" z="0" />
             <scale x="1" y="8" z="1" />
         </transformation>
+
         <transformation id="pilar1">
           <translate x="0.5" y="0" z="0.5" />
         </transformation>
+
         <transformation id="pilar2">
           <translate x="10.5" y="0" z="0.5" />
         </transformation>
+
         <transformation id="pilar3">
           <translate x="0.5" y="0" z="10.5" />
         </transformation>
+
         <transformation id="caixilho_base">
           <scale x="0.1" y="2.1" z="0.1" />
         </transformation>
+
         <transformation id="frame1_bkshelf">
           <translate x="0.5" y="1" z="7" />
-        <rotate axis="y" angle="90" />
+          <rotate axis="y" angle="90" />
           <scale x="0.9" y="0.9" z="4" />
         </transformation>
 
         <transformation id="frame2_bkshelf">
           <translate x="0.4" y="2" z="9" />
-        <rotate axis="x" angle="-90" />
+          <rotate axis="x" angle="-90" />
           <scale x="4" y="2" z="1.5" />
         </transformation>
+
         <transformation id="quadro1">
           <translate x="4.5" y="1.5" z="0.05" />
           <scale x="1" y="1.5" z="1"/>
         </transformation>
+
         <transformation id="quadro2">
           <translate x="2" y="0" z="0" />
         </transformation>
+
         <transformation id="quadro3">
           <translate x="5.5" y="3.05" z="0.05" />
           <rotate axis="z" angle="90" />
         </transformation>
+        
         <transformation id="quadro4">
           <translate x="0" y="-3.1" z="0" />
         </transformation>
+
         <transformation id="painting_frame_gryffindor">
           <translate x="2.7" y="0" z="-22" />
           <scale x="1" y="1" z="4" />
+        </transformation>
+
         <transformation id="painting_gryffindor">
           <translate x="2.8" y="4" z="-4.63" />
           <scale x="0.07" y="3" z="5.3" />
         </transformation> 
-        </transformation>
+        
         <transformation id="painting_frame1">
-            <rotate axis="y" angle="-90" />
+          <rotate axis="y" angle="-90" />
           <translate x="0.5" y="2.5" z="-0.1" />
           <scale x="0.7" y="1" z="0.9" />
         </transformation>
+
         <transformation id="painting_1">
           <translate x="0.05" y="4" z="4.35" />
           <scale x="0.1" y="3" z="1.25" />
         </transformation>   
+
         <transformation id="structure_1">
           <translate x="0.3" y="4" z="7.5" />
-            <rotate axis="y" angle="-90" />
+          <rotate axis="y" angle="-90" />
           <scale x="0.5" y="0.09" z="0.3" />
-        </transformation>   
+        </transformation>  
+
         <transformation id="structure_2">
           <translate x="0.3" y="5" z="7.5" />
-            <rotate axis="y" angle="-90" />
+          <rotate axis="y" angle="-90" />
           <scale x="0.5" y="0.09" z="0.3" />
         </transformation> 
+
         <transformation id="structure_3">
           <translate x="3" y="4" z="0.2" />
           <scale x="0.09" y="0.5" z="0.2" />
         </transformation> 
+
         <transformation id="painting_frame2">
           <translate x="1.3" y="3.5" z="0.05" />
         </transformation>   
+
         <transformation id="painting_frame3">
           <translate x="2.3" y="3.5" z="0.05" />
         </transformation>   
+
         <transformation id="painting_frame4">
           <translate x="3.3" y="3.5" z="0.05" />
-        </transformation>   
+        </transformation>  
+
         <transformation id="fatlady_painting">
           <translate x="5.5" y="1.5" z="0.03" />
-        <rotate axis="z" angle="180" />
-        <rotate axis="y" angle="90" />
-          <scale x="0.2" y="3" z="1.9" />
+          <scale x="2" y="3" z="1.9" />
         </transformation>   
+
         <transformation id="threeway_painting">
-          <translate x="7.8" y="5" z="0.02" />
-        <rotate axis="z" angle="180" />
-        <rotate axis="y" angle="90" />
-        <scale x="0.1" y="3" z="4" />
+          <translate x="7.8" y="5" z="0" />
+          <scale x="4" y="3" z="0.1" />
         </transformation>      
+
         <transformation id="maincarpet">
           <translate x="5.5" y="0" z="5.5" />
-        <rotate axis="z" angle="90" />
-        <rotate axis="x" angle="90" />
-          <scale x="0.07" y="6" z="5" />
-        </transformation>   
+          <rotate axis="x" angle="-90" />
+          <scale x="5" y="6" z="0.1" />
+        </transformation>
+
         <transformation id="bookshelf_1">
           <translate x="0.4" y="1" z="8.5" />
-        <rotate axis="x" angle="90" />
+          <rotate axis="x" angle="90" />
           <scale x="0.4" y="3" z="1.9" />
         </transformation> 
+
         <transformation id="bookshelf_2">
           <translate x="0.8" y="0" z="11" />
-        <rotate axis="y" angle="-180" />
+          <rotate axis="y" angle="-180" />
         </transformation> 
+
         <transformation id="hallway_wall2">
-            <translate x="2.7" y="4" z="-5.5" />
-            <rotate axis="y" angle="90" />
+          <translate x="2.7" y="4" z="-5.5" />
+          <rotate axis="y" angle="90" />
         </transformation>
-       <transformation id="hallway_wall3">
+
+        <transformation id="hallway_wall3">
           <translate x="8.3" y="4" z="-5.5" />
           <rotate axis="y" angle="-90" />
-      </transformation>
-       <transformation id="hallway_floor">
+        </transformation>
+
+        <transformation id="hallway_floor">
           <rotate axis="x" angle="-90"/>
           <translate x="5.5 " y="5.5" z="0" />
           <scale x="0.51" y="1.38" z="1"/>
-      </transformation>
-    <transformation id="hallway_ceiling">
+        </transformation>
+
+        <transformation id="hallway_ceiling">
           <rotate axis="x" angle="90"/>
           <translate x="5.5 " y="-5.5" z="-8" />
           <scale x="0.51" y="1.38" z="1"/>
-    </transformation>
+        </transformation>
+
         <transformation id="hallway_pilar1">
           <translate x="2.95" y="0" z="-0.26" />
           <scale x="0.5" y="1" z="0.5"/>
         </transformation>
+
         <transformation id="hallway_pilar2">
           <translate x="5.1" y="0" z="-0" />
         </transformation>
-      <transformation id="floor">
+
+        <transformation id="floor">
           <translate x="5.5" y="0" z="5.5" />
           <rotate axis="x" angle="-90"/>
           <scale x="11" y="11" z="1" />
-      </transformation>
-      <transformation id="ceiling">
+        </transformation>
+
+        <transformation id="ceiling">
           <translate x="5.5" y="8" z="5.5" />
           <rotate axis="x" angle="-90"/>
           <rotate axis="y" angle="180"/>
           <scale x="11" y="11" z="1" />
-    </transformation>
-     <transformation id="hogwarts_room">
+        </transformation>
+
+        <transformation id="hogwarts_room">
          <translate x="5.5" y="0" z="-19" />
          <rotate axis="x" angle="-90"/>
          <scale x="6" y="9" z="8"/>
-    </transformation>
+        </transformation>
+
+        <transformation id="mirror">
+            <translate x="5.5" y="0" z="-19" />
+        </transformation>
 
     </transformations>
 
     <primitives>
         <primitive id="rectangle">
-            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+            <rectangle x1="-0.5" y1="0.5" x2="0.5" y2="-0.5" />
         </primitive >
         <primitive id="triangle">
-            <triangle x1="5" y1="5" z1="5" x2="3" y2="3" z2="5" x3="7" y3="3" z3="5"/>
+            <triangle x1="0" y1="1" z1="0" x2="-0.5" y2="0" z2="0" x3="0.5" y3="0" z3="0"/>
         </primitive>
         <primitive id="cylinder">
             <cylinder base="1" top="1" height="1" stacks="100" slices="100"/>
@@ -429,6 +471,7 @@
             <componentref id="caixilho_base" />
         </children>
     </component>
+
     <component id="painting_frame1">
         <transformation>
             <transformationref id="painting_frame1" />
@@ -444,6 +487,7 @@
             <componentref id="quadro4"/>
         </children>
     </component>
+
     <component id="painting_1">
         <transformation>
             <transformationref id="painting_1" />
@@ -456,6 +500,7 @@
             <componentref id="trf_cubo" />
         </children>
     </component>
+
     <component id="painting_gryffindor">
         <transformation>
             <transformationref id="painting_gryffindor" />
@@ -468,6 +513,7 @@
             <componentref id="trf_cubo" />
         </children>
     </component>
+
     <component id="painting_frame2">
         <transformation>
             <transformationref id="painting_frame2" />
@@ -483,6 +529,7 @@
             <componentref id="quadro4"/>
         </children>
     </component>
+
     <component id="painting_frame3">
         <transformation>
             <transformationref id="painting_frame3" />
@@ -498,6 +545,7 @@
             <componentref id="quadro4"/>
         </children>
     </component>
+
     <component id="painting_frame4">
         <transformation>
             <transformationref id="painting_frame4" />
@@ -513,6 +561,7 @@
             <componentref id="quadro4"/>
         </children>
     </component>
+
     <component id="fatlady_painting">
         <transformation>
             <transformationref id="fatlady_painting" />
@@ -522,9 +571,10 @@
         </materials>
         <texture id="fatlady" length_s="1" length_t="1" />
         <children>
-            <componentref id="trf_cubo" />
+            <primitiveref id="rectangle" />
         </children>
     </component>
+
      <component id="threeway_painting">
         <transformation>
             <transformationref id="threeway_painting" />
@@ -550,6 +600,7 @@
             <componentref id="painting_frame1"/>
         </children>
     </component>
+
     <component id="maincarpet">
         <transformation>
             <transformationref id="maincarpet" />
@@ -603,18 +654,19 @@
        </children>
    </component>
 
-      <component id="frame1_bkshelf">
-       <transformation>
-          <transformationref id="frame1_bkshelf" />
-       </transformation>
-       <materials>
-           <material id="inherit" />
-       </materials>
-       <texture id="frame" length_s="1" length_t="1" />
-       <children>
-           <componentref id="caixilho_base" />
-       </children>
-   </component>
+    <component id="frame1_bkshelf">
+        <transformation>
+            <transformationref id="frame1_bkshelf" />
+        </transformation>
+        <materials>
+            <material id="inherit" />
+        </materials>
+        <texture id="frame" length_s="1" length_t="1" />
+        <children>
+            <componentref id="caixilho_base" />
+        </children>
+    </component>
+
     <component id="frame2_bkshelf">
        <transformation>
           <transformationref id="frame2_bkshelf" />
@@ -626,8 +678,7 @@
        <children>
            <componentref id="caixilho_base" />
        </children>
-   </component>
-
+    </component>
 
     <component id="pilar3">
         <transformation>
@@ -841,6 +892,7 @@
             <primitiveref id="rectangle"/>
         </children>
     </component>
+
     <component id="chandelier4">
         <transformation>
         <translate x="-2.5" y="0" z="-6.5" />
@@ -858,6 +910,7 @@
             <componentref id="chandelier_small_stem-2"/>
         </children>
     </component>
+
     <component id="chandelier3">
         <transformation>
         <translate x="1.5" y="0" z="-6.5" />
@@ -875,6 +928,7 @@
             <componentref id="chandelier_small_stem-2"/>
         </children>
     </component>
+
     <component id="chandelier2">
         <transformation>
         <translate x="1.5" y="0" z="-0.5" />
@@ -1104,6 +1158,7 @@
             <primitiveref id="torus" />
         </children>
     </component>
+
     <component id="structure_2">
         <transformation>
             <transformationref id="structure_2" />
@@ -1117,7 +1172,7 @@
         </children>
     </component>
 
-        <component id="structure_3">
+    <component id="structure_3">
         <transformation>
             <transformationref id="structure_3" />
         </transformation>
@@ -1129,7 +1184,6 @@
             <primitiveref id="torus" />
         </children>
     </component>
-
     
  </components>
 

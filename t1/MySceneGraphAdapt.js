@@ -38,8 +38,6 @@ class MySceneGraphAdapt {
         this.nodeIds = [];
         this.idRoot = null;                    // The id of the root element.
         this.primitives = [];
-        this.not_same = false;
-
         // File reading
         this.reader = new CGFXMLreader();
 
@@ -1123,7 +1121,7 @@ class MySceneGraphAdapt {
         s = this.reader.getFloat(textureTag, 'length_s', true);
         t = this.reader.getFloat(textureTag, 'length_t', true);
 
-        if(!this.verifyStringsFloats([], [s, t]))
+        if(!this.verifyStringsFloats([], [s, t]) && (id!="inherit" && id!="none"))
             return "<components> - somethings wrong with texture's length";
 
         this.nodes[compId].lengthS = s;
@@ -1305,11 +1303,9 @@ class MySceneGraphAdapt {
             for(let i=0; i<primitiveChildren.length; i++) {
                 currentMat.setTexture(currentTex);
 
-                if(this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle ){
-                    if(!this.not_same){
+                if( (this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle )
+                    && this.primitives[primitiveChildren[i]].textureSet == false){
                     this.primitives[primitiveChildren[i]].setTexCoords(this.nodes[comp].lengthS, this.nodes[comp].lengthT);
-                    }
-
                 }   
 
                 currentMat.apply();
@@ -1323,7 +1319,6 @@ class MySceneGraphAdapt {
 
         this.scene.popMatrix();
 
-        this.not_same = true;
     }
 
     /**

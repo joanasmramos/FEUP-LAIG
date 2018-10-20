@@ -50,11 +50,7 @@ class MyTriangle extends CGFobject {
 			norm[0], norm[1], norm[2]
 		];
 
-		this.texCoords = [
-			0, 0, 0,
-			0, 0, 0,
-			0, 0, 0
-		];
+		this.textureSet = false;
 
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
@@ -68,13 +64,15 @@ class MyTriangle extends CGFobject {
 		c = Math.sqrt(Math.pow(this.x3 - this.x2, 2) + Math.pow(this.y3 - this.y2, 2) + Math.pow(this.z3 - this.z2, 2) );
 
 		cosb = (Math.pow(a, 2) - Math.pow(b, 2) + Math.pow(c, 2))/(2*a*c);
-		beta = Math.acos(this.cosb);
+		beta = Math.acos(cosb);
 
 		this.texCoords = [
 			(c-a*cosb) / lengths, (a*Math.sin(beta))/ lengtht,
 			0, 0,
 			c/lengths, 0
 		];
+
+		this.textureSet = true;
 
 		this.updateTexCoordsGLBuffers();
 	}
