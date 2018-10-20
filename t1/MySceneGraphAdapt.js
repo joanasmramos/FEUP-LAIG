@@ -38,6 +38,7 @@ class MySceneGraphAdapt {
         this.nodeIds = [];
         this.idRoot = null;                    // The id of the root element.
         this.primitives = [];
+        this.not_same = false;
 
         // File reading
         this.reader = new CGFXMLreader();
@@ -1305,7 +1306,10 @@ class MySceneGraphAdapt {
                 currentMat.setTexture(currentTex);
 
                 if(this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle ){
+                    if(!this.not_same){
                     this.primitives[primitiveChildren[i]].setTexCoords(this.nodes[comp].lengthS, this.nodes[comp].lengthT);
+                    }
+
                 }   
 
                 currentMat.apply();
@@ -1318,6 +1322,8 @@ class MySceneGraphAdapt {
         }
 
         this.scene.popMatrix();
+
+        this.not_same = true;
     }
 
     /**

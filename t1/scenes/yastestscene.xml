@@ -199,8 +199,8 @@
           <translate x="2.7" y="0" z="-22" />
           <scale x="1" y="1" z="4" />
         <transformation id="painting_gryffindor">
-          <translate x="2.8" y="3.97" z="-4.63" />
-          <scale x="0.07" y="2.9" z="5.3" />
+          <translate x="2.8" y="4" z="-4.63" />
+          <scale x="0.07" y="3" z="5.3" />
         </transformation> 
         </transformation>
         <transformation id="painting_frame1">
