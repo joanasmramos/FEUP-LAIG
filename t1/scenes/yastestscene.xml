@@ -137,34 +137,36 @@
     <transformations>
         <transformation id="trf_cubo1">
             <translate x="0" y="0.5" z="0" />
-            <rotate axis="x" angle="-90" />
+            <rotate axis="x" angle="90" />
         </transformation>
 
         <transformation id="trf_cubo2">
             <translate x="0" y="-0.5" z="0" />
-            <rotate axis="x" angle="90" />
+            <rotate axis="x" angle="-90" />
         </transformation>
 
         <transformation id="trf_cubo3">
             <translate x="0" y="0" z="0.5" />
+            <rotate axis="x" angle="-180" />
         </transformation>
 
         <transformation id="trf_cubo4">
             <translate x="0" y="0" z="-0.5" />
-            <rotate axis="x" angle="-180" />
         </transformation>
 
         <transformation id="trf_cubo5">
             <translate x="-0.5" y="0" z="0" />
-            <rotate axis="y" angle="-90" />
+            <rotate axis="y" angle="90" />
         </transformation>
 
         <transformation id="trf_cubo6">
             <translate x="0.5" y="0" z="0" />
-            <rotate axis="y" angle="90" />
+            <rotate axis="y" angle="-90" />
         </transformation>
 
         <transformation id="parede_base">
+            <rotate axis="y" angle="180"/>
+            <rotate axis="z" angle="180"/>
             <scale x="11" y="8" z="1" />
         </transformation>
 
@@ -280,11 +282,13 @@
 
         <transformation id="fatlady_painting">
           <translate x="5.5" y="1.5" z="0.03" />
+          <rotate axis="y" angle="180" />
           <scale x="2" y="3" z="1.9" />
         </transformation>   
 
         <transformation id="threeway_painting">
           <translate x="7.8" y="5" z="0.1" />
+          <rotate axis="y" angle="180" />
           <scale x="4" y="3" z="0.1" />
         </transformation>      
 
@@ -338,14 +342,13 @@
 
         <transformation id="floor">
           <translate x="5.5" y="0" z="5.5" />
-          <rotate axis="x" angle="-90"/>
+          <rotate axis="x" angle="90"/>
           <scale x="11" y="11" z="1" />
         </transformation>
 
         <transformation id="ceiling">
           <translate x="5.5" y="8" z="5.5" />
           <rotate axis="x" angle="-90"/>
-          <rotate axis="y" angle="180"/>
           <scale x="11" y="11" z="1" />
         </transformation>
 
@@ -744,6 +747,7 @@
             <componentref id="trf_cubo" />
         </children>
     </component>
+
 
     <component id="trf_cubo">
         <transformation>
