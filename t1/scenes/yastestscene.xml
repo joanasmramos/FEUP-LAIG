@@ -364,9 +364,6 @@
         <primitive id="torus">
             <torus inner="1" outer="2" slices="64" loops="32"/>
         </primitive>
-        <primitive id="circle">
-            <circle slices="64" radius = "1"/>
-        </primitive>
     </primitives>
 
  <components>
