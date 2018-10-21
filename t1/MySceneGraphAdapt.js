@@ -1122,9 +1122,6 @@ class MySceneGraphAdapt {
         s = this.reader.getFloat(textureTag, 'length_s', true);
         t = this.reader.getFloat(textureTag, 'length_t', true);
 
-        if(!this.verifyStringsFloats([], [s, t]) && (id!="inherit" && id!="none"))
-            return "<components> - somethings wrong with texture's length";
-
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;
     }
@@ -1273,14 +1270,18 @@ class MySceneGraphAdapt {
      * @param {Current component} comp 
      * @param {Father's material} fatherMat 
      * @param {Father's texture} fatherTex 
+     * @param {Father's length S} fatherS
+     * @param {Father's length T} fatherT
      */
-    processComponent(comp, fatherMat, fatherTex) {
-        var currentMat, currentTex;
+    processComponent(comp, fatherMat, fatherTex, fatherS, fatherT) {
+        var currentMat, currentTex, currentS, currentT;
         this.scene.pushMatrix();
       
         if(this.nodes[comp].transformationMat != null)
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         
+        currentS = this.nodes[comp].lengthS;
+        currentT = this.nodes[comp].lengthT;
 
         switch(this.nodes[comp].materials[this.nodes[comp].defaultMaterial]){
             case "inherit":
@@ -1297,6 +1298,10 @@ class MySceneGraphAdapt {
                 break;
             case "inherit":
                 currentTex = fatherTex;
+                if(currentS==null)
+                    currentS = fatherS;
+                if(currentT==null)
+                    currentT = fatherT;
                 break;
             default:
                 currentTex = this.nodes[comp].texture;
@@ -1312,7 +1317,7 @@ class MySceneGraphAdapt {
 
                 if( (this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle )
                     && this.primitives[primitiveChildren[i]].textureSet == false){
-                    this.primitives[primitiveChildren[i]].setTexCoords(this.nodes[comp].lengthS, this.nodes[comp].lengthT);
+                    this.primitives[primitiveChildren[i]].setTexCoords(currentS, currentT);
                 }   
 
                 currentMat.apply();
@@ -1321,7 +1326,7 @@ class MySceneGraphAdapt {
         }
             
         for(let i=0; i<componentChildren.length; i++) {
-            this.processComponent(componentChildren[i], currentMat, currentTex);
+            this.processComponent(componentChildren[i], currentMat, currentTex, currentS, currentT);
         }
 
         this.scene.popMatrix();
@@ -1333,7 +1338,8 @@ class MySceneGraphAdapt {
      */
     displayScene() {
         this.nodes[this.idRoot].transformationMat = mat4.create();
-        this.processComponent(this.idRoot, this.nodes[this.idRoot].materials[this.nodes[this.idRoot].defaultMaterial], this.nodes[this.idRoot].texture);
+        var material = new CGFappearance();
+        this.processComponent(this.idRoot, material, this.nodes[this.idRoot].texture, this.nodes[this.idRoot].lengthS, this.nodes[this.idRoot].lengthT);
     }
 
 }

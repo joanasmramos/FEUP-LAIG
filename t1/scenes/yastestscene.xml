@@ -99,7 +99,6 @@
         <texture id="ceiling" file="scenes/images/floor.jpg" />
         <texture id="floor" file="scenes/images/wooden_floors.png" />
         <texture id="candle" file="scenes/images/candle.jpg" />
-        <texture id="stonewall" file="scenes/images/wall.jpg"/>
         <texture id="metal" file="scenes/images/metal.jpg"/>
     </textures>
 
@@ -116,7 +115,14 @@
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.3" g="0.3" b="0.3" a="1" />
             <specular r="0.9" g="0.9" b="0.9" a="1" />           
-        </material>       
+        </material> 
+
+         <material id="metal2" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+            <specular r="0.9" g="0.9" b="0.9" a="1" />           
+        </material>              
 
     </materials>
 
@@ -972,6 +978,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
@@ -987,6 +994,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
@@ -1002,6 +1010,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
