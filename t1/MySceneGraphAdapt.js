@@ -1119,8 +1119,8 @@ class MySceneGraphAdapt {
         else {
             this.nodes[compId].texture = this.data.textures[id];
         }
-        s = this.reader.getFloat(textureTag, 'length_s', true);
-        t = this.reader.getFloat(textureTag, 'length_t', true);
+        s = this.reader.getFloat(textureTag, 'length_s');
+        t = this.reader.getFloat(textureTag, 'length_t');
 
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;
