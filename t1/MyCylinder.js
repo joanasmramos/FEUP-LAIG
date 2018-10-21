@@ -19,6 +19,8 @@ class MyCylinder extends CGFobject
 		this.base = base;
 		this.top = top;
 		this.height = height;
+		this.baseCircle = new MyCircle(scene, slices, base);
+		this.topCircle = new MyCircle(scene, slices, top);
 
 		this.initBuffers();
 	};
@@ -29,8 +31,6 @@ class MyCylinder extends CGFobject
 		this.indices = [];
 		this.normals = [];
 		this.texCoords = [];
-
-		var stacks = this.stacks;
 
 		var n = -2 * Math.PI / this.slices;
 

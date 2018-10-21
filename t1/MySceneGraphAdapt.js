@@ -881,7 +881,7 @@ class MySceneGraphAdapt {
 
         var id;
         var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, circleTag;
-        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], slices;
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], slices, radius;
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -986,13 +986,14 @@ class MySceneGraphAdapt {
                         return "<primitives> - something wrong with primitives children";
 
                     slices = this.reader.getInteger(circleTag, "slices", true);
-                    if(!this.verifyFloat(slices))
+                    radius = this.reader.getInteger(circleTag, "radius", true);
+                    if(!this.verifyStringsFloats([],[slices, radius]))
                         return "<primitives> - something wrong with circle's slices";
 
                     if(this.primitives[id] != null)
                         return "<primitives> - something wrong with primitive's id";
                     
-                    this.primitives[id] = new MyCircle(this.scene, slices);
+                    this.primitives[id] = new MyCircle(this.scene, slices, radius);
 
                 default:
                     break;
@@ -1267,6 +1268,12 @@ class MySceneGraphAdapt {
         console.log("   " + message);
     }
 
+    /**
+     * 
+     * @param {Current component} comp 
+     * @param {Father's material} fatherMat 
+     * @param {Father's texture} fatherTex 
+     */
     processComponent(comp, fatherMat, fatherTex) {
         var currentMat, currentTex;
         this.scene.pushMatrix();

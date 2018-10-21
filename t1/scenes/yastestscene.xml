@@ -101,7 +101,6 @@
         <texture id="candle" file="scenes/images/candle.jpg" />
         <texture id="stonewall" file="scenes/images/wall.jpg"/>
         <texture id="metal" file="scenes/images/metal.jpg"/>
-        <texture id="teste" file="scenes/images/teste.jpg"/>
     </textures>
 
     <materials>
@@ -117,7 +116,14 @@
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.3" g="0.3" b="0.3" a="1" />
             <specular r="0.9" g="0.9" b="0.9" a="1" />           
-        </material>       
+        </material> 
+
+        <material id="metal2" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+            <specular r="0.9" g="0.9" b="0.9" a="1" />           
+        </material> 
 
     </materials>
 
@@ -365,7 +371,7 @@
             <torus inner="1" outer="2" slices="64" loops="32"/>
         </primitive>
         <primitive id="circle">
-            <circle slices="64"/>
+            <circle radius="1" slices="64"/>
         </primitive>
     </primitives>
 
@@ -898,7 +904,7 @@
         <translate x="-2.5" y="0" z="-6.5" />
         </transformation>
         <materials>
-            <material id="metal"/>
+            <material id="inherit"/>
         </materials>
         <texture id="metal" length_s="5.0" length_t="5.0"/>
         <children>
@@ -916,7 +922,7 @@
         <translate x="1.5" y="0" z="-6.5" />
         </transformation>
         <materials>
-            <material id="metal"/>
+            <material id="inherit"/>
         </materials>
         <texture id="metal" length_s="5.0" length_t="5.0"/>
         <children>
@@ -934,7 +940,7 @@
         <translate x="1.5" y="0" z="-0.5" />
         </transformation>
         <materials>
-            <material id="metal"/>
+            <material id="inherit"/>
         </materials>
         <texture id="metal" length_s="5.0" length_t="5.0"/>
         <children>
@@ -973,6 +979,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
@@ -988,6 +995,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
@@ -1003,6 +1011,7 @@
         </transformation>
         <materials>
             <material id="metal"/>
+            <material id="metal2"/>
         </materials>
         <texture id="inherit" length_s="1" length_t="1"/>
         <children>
