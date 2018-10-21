@@ -82,6 +82,13 @@
             <specular r="0.5" g="0.5" b="0.5" a="1" />
         </omni>  
 
+        <omni id="Hogwarts Room" enabled="1" >
+            <location x="5.5" y="10" z="-15" w="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.8" g="0.8" b="0.8" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
+        </omni>
+
     </lights>
 
     <textures>
@@ -277,7 +284,7 @@
         </transformation>   
 
         <transformation id="threeway_painting">
-          <translate x="7.8" y="5" z="0" />
+          <translate x="7.8" y="5" z="0.1" />
           <scale x="4" y="3" z="0.1" />
         </transformation>      
 
@@ -343,9 +350,9 @@
         </transformation>
 
         <transformation id="hogwarts_room">
-         <translate x="5.5" y="0" z="-19" />
+         <translate x="5.5" y="0" z="-15" />
          <rotate axis="x" angle="-90"/>
-         <scale x="6" y="9" z="8"/>
+         <scale x="5" y="5" z="7"/>
         </transformation>
 
         <transformation id="mirror">
@@ -590,7 +597,7 @@
         </materials>
         <texture id="threeway_painting" length_s="1" length_t="1" />
         <children>
-            <componentref id="trf_cubo" />
+            <primitiveref id="rectangle" />
         </children>
     </component>
 
