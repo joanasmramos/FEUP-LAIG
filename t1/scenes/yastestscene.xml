@@ -12,11 +12,6 @@
             <to x="5.5" y="1.5" z="-5" />
         </perspective>
 
-        <perspective id="MagicMirror Room" near="0.1" far="500" angle="40">
-            <from x="5.5" y="1.5" z="-12" />
-            <to x="5.5" y="1.5" z="-15" />
-        </perspective>
-
         <perspective id="Perspective" near="0.1" far="500" angle="20">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
