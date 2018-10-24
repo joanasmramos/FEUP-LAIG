@@ -1,0 +1,576 @@
+<yas>
+    <scene root="root_comp" axis_length="8" />
+    <views default="main" >
+        <perspective id="main" near="0.1" far="90" angle="60">
+            <from x="10" y="5" z="12" />
+            <to x="0" y="1" z="0" />
+        </perspective>
+
+        <ortho id="ortho_front" near="0.1" far="70" left="-10" right="10" top="10" bottom="-10">
+            <from x="5" y="5" z="20" />
+            <to x="5" y="5" z="0" />
+        </ortho>
+    </views>
+    <ambient>
+        <ambient r="0.6" g="0.6" b="0.6" a="1" />
+        <background r="0.05" g="0.05" b="0.05" a="1" />
+    </ambient>
+    <lights>
+        <omni id="light_1" enabled="0" >
+            <location x="2" y="5" z="3.5" w="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+        <omni id="light_3" enabled="0" >
+            <location x="3.5" y="5" z="2" w="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+        <omni id="light_2" enabled="1" >
+            <location x="5" y="4" z="3.5" w="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </omni>
+        <spot id="Spot1" enabled="1" angle="1" exponent="1">
+            <location x="0.7" y="5.5" z="5.2" w="1" />
+            <target x="0" y="4" z="5.2" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.65" g="0.65" b="0.65" a="1" />
+            <specular r="0.65" g="0.65" b="0.65" a="1" />
+        </spot>
+
+        <spot id="Spot2" enabled="1" angle="30" exponent="40">
+            <location x="6" y="0.5" z="3" w="1" />
+            <target x="5" y="2" z="0" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="1" g="1" b="1" a="1" />
+            <specular r="1" g="1" b="1" a="1" />
+        </spot>
+
+    </lights>
+    <textures>
+        <texture id="tex_rough" file="scenes/images/rough.jpg" />
+        <texture id="tex_world" file="scenes/images/world.jpg" />
+        <texture id="tex_window" file="scenes/images/window.jpg" />
+        <texture id="tex_wood" file="scenes/images/wood.png" />
+        <texture id="tex_donut" file="scenes/images/donut.png" />
+    </textures>
+    <materials>
+        <material id="mat_metal" shininess="80" >
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.1" g="0.1" b="0.15" a="1" />
+            <diffuse r="0.4" g="0.4" b="0.5" a="1" />
+            <specular r="0.4" g="0.4" b="0.5" a="1" />
+        </material>
+        <material id="mat_regular" shininess="40" >
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1" />
+            <specular r="0.5" g="0.5" b="0.5" a="1" />
+        </material>
+        <material id="mat_wood" shininess="20" >
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.0545" g="0.0271" b="0.0075" a="1" />
+            <diffuse r="0.800" g="0.5" b="0.3" a="1" />
+            <specular r="0.1" g="0.042" b="0.015" a="1" />
+        </material>
+        <material id="mat_lighter_wood" shininess="30" >
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.43" g="0.2" b="0.17" a="1" />
+            <diffuse r="0.53" g="0.2" b="0.16" a="1" />
+            <specular r="0.34" g="0.12" b="0.15" a="1" />
+        </material>
+        <material id="mat_grey" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1" />
+            <specular r="0.4" g="0.4" b="0.4" a="1" />
+        </material>
+        <material id="mat_blue" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0.1" a="1" />
+            <diffuse r="0.2" g="0.2" b="0.3" a="1" />
+            <specular r="0.2" g="0.2" b="0.3" a="1" />
+        </material>
+        <material id="mat_orange" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.1" g="0" b="0" a="1" />
+            <diffuse r="0.4" g="0.3" b="0.2" a="1" />
+            <specular r="0.4" g="0.3" b="0.2" a="1" />
+        </material>
+        <material id="mat_turquoise" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="1" g="1" b="1" a="1" />
+            <diffuse r="0.13" g="0.28" b="0.5" a="1" />
+            <specular r="0.13" g="0.28" b="0.5" a="1" />
+        </material>
+        <material id="mat_red" shininess="30">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.2" g="0.05" b="0.05" a="1" />
+            <specular r="0.2" g="0.05" b="0.05" a="1" />
+        </material>
+        <material id="mat_glass" shininess="90">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1" />
+            <specular r="0.9" g="0.9" b="0.9" a="1" />
+        </material>
+        <material id="mat_dark" shininess="10">
+            <emission r="0" g="0" b="0" a="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.27" g="0.27" b="0.27" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
+        </material>
+    </materials>
+    <transformations>
+        <transformation id="trf_standup_y">
+            <rotate axis="x" angle="-90" />
+        </transformation>
+        <transformation id="trf_lift_y">
+            <translate x="0" y="1.2" z="0" />
+        </transformation>
+        <transformation id="trf_shift_to_room_middle">
+            <translate x="3.5" y="0" z="3.5" />
+        </transformation>
+        <transformation id="trf_donut_plate_to_table">
+            <translate x="2.1" y="2.4" z="4.1" />
+            <scale x="1.5" y="1.5" z="1.5" />
+            <rotate axis="x" angle="-90" />
+        </transformation>
+        <transformation id="trf_donut_to_plate">
+            <translate x="0" y="0" z="0.075" />
+        </transformation>
+    </transformations>
+    <primitives>
+        <primitive id="window">
+            <rectangle x1="2" y1="2" x2="5" y2="5" />
+        </primitive>
+        <primitive id="wall">
+            <rectangle x1="0" y1="0" x2="7" y2="7" />
+        </primitive>
+        <primitive id="frame">
+            <rectangle x1="0" y1="0" x2="2.736" y2="3.27" />
+        </primitive>
+        <primitive id="frame2">
+            <rectangle x1="0" y1="0" x2="2.52" y2="3.44" />
+        </primitive>
+        <primitive id="ceiling">
+            <triangle x2="0" y2="0" z2="7"
+                      x1="0" y1="0" z1="0"
+                      x3="7" y3="0" z3="0" />
+        </primitive>
+        <primitive id="cone_base">
+            <cylinder base="0.35" top="0" height="0.24" slices="10" stacks="6" />
+        </primitive>
+        <primitive id="cyl_core">
+            <cylinder base="0.12" top="0.12" height="1.6" slices="10" stacks="6" />
+        </primitive>
+        <primitive id="world">
+            <sphere radius="0.8" slices="20" stacks="20" />
+        </primitive>
+        <primitive id="torus_holder">
+            <torus inner="0.05" outer="0.8" slices="20" loops="20" />
+        </primitive>
+        <primitive id="table_leg">
+            <cylinder base="0.1" top="0.1" height="2.2" slices="10" stacks="30" />
+        </primitive>
+        <primitive id="table_top_part">
+            <rectangle x1="-0.5" y1="-0.5" x2="0.5" y2="0.5" />
+        </primitive>
+        <primitive id="simpson_donut">
+            <torus inner="0.06" outer="0.12" slices="20" loops="20" />
+        </primitive>
+        <primitive id="donut_plate">
+            <cylinder base="0.26" top="0.26" height="0.015" slices="30" stacks="3" />
+        </primitive>
+    </primitives>
+    <components>
+        <component id="root_comp">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="mat_regular" />
+            </materials>
+            <texture id="tex_window" length_s ="1" length_t="1"/>
+            <children>
+                <componentref id="desk_globe" />
+                <componentref id="right_wall" />
+                <componentref id="left_wall" />
+                <!-- componentref id="frame_comp" />
+                <componentref id="floor" />
+                <componentref id="window" />
+                <componentref id="frame_comp2" / -->
+                <componentref id="ceiling" />
+                <componentref id="table" />
+                <componentref id="plate_with_donut" />
+            </children>
+        </component>
+
+        <component id="right_wall">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="mat_grey" />
+                <material id="mat_blue" />
+                <material id="mat_orange" />
+                <material id="mat_turquoise" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="wall" />
+            </children>
+        </component>
+
+        <component id="left_wall">
+            <transformation>
+                <rotate axis="y" angle="90" />
+                <translate x="-7" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="mat_grey" />
+                <material id="mat_blue" />
+                <material id="mat_orange" />
+                <material id="mat_turquoise" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="wall" />
+            </children>
+        </component>
+
+        <component id="ceiling">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tex_window" length_s="4.95" length_t="4.95" />
+            <children>
+                <primitiveref id="ceiling" />
+            </children>
+        </component>
+
+        <component id="desk_globe">
+            <transformation>
+                <translate x="3.5" y="2.4" z="3.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="holder_base" />
+                <componentref id="holder_core" />
+                <componentref id="holder_around" />
+                <componentref id="world" />
+            </children>
+        </component>
+
+        <component id="holder_base">
+            <transformation>
+                <transformationref id="trf_standup_y" />
+            </transformation>
+            <materials>
+                <material id="mat_metal" />
+                <material id="mat_orange" />
+            </materials>
+            <texture id="tex_rough" length_s="1" length_t="2" />
+            <children>
+                <primitiveref id="cone_base" />
+            </children>
+        </component>
+
+        <component id="holder_core">
+            <transformation>
+                <transformationref id="trf_standup_y" />
+            </transformation>
+            <materials>
+                <material id="mat_metal" />
+                <material id="mat_orange" />
+            </materials>
+            <texture id="tex_rough" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="cyl_core" />
+            </children>
+        </component>
+
+        <component id="holder_around">
+            <transformation>
+                <transformationref id="trf_lift_y" />
+            </transformation>
+            <materials>
+                <material id="mat_metal" />
+                <material id="mat_orange" />
+            </materials>
+            <texture id="tex_rough" length_s="1" length_t="1" />
+            <children>
+                <componentref id="holder_around_core" />
+            </children>
+        </component>
+
+        <component id="holder_around_core">
+            <transformation>
+                <transformationref id="trf_standup_y" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="torus_holder" />
+            </children>
+        </component>
+
+        <component id="world">
+            <transformation>
+                <transformationref id="trf_lift_y" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tex_world" length_s="1" length_t="1" />
+            <children>
+                <componentref id="world_core" />
+            </children>
+        </component>
+
+        <component id="world_core">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="world" />
+            </children>
+        </component>
+
+        <component id="table">
+            <transformation>
+                <transformationref id="trf_shift_to_room_middle" />
+            </transformation>
+            <materials>
+                <material id="mat_lighter_wood" />
+            </materials>
+            <texture id="tex_wood" length_s="1" length_t="1" />
+            <children>
+                <componentref id="table_leg1" />
+                <componentref id="table_leg2" />
+                <componentref id="table_leg3" />
+                <componentref id="table_leg4" />
+                <componentref id="table_top" />
+            </children>
+        </component>
+
+        <component id="table_leg1">
+            <transformation>
+                <translate x="-1.9" y="0" z="-1.1" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="table_leg" />
+            </children>
+        </component>
+
+        <component id="table_leg2">
+            <transformation>
+                <translate x="1.9" y="0" z="-1.1" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tex_window"  length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="table_leg" />
+            </children>
+        </component>
+
+        <component id="table_leg3">
+            <transformation>
+                <translate x="-1.9" y="0" z="1.1" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="mat_turquoise" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_leg" />
+            </children>
+        </component>
+
+        <component id="table_leg4">
+            <transformation>
+                <translate x="1.9" y="0" z="1.1" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_leg" />
+            </children>
+        </component>
+
+        <component id="table_top">
+            <transformation>
+                <translate x="0" y="2.3" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="table_top_top" />
+                <componentref id="table_top_bottom" />
+                <componentref id="table_top_left" />
+                <componentref id="table_top_right" />
+                <componentref id="table_top_back" />
+                <componentref id="table_top_front" />
+            </children>
+        </component>
+
+        <component id="table_top_front">
+            <transformation>
+                <translate x="0" y="0" z="1.2" />
+                <scale x="4" y="0.2" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="table_top_back">
+            <transformation>
+                <translate x="0" y="0" z="-1.2" />
+                <rotate axis="y" angle="180" />
+                <scale x="4" y="0.2" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="table_top_right">
+            <transformation>
+                <translate x="2" y="0" z="0" />
+                <rotate axis="y" angle="90" />
+                <scale x="2.4" y="0.2" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="table_top_left">
+            <transformation>
+                <translate x="-2" y="0" z="0" />
+                <rotate axis="y" angle="-90" />
+                <scale x="2.4" y="0.2" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="table_top_top">
+            <transformation>
+                <translate x="0" y="0.1" z="0" />
+                <rotate axis="x" angle="-90" />
+                <scale x="4" y="2.4" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="table_top_bottom">
+            <transformation>
+                <translate x="0" y="-0.1" z="0" />
+                <rotate axis="x" angle="90" />
+                <scale x="4" y="2.4" z="1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="table_top_part" />
+            </children>
+        </component>
+
+        <component id="plate_with_donut">
+            <transformation>
+                <transformationref id="trf_donut_plate_to_table" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="donut_plate" />
+                <componentref id="simpson_donut" />
+            </children>
+        </component>
+
+        <component id="donut_plate">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+                <material id="mat_turquoise" />
+                <material id="mat_red" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="donut_plate" />
+            </children>
+        </component>
+
+        <component id="simpson_donut">
+            <transformation>
+                <transformationref id="trf_donut_to_plate" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tex_donut" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="simpson_donut" />
+            </children>
+        </component>
+
+    </components>
+</yas>
