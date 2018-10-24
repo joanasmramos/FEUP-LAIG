@@ -67,9 +67,9 @@ class MyTriangle extends CGFobject {
 		beta = Math.acos(cosb);
 
 		this.texCoords = [
-			(c-a*cosb) / lengths, (a*Math.sin(beta))/ lengtht,
-			0, 0,
-			c/lengths, 0
+			(c-a*cosb) / lengths, (1/lengtht) - a*Math.sin(beta),
+			0, 1/lengtht,
+			c/lengths, 1/lengtht
 		];
 
 		this.textureSet = true;
