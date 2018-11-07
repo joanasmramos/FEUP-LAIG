@@ -18,6 +18,20 @@ class XMLscene extends CGFscene {
     }
 
     /**
+     * Updates animations
+     * @param {Current time in miliseconds} currTime 
+     */
+    update(currTime) {
+        for(let key in this.data.linearAnimations) {
+            this.data.linearAnimations[key].update(currTime);
+        }
+
+        for(let key in this.data.circularAnimations) {
+            this.data.circularAnimations[key].update(currTime);
+        }
+    }
+
+    /**
      * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
      * @param {CGFApplication} application
      */

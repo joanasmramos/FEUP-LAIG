@@ -21,6 +21,7 @@ class LinearAnimation extends Animation {
         this.translatez = 0;
 
         this.calcSegmentsDistance();
+        this.setActiveSegmentDistance();
         this.calcDeltaDistance;
     }
 
@@ -37,10 +38,43 @@ class LinearAnimation extends Animation {
     }
 
     /**
+     * Sets the maximum distance for the active segment (its own distance)
+     */
+    setActiveSegmentDistance() {
+        this.activeSegmentDistance = this.segments[this.activeSegment];
+    }
+
+
+    /**
+     * Updates index of the active segment
+     */
+    updateActiveSegment() {
+        if(++this.activeSegment == this.segments.length) {
+            this.activeSegment = 0;
+        }
+    }
+
+    /**
      * Calculates delta distance
      */
     calcDeltaDistance(){
         this.deltaDistance = (this.deltaT * this.totalDistance) / this.totalTime;
+    }
+
+    /**
+     * Updates values according to deltaT
+     */
+    animate(){
+        if(this.deltaT == null) {
+            return;
+        }
+
+        this.calcDeltaDistance();
+        
+        if(this.deltaDistance > this.activeSegmentDistance) {
+            this.deltaDistance -= this.activeSegmentDistance;
+            this.updateActiveSegment();
+        }
     }
 
     rectifyDirection() {

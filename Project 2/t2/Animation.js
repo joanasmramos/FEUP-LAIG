@@ -13,6 +13,12 @@ class Animation {
         this.deltaT = null;
     }
 
-    update() {}
+    update(currTime) {
+        if(this.lastT != null) {
+            this.deltaT = currTime - this.lastT;
+        }
+
+        this.lastT = currTime;
+    }
     apply() {}
 }
