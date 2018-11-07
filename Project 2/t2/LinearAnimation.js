@@ -8,7 +8,7 @@ class LinearAnimation extends Animation {
      * @param {Total time of the animation} totalTime 
      */
     constructor(controlPoints, totalTime){
-        super.constructor(totalTime);
+        super(totalTime);
         
         this.activeSegment = 0;
         this.totalDistance = 0;

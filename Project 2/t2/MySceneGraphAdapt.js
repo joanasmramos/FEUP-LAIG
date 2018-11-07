@@ -153,6 +153,20 @@ class MySceneGraphAdapt {
         x = this.reader.getFloat(elem, "x", true);
         y = this.reader.getFloat(elem, "y", true);
         z = this.reader.getFloat(elem, "z", true);
+
+        return vec3.fromValues(x, y, z);
+    }
+
+    /**
+     * Reads x, y, z from a DOM element, returns vec3 from values
+     * @param {element} elem
+     */
+    readXYZ2(elem) {
+        var x, y, z;
+        x = this.reader.getFloat(elem, "xx", true);
+        y = this.reader.getFloat(elem, "yy", true);
+        z = this.reader.getFloat(elem, "zz", true);
+
         return vec3.fromValues(x, y, z);
     }
 
@@ -821,7 +835,8 @@ class MySceneGraphAdapt {
         }
 
         let id, span, controlPoint, center, radius, startang, rotang;
-        let controlPoints;
+        let controlPointsNode;
+        let controlPoints = new Array();
 
         for(let i=0; i<linearAnimations.length; i++) {
             id = this.reader.getString(linearAnimations[i], "id", true);
@@ -831,10 +846,18 @@ class MySceneGraphAdapt {
                 return "<animations> - repeated id in linear animations";
             }
 
-            controlPoints = linearAnimations[id].getElementsByTagName("controlpoint");
-            for(let j=0; j<controlPoints.length;j++) {
-                
+            controlPointsNode = linearAnimations[id].getElementsByTagName("controlpoint");
+            for(let j=0; j<controlPointsNode.length;j++) {
+                controlPoint = this.readXYZ2(controlPointsNode[j]);
+
+                if(!this.verifyStringsFloats([], controlPoint)) {
+                    return "<animations> - xyz values for linear animation are not valid";
+                }
+
+                controlPoints.push(controlPoint);
             }
+
+            this.data.linearAnimations[id] = new LinearAnimation(controlPoints, span);
         }
 
     }
