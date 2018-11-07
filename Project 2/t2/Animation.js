@@ -13,7 +13,6 @@ class Animation {
         this.deltaT = null;
     }
 
-    animate() {
-
-    }
+    update() {}
+    apply() {}
 }

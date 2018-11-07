@@ -14,8 +14,9 @@ var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -167,6 +168,14 @@ class MySceneGraphAdapt {
         xyz["z"] = this.reader.getFloat(elem, "z", true);
 
         return xyz;
+    }
+
+    /**
+     * Reads x, y, z values from a string like "xx yy zz"
+     * @param {string} str 
+     */
+    readXYZfromStr(str) {
+
     }
 
     /**
@@ -344,6 +353,18 @@ class MySceneGraphAdapt {
             if ((error = this.parseMaterials(rootChildren[index])) != null)
                 return error;
         }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <materials> out of order");
+
+            //Parse ANIMATIONS block
+            if ((error = this.parseAnimations(rootChildren[index])) != null)
+                return error;
+        }        
 
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
@@ -785,6 +806,37 @@ class MySceneGraphAdapt {
 
         this.log("Parsed materials");
         return null;
+    }
+
+    /**
+     * Parses the <animations> node.
+     * @param {animations block element} animationsNode 
+     */
+    parseAnimations(animationsNode) {
+        let linearAnimations = animationsNode.getElementsByTagName("linear");
+        let circularAnimations = animationsNode.getElementsByTagName("circular");
+        
+        if(linearAnimations.length == 0 && circularAnimations.length == 0) {
+            return;
+        }
+
+        let id, span, controlPoint, center, radius, startang, rotang;
+        let controlPoints;
+
+        for(let i=0; i<linearAnimations.length; i++) {
+            id = this.reader.getString(linearAnimations[i], "id", true);
+            span = this.reader.getFloat(linearAnimations[i], "span", true);
+
+            if(this.data.linearAnimations[id] != null) {
+                return "<animations> - repeated id in linear animations";
+            }
+
+            controlPoints = linearAnimations[id].getElementsByTagName("controlpoint");
+            for(let j=0; j<controlPoints.length;j++) {
+                
+            }
+        }
+
     }
 
     /**

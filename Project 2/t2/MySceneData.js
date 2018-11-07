@@ -31,5 +31,9 @@ class MySceneData {
 
         //transformations
         this.transformations = [];
+
+        //animations
+        this.linearAnimations = new Object();
+        this.circularAnimations = new Object();
     }
 }

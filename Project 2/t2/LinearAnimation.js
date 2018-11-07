@@ -16,6 +16,10 @@ class LinearAnimation extends Animation {
         this.controlPoints = controlPoints;
         this.segments = new Array(); // this.segments[0] = 2 ---> segment 0 has a total distance of 2 units
         
+        this.translatex = 0;
+        this.translatey = 0;
+        this.translatez = 0;
+
         this.calcSegmentsDistance();
         this.calcDeltaDistance;
     }

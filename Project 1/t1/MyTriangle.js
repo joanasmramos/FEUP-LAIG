@@ -37,7 +37,7 @@ class MyTriangle extends CGFobject {
         p1=vec3.fromValues(this.x1, this.y1, this.z1);
         p2=vec3.fromValues(this.x2, this.y2, this.z2);
 		p3=vec3.fromValues(this.x3, this.y3, this.z3);
-		
+
 		a = [0,0,0], b = [0,0,0], norm = [0,0,0];
 
         vec3.subtract(a, p2, p1);
@@ -67,7 +67,7 @@ class MyTriangle extends CGFobject {
 		beta = Math.acos(cosb);
 
 		this.texCoords = [
-			(c-a*cosb) / lengths, (1/lengtht) - a*Math.sin(beta),
+			(c-a*cosb) / lengths, (1 - a*Math.sin(beta))/lengtht,
 			0, 1/lengtht,
 			c/lengths, 1/lengtht
 		];

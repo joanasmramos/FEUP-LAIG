@@ -340,7 +340,7 @@
 
         <component id="world_core">
             <transformation>
-                <rotate axis="x" angle="-90" />
+                <rotate axis="x" angle="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
