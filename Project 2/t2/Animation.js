@@ -11,6 +11,7 @@ class Animation {
         this.totalTime = totalTime;
         this.lastT = null;
         this.deltaT = null;
+        this.done = false;
     }
 
     update(currTime) {

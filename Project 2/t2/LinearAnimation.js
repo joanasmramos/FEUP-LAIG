@@ -14,11 +14,8 @@ class LinearAnimation extends Animation {
         this.totalDistance = 0;
         this.deltaDistance = 0;
         this.controlPoints = controlPoints;
-        this.segments = new Array(); // this.segments[0] = 2 ---> segment 0 has a total distance of 2 units
-        
-        this.translatex = 0;
-        this.translatey = 0;
-        this.translatez = 0;
+        this.segmentsDistance = new Array(); // this.segmentsDistance[0] = 2 ---> segment 0 has a total distance of 2 units
+        this.segments = new Array();
 
         this.calcSegmentsDistance();
         this.setActiveSegmentDistance();
@@ -26,13 +23,18 @@ class LinearAnimation extends Animation {
     }
 
     /**
+     * Calculates vectors for each segment
      * Calculates the distance of each segment (vector between two control points) and stores it
      * Updates total distance of the animation (sum of each segment distance)
      */
     calcSegmentsDistance() {
-        for(var i=1; i<this.controlPoints.length; i++) {
-            var segmentDistance = vec3.distance(this.controlPoints[i-1], this.controlPoints[i]); 
-            this.segments.push(segmentDistance);
+        for(let i=1; i<this.controlPoints.length; i++) {
+            let segmentDistance = vec3.distance(this.controlPoints[i-1], this.controlPoints[i]); 
+            let vector;
+            vec3.subtract(vector, this.controlPoints[i], this.controlpoints[i-1]);
+
+            this.segmentsDistance.push(segmentDistance);
+            this.segments.push(vector);
             this.totalDistance += segmentDistance;
         }
     }
@@ -41,16 +43,16 @@ class LinearAnimation extends Animation {
      * Sets the maximum distance for the active segment (its own distance)
      */
     setActiveSegmentDistance() {
-        this.activeSegmentDistance = this.segments[this.activeSegment];
+        this.activeSegmentDistance = this.segmentsDistance[this.activeSegment];
     }
 
 
     /**
-     * Updates index of the active segment
+     * Updates index of the active segment, if it reaches end of the segments, animation is done
      */
     updateActiveSegment() {
         if(++this.activeSegment == this.segments.length) {
-            this.activeSegment = 0;
+            this.done = true;
         }
     }
 
@@ -61,11 +63,15 @@ class LinearAnimation extends Animation {
         this.deltaDistance = (this.deltaT * this.totalDistance) / this.totalTime;
     }
 
+    rectifyDirection() {
+
+    }
+
     /**
      * Updates values according to deltaT
      */
     animate(){
-        if(this.deltaT == null) {
+        if(this.deltaT == null || this.done) {
             return;
         }
 
@@ -75,9 +81,5 @@ class LinearAnimation extends Animation {
             this.deltaDistance -= this.activeSegmentDistance;
             this.updateActiveSegment();
         }
-    }
-
-    rectifyDirection() {
-
     }
 }

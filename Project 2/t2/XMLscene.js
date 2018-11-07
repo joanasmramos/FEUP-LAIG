@@ -24,6 +24,7 @@ class XMLscene extends CGFscene {
     update(currTime) {
         for(let key in this.data.linearAnimations) {
             this.data.linearAnimations[key].update(currTime);
+            this.data.linearAnimations[key].animate();
         }
 
         for(let key in this.data.circularAnimations) {
