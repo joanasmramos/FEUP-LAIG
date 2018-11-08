@@ -4,12 +4,12 @@
 class LinearAnimation extends Animation {
     /**
      * Constructor
-     * @param {vec3 Array containing the coordinates of each control point} controlPoints 
-     * @param {Total time of the animation} totalTime 
+     * @param {vec3 Array containing the coordinates of each control point} controlPoints
+     * @param {Total time of the animation} totalTime
      */
     constructor(controlPoints, totalTime){
-        super(totalTime);
-        
+        super(totalTime, span);
+
         this.activeSegment = 0;
         this.totalDistance = 0;
         this.deltaDistance = 0;
@@ -29,7 +29,7 @@ class LinearAnimation extends Animation {
      */
     calcSegmentsDistance() {
         for(let i=1; i<this.controlPoints.length; i++) {
-            let segmentDistance = vec3.distance(this.controlPoints[i-1], this.controlPoints[i]); 
+            let segmentDistance = vec3.distance(this.controlPoints[i-1], this.controlPoints[i]);
             let vector;
             vec3.subtract(vector, this.controlPoints[i], this.controlpoints[i-1]);
 
@@ -76,7 +76,7 @@ class LinearAnimation extends Animation {
         }
 
         this.calcDeltaDistance();
-        
+
         if(this.deltaDistance > this.activeSegmentDistance) {
             this.deltaDistance -= this.activeSegmentDistance;
             this.updateActiveSegment();
