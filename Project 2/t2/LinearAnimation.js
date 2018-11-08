@@ -17,9 +17,9 @@ class LinearAnimation extends Animation {
         this.segmentsDistance = new Array(); // this.segmentsDistance[0] = 2 ---> segment 0 has a total distance of 2 units
         this.segments = new Array();
 
-        this.calcSegmentsDistance();
-        this.setActiveSegmentDistance();
-        this.calcDeltaDistance;
+        //this.calcSegmentsDistance();
+        //this.setActiveSegmentDistance();
+        //this.calcDeltaDistance;
     }
 
     /**

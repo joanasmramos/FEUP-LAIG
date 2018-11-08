@@ -1178,8 +1178,12 @@ class MySceneGraphAdapt {
         else {
             this.nodes[compId].texture = this.data.textures[id];
         }
-        s = this.reader.getFloat(textureTag, 'length_s');
-        t = this.reader.getFloat(textureTag, 'length_t');
+        s = this.reader.getFloat(textureTag, 'length_s', false);
+        t = this.reader.getFloat(textureTag, 'length_t', false);
+
+        if(!this.verifyStringsFloats([],[s,t])) {
+            return;
+        }
 
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;
@@ -1333,7 +1337,7 @@ class MySceneGraphAdapt {
      * @param {Father's length T} fatherT
      */
     processComponent(comp, fatherMat, fatherTex, fatherS, fatherT) {
-        var currentMat, currentTex, currentS, currentT;
+        let currentMat, currentTex, currentS, currentT;
         this.scene.pushMatrix();
       
         if(this.nodes[comp].transformationMat != null)
@@ -1357,9 +1361,9 @@ class MySceneGraphAdapt {
                 break;
             case "inherit":
                 currentTex = fatherTex;
-                if(currentS==null)
+                if(this.nodes[comp].lengthS==null)
                     currentS = fatherS;
-                if(currentT==null)
+                if(this.nodes[comp].lengthT==null)
                     currentT = fatherT;
                 break;
             default:
@@ -1375,7 +1379,8 @@ class MySceneGraphAdapt {
                 currentMat.setTexture(currentTex);
 
                 if( (this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle )
-                    && this.primitives[primitiveChildren[i]].textureSet == false){
+                    //&& this.primitives[primitiveChildren[i]].textureSet == false
+                    ){
                     this.primitives[primitiveChildren[i]].setTexCoords(currentS, currentT);
                 }   
 
