@@ -870,7 +870,7 @@ class MySceneGraphAdapt {
 
 
             if(this.reader.hasAttribute("center")
-              center = Vector3(this.reader,"center");
+              center = getVector3(this.reader,"center");
 
             radius = this.reader.getFloat(circularAnimations[i], "radius", true);
             startang = this.reader.getFloat(circularAnimations[i], "startang", true);
@@ -1210,6 +1210,30 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Parses <animation> block (<component>'s child)
+     * @param {component's id} compId
+     * @param {children tag} animationTag
+     */
+    parseCompAnimation(compId, animationTag) {
+        var animationref;
+
+        animationref = childrenTag.getElementsByTagName('animationref');
+
+        for(let i=0; i<animationref.length; i++) {
+            var id;
+
+            id=this.reader.getString(animationref[i], 'id', true);
+            if(!this.verifyString(id)){
+                return "<components> - something wrong with animationref's id";
+              }else {
+                  this.nodes[compId].animations.push(id);
+                  return;
+
+            this.nodes[compId].animations.push(this.data.animations[id]);
+        }
+
+}
+    /**
      * Parses <children> block (<component>'s child)
      * @param {component's id} compId
      * @param {children tag} childrenTag
@@ -1258,7 +1282,7 @@ class MySceneGraphAdapt {
             return "<components> - you must define at least one component";
 
         var id;
-        var transformationTag, materialsTag, textureTag, childrenTag;
+        var transformationTag, materialsTag, textureTag, animationTag, childrenTag;
 
         for(let i=0; i<components.length; i++){
             // id do component
@@ -1273,9 +1297,10 @@ class MySceneGraphAdapt {
             transformationTag = components[i].getElementsByTagName('transformation')[0];
             materialsTag = components[i].getElementsByTagName('materials')[0];
             textureTag = components[i].getElementsByTagName('texture')[0];
+            animationTag = components[i].getElementsByTagName('animation')[0];
             childrenTag = components[i].getElementsByTagName('children')[0];
 
-            if(!this.verifyElems([transformationTag, materialsTag, textureTag, childrenTag]))
+            if(!this.verifyElems([transformationTag, materialsTag, textureTag, animationTag, childrenTag]))
                 return "<components> - something wrong with component's children";
 
             var error = this.parseCompTransformation(id, transformationTag);
@@ -1292,8 +1317,12 @@ class MySceneGraphAdapt {
             if(error != null)
                 return error;
 
-            // <children>
+            // <animation>
+            error = this.parseCompAnimation(id, animationTag);
+            if(error != null)
+              return error;
 
+            // <children>
             error = this.parseCompChildren(id, childrenTag);
             if(error != null)
                 return error;

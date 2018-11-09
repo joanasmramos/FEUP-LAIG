@@ -3,8 +3,8 @@
  */
 class MySceneData {
 
-    /** 
-    * @constructor 
+    /**
+    * @constructor
     */
     constructor() {
         //scene
@@ -31,6 +31,9 @@ class MySceneData {
 
         //transformations
         this.transformations = [];
+
+        //transformations
+        this.animatinos = [];
 
         //animations
         this.linearAnimations = new Object();

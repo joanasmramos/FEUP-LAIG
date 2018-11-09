@@ -12,8 +12,8 @@ class CircularAnimation extends Animation {
      * @param {Total rotation angle for the animation} rotationalAngle
      * @param {Total duration of the circular animation} totalTime
      */
-    constructor(center, radius, initialAngle, rotationalAngle, totalTime){
-      super(totalTime);
+    constructor(id, center, radius, initialAngle, rotationalAngle, totalTime){
+      super(id, totalTime);
 
       this.center = center;
       this.radius = radius;

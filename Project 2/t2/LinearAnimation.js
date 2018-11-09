@@ -7,8 +7,8 @@ class LinearAnimation extends Animation {
      * @param {vec3 Array containing the coordinates of each control point} controlPoints
      * @param {Total time of the animation} totalTime
      */
-    constructor(controlPoints, totalTime){
-        super(totalTime);
+    constructor(id, controlPoints, totalTime){
+        super(id, totalTime);
 
         this.activeSegment = 0;
         this.totalDistance = 0;
