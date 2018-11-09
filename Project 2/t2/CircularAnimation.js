@@ -26,11 +26,26 @@ class CircularAnimation extends Animation {
       this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
+    calcRotationalTransformations(transMatrix, currAngle){
+      mat4.identity(transMatrix);
+      mat4.translate(transMatrix, transMatrix, this.center);
+      mat4.rotateY(transMatrix), transMatrix, currAngle);
+      mat4.rotateY(transMatrix, transMatrix, this.initialAngle);
+      mat4.translate(transMatrix, transMatrix, [this.radius, 0, 0]);
+
+      if(this.rotationalAngle < 0){
+      mat4.rotateY(transMatrix, transMatrix, 180);
+      }
+
+    return transMatrix;
+  }
+    }
+
     update(currTime) {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees
       let deltaTime = currTime/this.totalTime - deltaT;
 
-      let currAngle = this.rotationalAngle*(this.deltaTime/span)*radToDegree;
+      let currAngle = this.initialAngle + this.rotationalAngle*(this.deltaTime/this.totalTime)*radToDegree;
 
       if(currTime < this.totalTime){
         if(this.curranimatione_time <= 0){
@@ -40,14 +55,13 @@ class CircularAnimation extends Animation {
         if(this.totalTime < deltaT)
           deltaT = this.totalTime;
 
-      mat4.identity(this.transformationMatrix);
-      mat4.translate(this.transformationMatrix, this.transformationMatrix, this.center);
-      mat4.rotateY(this.transformationMatrix, this.transformationMatrix, currAngle);
-      mat4.rotateY(this.transformationMatrix, this.transformationMatrix, initialAngle);
-      mat4.translate(this.transformationMatrix, this.matransformationMatrixtrix, [this.radius, 0, 0]);
+        calcRotationalTransformations(this.transformationMatrix, currAngle);
 
-    }
-      return;
+        this.curranimatione_time += currTime;
+
+        return this.transformationMatrix;
+    }else return;
+
   }
 
 

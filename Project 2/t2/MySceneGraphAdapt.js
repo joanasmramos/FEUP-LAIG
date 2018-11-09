@@ -115,8 +115,8 @@ class MySceneGraphAdapt {
 
     /**
      * Verifies if an array of strings and an array of floats are valid
-     * @param {strings to verify} strs 
-     * @param {floats to verify} fls 
+     * @param {strings to verify} strs
+     * @param {floats to verify} fls
      */
     verifyStringsFloats(strs, fls) {
         for (let i = 0; i < strs.length; i++) {
@@ -133,7 +133,7 @@ class MySceneGraphAdapt {
 
     /**
     * Verifies if an array of elements is valid (not null)
-    * @param {Elements to verify} elems 
+    * @param {Elements to verify} elems
     */
     verifyElems(elems) {
         for (let i = 0; i < elems.length; i++) {
@@ -172,7 +172,7 @@ class MySceneGraphAdapt {
 
     /**
      * Readz x, y and z from a DOM element, returns an associative array with xyz
-     * @param {element} elem 
+     * @param {element} elem
      */
     readXYZarray(elem) {
         var xyz = [];
@@ -186,7 +186,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads x, y, z values from a string like "xx yy zz"
-     * @param {string} str 
+     * @param {string} str
      */
     readXYZfromStr(str) {
 
@@ -194,7 +194,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads x, y, z and w from a DOM element, returns associative array with xyzw
-     * @param {element} elem 
+     * @param {element} elem
      */
     readXYZW(elem) {
         var xyzw = [];
@@ -208,8 +208,8 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Reads r, g, b and a from a DOM element, returns array 
-     * @param {element} elem 
+     * Reads r, g, b and a from a DOM element, returns array
+     * @param {element} elem
      */
     readRGBA(elem) {
         var rgba = [];
@@ -224,7 +224,7 @@ class MySceneGraphAdapt {
 
     /**
      * Validates an rgb component (r, g, b, a)
-     * @param {color} color 
+     * @param {color} color
      */
     validate_RGB(color) {
         if (!this.verifyElement(color) || !this.verifyFloat(color) || color < 0 || color > 1) {
@@ -248,7 +248,7 @@ class MySceneGraphAdapt {
 
     /**
      * Validates an array of rgba elements
-     * @param {colors} colors 
+     * @param {colors} colors
      */
     validateRGBAs(colors) {
         for (let i = 0; i < colors.length; i++) {
@@ -378,7 +378,7 @@ class MySceneGraphAdapt {
             //Parse ANIMATIONS block
             if ((error = this.parseAnimations(rootChildren[index])) != null)
                 return error;
-        }        
+        }
 
         // <primitives>
         if ((index = nodeNames.indexOf("primitives")) == -1)
@@ -493,7 +493,7 @@ class MySceneGraphAdapt {
                 return "<views> - something wrong with a ortho's from/to element";
 
             from = this.readXYZ(fromTag);
-            to = this.readXYZ(toTag);            
+            to = this.readXYZ(toTag);
             up = [0,1,0];
 
             if (!this.verifyStringsFloats([], [near, far, left, right, top, bottom, from[0], from[1], from[2], to[0], to[1], to[2],
@@ -514,7 +514,7 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses the <ambient> block. 
+     * Parses the <ambient> block.
      * @param {ambient block element} ambientsNode
      */
     parseAmbient(ambientsNode) {
@@ -655,7 +655,7 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses the <TEXTURES> block. 
+     * Parses the <TEXTURES> block.
      * @param {textures block element} texturesNode
      */
     parseTextures(texturesNode) {
@@ -696,7 +696,7 @@ class MySceneGraphAdapt {
         var id;
         var vector, axis, angle;
         this.data.transformations = [];
-        for (let i = 0; i < transformation.length; i++) { 
+        for (let i = 0; i < transformation.length; i++) {
 
             id = this.reader.getString(transformation[i], "id", true);
             var children = transformation[i].children; //translates rotates scales
@@ -704,7 +704,7 @@ class MySceneGraphAdapt {
             if (!(this.verifyString(id) || this.data.transformations[id] != null))
                 return "<transformations> - something wrong with the transformation id";
 
-            if (children.length == 0) 
+            if (children.length == 0)
                 return "<transformations> - a transformation needs to have an effective action (translate/rotate/scale)";
 
             var result = mat4.create();
@@ -713,7 +713,7 @@ class MySceneGraphAdapt {
                 switch (children[j].nodeName) {
                     case "translate":
                         vector = this.readXYZ(children[j]);
-    
+
                         mat4.translate(result, result, vector);
                         //this.data.transformations[id].push(result);
                         break;
@@ -727,19 +727,19 @@ class MySceneGraphAdapt {
                             case 'y':
                                 axis = [0, 1, 0];
                                 break;
-    
+
                             case 'z':
                                 axis = [0, 0, 1];
                                 break;
                         }
-    
+
                         vector = vec3.fromValues(axis[0], axis[1], axis[2]);
                         mat4.rotate(result, result, DEGREE_TO_RAD * angle, vector);
                         //this.data.transformations[id].push(result);
                         break;
                     case "scale":
                         vector = this.readXYZ(children[j]);
-    
+
                         mat4.scale(result, result, vector);
                         //this.data.transformations[id].push(result);
                         break;
@@ -755,7 +755,7 @@ class MySceneGraphAdapt {
 
             if (!this.verifyAssocArr(this.data.omniLights[id].location))
                 return "<lights> - something wrong with omni's xyzw values";
-    
+
             if (!this.validateRGBAs([this.data.omniLights[id].ambient, this.data.omniLights[id].diffuse, this.data.omniLights[id].specular]))
                 return "<lights> - something wrong with omni's rgb values";
         }
@@ -824,12 +824,12 @@ class MySceneGraphAdapt {
 
     /**
      * Parses the <animations> node.
-     * @param {animations block element} animationsNode 
+     * @param {animations block element} animationsNode
      */
     parseAnimations(animationsNode) {
         let linearAnimations = animationsNode.getElementsByTagName("linear");
         let circularAnimations = animationsNode.getElementsByTagName("circular");
-        
+
         if(linearAnimations.length == 0 && circularAnimations.length == 0) {
             return;
         }
@@ -860,11 +860,35 @@ class MySceneGraphAdapt {
             this.data.linearAnimations[id] = new LinearAnimation(controlPoints, span);
         }
 
+        for(let i=0; i<circularAnimations.length; i++) {
+            id = this.reader.getString(circularAnimations[i], "id", true);
+            span = this.reader.getFloat(circularAnimations[i], "span", true);
+
+            if(this.data.circularAnimations[id] != null) {
+                return "<animations> - repeated id in circular animations";
+            }
+
+
+            if(this.reader.hasAttribute("center")
+              center = Vector3(this.reader,"center");
+
+            radius = this.reader.getFloat(circularAnimations[i], "radius", true);
+            startang = this.reader.getFloat(circularAnimations[i], "startang", true);
+            rotang = this.reader.getFloat(circularAnimations[i], "rotang", true);
+
+                if(!this.verifyStringsFloats([], center)) {
+                    return "<animations> - xyz values for circular animation are not valid";
+                }
+
+
+            this.data.circularAnimations[id] = new CircularAnimation(center, radius, initialAngle, rotationalAngle, span);
+        }
+
     }
 
     /**
      * Reads x,y and z coordinates from a Rectangle element, returns associative array with xy_rect
-     * @param {element} elem 
+     * @param {element} elem
      */
     readRectanglearray(elem) {
         var xy_rect = [];
@@ -879,7 +903,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads radius, slices, stacks from a Sphere element, returns associative array with rss
-     * @param {element} elem 
+     * @param {element} elem
      */
     readSpherearray(elem) {
         var rss = [];
@@ -893,7 +917,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads x,y and z coordinates from a Triangle element, returns associative array with xyz_rect
-     * @param {element} elem 
+     * @param {element} elem
      */
     readTrianglearray(elem) {
         var xyz_rect = [];
@@ -913,7 +937,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads from a Cylinder element, returns associative array with components
-     * @param {element} elem 
+     * @param {element} elem
      */
     readCylinderarray(elem) {
         var bthss_cylinder = [];
@@ -930,7 +954,7 @@ class MySceneGraphAdapt {
 
     /**
     * Reads x,y and z coordinates from a Torus element, returns associative array with inner;outer;slices;stack
-    * @param {element} elem 
+    * @param {element} elem
     */
     readTorusarray(elem) {
         var torus_property = [];
@@ -946,7 +970,7 @@ class MySceneGraphAdapt {
 
     /**
      * Parses the <primitives> node.
-     * @param {primitives block element} 
+     * @param {primitives block element}
      */
     parsePrimitives(primitivesNode) {
 
@@ -964,11 +988,11 @@ class MySceneGraphAdapt {
 
             if (!this.verifyString(id))
                 return "<primitives> - something wrong with primitives' id";
-            
+
             if(children.length > 1)
                 return "You can only define 1 primitive per block."
 
-            
+
             switch (children[0].nodeName) {
                 case 'rectangle':
                     rectangleTag = primitive[id].getElementsByTagName('rectangle')[0];
@@ -980,11 +1004,11 @@ class MySceneGraphAdapt {
                     if (!this.verifyAssocArr(rectangle))
                         return "<primitives> - something wrong with rectangles's x1y1x2y2 values";
 
-                    if(this.primitives[id] != null) 
+                    if(this.primitives[id] != null)
                         return "<primitives> - something wrong with primitive's id";
-                    
-                    this.primitives[id] = new MyRectangle(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]); 
-                    
+
+                    this.primitives[id] = new MyRectangle(this.scene, rectangle["x1"], rectangle["y1"], rectangle["x2"], rectangle["y2"]);
+
                     break;
 
                 case 'triangle':
@@ -997,13 +1021,13 @@ class MySceneGraphAdapt {
                     if (!this.verifyAssocArr(triangle))
                         return "<primitives> - something wrong with triangles's x1;y1;z1;x2;y2;z2;x3;y3,z3 values";
 
-                    if(this.primitives[id] != null) 
+                    if(this.primitives[id] != null)
                         return "<primitves> - something wrong with primitive's id";
-                    
+
                     this.primitives[id] = new MyTriangle(this.scene, triangle["x1"], triangle["y1"], triangle["z1"],
                                                                      triangle["x2"], triangle["y2"], triangle["z2"],
                                                                      triangle["x3"], triangle["y3"], triangle["z3"]);
-                    
+
                     break;
 
                 case 'cylinder':
@@ -1017,7 +1041,7 @@ class MySceneGraphAdapt {
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
                     //semtampa
                     this.primitives[id] = new MyCylinder (this.scene, cylinder["base"], cylinder["top"], cylinder["height"], cylinder["slices"], cylinder["stacks"]);
-                    
+
                     break;
 
                 case 'sphere':
@@ -1030,7 +1054,7 @@ class MySceneGraphAdapt {
                     if (!this.verifyAssocArr(sphere))
                         return "<primitives> - something wrong with spheres's radius;slices;stacks values";
 
-                    if(this.primitives[id] != null) 
+                    if(this.primitives[id] != null)
                         return "<primitves> - something wrong with primitive's id";
 
                     this.primitives[id] = new MySphere(this.scene, sphere["radius"],  sphere["slices"], sphere["stacks"]);
@@ -1047,7 +1071,7 @@ class MySceneGraphAdapt {
                         return "<primitives> - something wrong with torus's inner;outer;slices;loops' values";
 
 
-                    if(this.primitives[id] != null) 
+                    if(this.primitives[id] != null)
                         return "<primitves> - something wrong with primitive's id";
 
                     this.primitives[id] = new MyTorus(this.scene, torus["inner"], torus["outer"], torus["slices"], torus["loops"]);
@@ -1067,8 +1091,8 @@ class MySceneGraphAdapt {
 
     /**
      * Parses <transformation> block (<component>'s child)
-     * @param {component's id} compId 
-     * @param {transformation tag} transformationTag 
+     * @param {component's id} compId
+     * @param {transformation tag} transformationTag
      */
     parseCompTransformation(compId,transformationTag) {
         var transformationref = transformationTag.getElementsByTagName("transformationref");
@@ -1087,7 +1111,7 @@ class MySceneGraphAdapt {
 
             if(this.data.transformations[id] == null)
                 return "<components> no such transformation";
-            
+
             this.nodes[compId].transformationMat = this.data.transformations[id];
         }
         else {
@@ -1098,7 +1122,7 @@ class MySceneGraphAdapt {
                 switch(children[i].nodeName) {
                     case "translate":
                         var vector = this.readXYZ(children[i]);
-    
+
                         mat4.translate(result, result, vector);
                         break;
                     case "rotate":
@@ -1111,18 +1135,18 @@ class MySceneGraphAdapt {
                             case 'y':
                                 axis = [0, 1, 0];
                                 break;
-    
+
                             case 'z':
                                 axis = [0, 0, 1];
                                 break;
                         }
-    
+
                         var vector = vec3.fromValues(axis[0], axis[1], axis[2]);
                         mat4.rotate(result, result, DEGREE_TO_RAD * angle, vector);
                         break;
                     case "scale":
                         vector = this.readXYZ(children[i]);
-    
+
                         mat4.scale(result, result, vector);
                         break;
                     default:
@@ -1136,8 +1160,8 @@ class MySceneGraphAdapt {
 
     /**
      * Parses <materials> block (<component>'s child)
-     * @param {component's id} compId 
-     * @param {materials tag} materialsTag 
+     * @param {component's id} compId
+     * @param {materials tag} materialsTag
      */
     parseCompMaterials(compId, materialsTag) {
         var materials = materialsTag.getElementsByTagName('material'); // array com todas as <material> filhas de <materials>
@@ -1163,8 +1187,8 @@ class MySceneGraphAdapt {
 
     /**
      * Parses <texture> block (<component>'s child)
-     * @param {component's id} compId 
-     * @param {texture tag} textureTag 
+     * @param {component's id} compId
+     * @param {texture tag} textureTag
      */
     parseCompTexture(compId, textureTag) {
         var id, s, t;
@@ -1178,12 +1202,8 @@ class MySceneGraphAdapt {
         else {
             this.nodes[compId].texture = this.data.textures[id];
         }
-        s = this.reader.getFloat(textureTag, 'length_s', false);
-        t = this.reader.getFloat(textureTag, 'length_t', false);
-
-        if(!this.verifyStringsFloats([],[s,t])) {
-            return;
-        }
+        s = this.reader.getFloat(textureTag, 'length_s');
+        t = this.reader.getFloat(textureTag, 'length_t');
 
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;
@@ -1191,8 +1211,8 @@ class MySceneGraphAdapt {
 
     /**
      * Parses <children> block (<component>'s child)
-     * @param {component's id} compId 
-     * @param {children tag} childrenTag 
+     * @param {component's id} compId
+     * @param {children tag} childrenTag
      */
     parseCompChildren(compId, childrenTag) {
         var componentref, primitiveref;
@@ -1277,7 +1297,7 @@ class MySceneGraphAdapt {
             error = this.parseCompChildren(id, childrenTag);
             if(error != null)
                 return error;
-            
+
 
             for(let i=0; i<this.nodeIds.length; i++) {
                 if(this.nodeIds[i] == id)
@@ -1285,7 +1305,7 @@ class MySceneGraphAdapt {
             }
 
             this.nodeIds.push(id);
-            
+
             var a = this.nodes[id];
             this.log("");
         }
@@ -1297,7 +1317,7 @@ class MySceneGraphAdapt {
                 root = true;
         }
         if (!root)
-            return "<components> - there's no such root"; 
+            return "<components> - there's no such root";
 
         this.log("Parsed components");
         return null;
@@ -1329,20 +1349,20 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * 
-     * @param {Current component} comp 
-     * @param {Father's material} fatherMat 
-     * @param {Father's texture} fatherTex 
+     *
+     * @param {Current component} comp
+     * @param {Father's material} fatherMat
+     * @param {Father's texture} fatherTex
      * @param {Father's length S} fatherS
      * @param {Father's length T} fatherT
      */
     processComponent(comp, fatherMat, fatherTex, fatherS, fatherT) {
-        let currentMat, currentTex, currentS, currentT;
+        var currentMat, currentTex, currentS, currentT;
         this.scene.pushMatrix();
-      
+
         if(this.nodes[comp].transformationMat != null)
             this.scene.multMatrix(this.nodes[comp].transformationMat);
-        
+
         currentS = this.nodes[comp].lengthS;
         currentT = this.nodes[comp].lengthT;
 
@@ -1361,16 +1381,16 @@ class MySceneGraphAdapt {
                 break;
             case "inherit":
                 currentTex = fatherTex;
-                if(this.nodes[comp].lengthS==null)
+                if(currentS==null)
                     currentS = fatherS;
-                if(this.nodes[comp].lengthT==null)
+                if(currentT==null)
                     currentT = fatherT;
                 break;
             default:
                 currentTex = this.nodes[comp].texture;
                 break;
         }
-    
+
         var primitiveChildren = this.nodes[comp].primitiveref;
         var componentChildren = this.nodes[comp].componentref;
 
@@ -1379,16 +1399,15 @@ class MySceneGraphAdapt {
                 currentMat.setTexture(currentTex);
 
                 if( (this.primitives[primitiveChildren[i]] instanceof MyRectangle || this.primitives[primitiveChildren[i]] instanceof MyTriangle )
-                    //&& this.primitives[primitiveChildren[i]].textureSet == false
-                    ){
+                    && this.primitives[primitiveChildren[i]].textureSet == false){
                     this.primitives[primitiveChildren[i]].setTexCoords(currentS, currentT);
-                }   
+                }
 
                 currentMat.apply();
                 this.primitives[primitiveChildren[i]].display();
             }
         }
-            
+
         for(let i=0; i<componentChildren.length; i++) {
             this.processComponent(componentChildren[i], currentMat, currentTex, currentS, currentT);
         }
@@ -1407,4 +1426,3 @@ class MySceneGraphAdapt {
     }
 
 }
-
