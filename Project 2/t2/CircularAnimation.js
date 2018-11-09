@@ -13,24 +13,32 @@ class CircularAnimation extends Animation {
      * @param {Total duration of the circular animation} totalTime
      */
     constructor(center, radius, initialAngle, rotationalAngle, totalTime){
-      super(totalTime, span);
+      super(totalTime);
 
       this.center = center;
       this.radius = radius;
       this.initialAngle = initialAngle;
       this.rotationalAngle = rotationalAngle;
+      this.curranimatione_time = 0;
 
+
+      this.transformationMatrix = mat4.create();
       this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
     update(currTime) {
-      if(currTime > this.totalTime)
-        return;
-      //        if(this.initialAngle > this.rotationalAngle)
-
+      let radToDegree = 180 / Math.PI; // convert the angle to degrees
       let deltaTime = currTime/this.totalTime - deltaT;
 
-      let currAngle = this.rotationalAngle*this.deltaTime/span;
+      let currAngle = this.rotationalAngle*(this.deltaTime/span)*radToDegree;
+
+      if(currTime < this.totalTime){
+        if(this.curranimatione_time <= 0){
+          this.curranimatione_time = currTime;
+          return this.transformationMatrix;
+        }
+        if(this.totalTime < deltaT)
+          deltaT = this.totalTime;
 
       mat4.identity(this.transformationMatrix);
       mat4.translate(this.transformationMatrix, this.transformationMatrix, this.center);
@@ -38,8 +46,9 @@ class CircularAnimation extends Animation {
       mat4.rotateY(this.transformationMatrix, this.transformationMatrix, initialAngle);
       mat4.translate(this.transformationMatrix, this.matransformationMatrixtrix, [this.radius, 0, 0]);
 
-      return;
     }
+      return;
+  }
 
 
     }

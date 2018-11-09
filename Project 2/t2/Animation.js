@@ -7,13 +7,11 @@ class Animation {
      * Constructor
      * @param {Total time of the animation} totalTime
      */
-    constructor(totalTime, span){
+    constructor(totalTime){
         this.totalTime = totalTime;
         this.lastT = null;
         this.deltaT = null;
         this.done = false;
-        this.span = span;
-        this.transformationMatrix = mat4.create();
     }
 
     update(currTime) {
