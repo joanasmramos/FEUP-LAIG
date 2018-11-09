@@ -29,7 +29,7 @@ class CircularAnimation extends Animation {
     calcRotationalTransformations(transMatrix, currAngle){
       mat4.identity(transMatrix);
       mat4.translate(transMatrix, transMatrix, this.center);
-      mat4.rotateY(transMatrix), transMatrix, currAngle);
+      mat4.rotateY(transMatrix, transMatrix, currAngle);
       mat4.rotateY(transMatrix, transMatrix, this.initialAngle);
       mat4.translate(transMatrix, transMatrix, [this.radius, 0, 0]);
 
@@ -39,7 +39,7 @@ class CircularAnimation extends Animation {
 
     return transMatrix;
   }
-    }
+
 
     update(currTime) {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees

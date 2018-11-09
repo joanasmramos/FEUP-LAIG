@@ -857,7 +857,7 @@ class MySceneGraphAdapt {
                 controlPoints.push(controlPoint);
             }
 
-            this.data.linearAnimations[id] = new LinearAnimation(controlPoints, span);
+            this.data.linearAnimations[id] = new LinearAnimation(id, span, controlPoints, span);
         }
 
         for(let i=0; i<circularAnimations.length; i++) {
@@ -869,8 +869,9 @@ class MySceneGraphAdapt {
             }
 
 
-            if(this.reader.hasAttribute("center")
-              center = getVector3(this.reader,"center");
+            if(this.reader.hasAttribute(circularAnimations[i], "center")){
+              center = this.reader.getVector3(circularAnimations[i], "center");
+            }
 
             radius = this.reader.getFloat(circularAnimations[i], "radius", true);
             startang = this.reader.getFloat(circularAnimations[i], "startang", true);
@@ -881,7 +882,7 @@ class MySceneGraphAdapt {
                 }
 
 
-            this.data.circularAnimations[id] = new CircularAnimation(center, radius, initialAngle, rotationalAngle, span);
+            this.data.circularAnimations[id] = new CircularAnimation(id, span, center, radius, startang, rotang);
         }
 
     }
@@ -1210,28 +1211,29 @@ class MySceneGraphAdapt {
     }
 
     /**
-     * Parses <animation> block (<component>'s child)
+     * Parses <animation> block (<component>'s animation)
      * @param {component's id} compId
-     * @param {children tag} animationTag
+     * @param {animation tag} animationTag
      */
     parseCompAnimation(compId, animationTag) {
-        var animationref;
+      var animationref;
 
-        animationref = childrenTag.getElementsByTagName('animationref');
-
+      animationref = animationTag.getElementsByTagName("animationref");
+      if(animationref != null){
         for(let i=0; i<animationref.length; i++) {
             var id;
-
             id=this.reader.getString(animationref[i], 'id', true);
+
             if(!this.verifyString(id)){
                 return "<components> - something wrong with animationref's id";
-              }else {
+              } else {
                   this.nodes[compId].animations.push(id);
                   return;
-
+                }
             this.nodes[compId].animations.push(this.data.animations[id]);
         }
-
+    }
+     else return;
 }
     /**
      * Parses <children> block (<component>'s child)
@@ -1295,17 +1297,22 @@ class MySceneGraphAdapt {
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
+            animationTag = components[i].getElementsByTagName('animations')[0];
             materialsTag = components[i].getElementsByTagName('materials')[0];
             textureTag = components[i].getElementsByTagName('texture')[0];
-            animationTag = components[i].getElementsByTagName('animation')[0];
             childrenTag = components[i].getElementsByTagName('children')[0];
 
-            if(!this.verifyElems([transformationTag, materialsTag, textureTag, animationTag, childrenTag]))
+            if(!this.verifyElems([transformationTag, materialsTag, textureTag, childrenTag]))
                 return "<components> - something wrong with component's children";
 
             var error = this.parseCompTransformation(id, transformationTag);
             if(error != null)
                 return error;
+
+            // <animations>
+            if(animationTag =! null){
+              error = this.parseCompAnimation(id, animationTag);
+            }
 
             // <materials>
             error = this.parseCompMaterials(id, materialsTag);
@@ -1316,11 +1323,6 @@ class MySceneGraphAdapt {
             error = this.parseCompTexture(id, textureTag);
             if(error != null)
                 return error;
-
-            // <animation>
-            error = this.parseCompAnimation(id, animationTag);
-            if(error != null)
-              return error;
 
             // <children>
             error = this.parseCompChildren(id, childrenTag);

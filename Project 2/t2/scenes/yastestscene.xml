@@ -11,7 +11,7 @@
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
         </perspective>
-        
+
         <ortho id="Orthographic" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
             <from x="20" y="1" z="20" />
             <to x="0" y="0" z="0" />
@@ -38,7 +38,7 @@
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
-        </omni>       
+        </omni>
 
         <spot id="FatLady 1" enabled="0" angle="10" exponent="2" >
             <location x="3.5" y="2" z="0.5" w="1" />
@@ -47,7 +47,7 @@
             <diffuse r="1" g="1" b="1" a="1" />
             <specular r="0.5" g="0.5" b="0.5" a="1" />
         </spot>
-        
+
         <spot id="FatLady 2" enabled="0" angle="20" exponent="2" >
             <location x="7.5" y="2" z="0.5" w="1" />
             <target x="10.5" y="9" z="-5.5" />
@@ -62,7 +62,7 @@
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
             <specular r="0.5" g="0.5" b="0.5" a="1" />
-        </omni>    
+        </omni>
 
         <omni id="Hallway 2" enabled="0" >
             <location x="7.5" y="2" z="-5.5" w="1" />
@@ -70,7 +70,7 @@
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="1" g="1" b="1" a="1" />
             <specular r="0.5" g="0.5" b="0.5" a="1" />
-        </omni>  
+        </omni>
 
     </lights>
 
@@ -103,15 +103,15 @@
             <emission r="0.2" g="0.2" b="0.2" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.3" g="0.3" b="0.3" a="1" />
-            <specular r="0.9" g="0.9" b="0.9" a="1" />           
-        </material> 
+            <specular r="0.9" g="0.9" b="0.9" a="1" />
+        </material>
 
          <material id="metal2" shininess="30">
             <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.3" g="0.3" b="0.3" a="1" />
-            <specular r="0.9" g="0.9" b="0.9" a="1" />           
-        </material>              
+            <specular r="0.9" g="0.9" b="0.9" a="1" />
+        </material>
 
     </materials>
 
@@ -204,11 +204,11 @@
           <translate x="5.5" y="3.05" z="0.05" />
           <rotate axis="z" angle="90" />
         </transformation>
-        
+
         <transformation id="bottom_frame">
           <translate x="0" y="-3.1" z="0" />
         </transformation>
-        
+
         <transformation id="hogwarts_frame">
           <rotate axis="y" angle="-90" />
           <translate x="0.5" y="2.5" z="-0.1" />
@@ -219,19 +219,19 @@
           <translate x="0.1" y="4" z="4.35" />
           <scale x="1" y="3" z="1.3" />
           <rotate axis="y" angle="90"/>
-        </transformation>   
+        </transformation>
 
         <!--<transformation id="structure_1">
           <translate x="0.3" y="4" z="7.5" />
           <rotate axis="y" angle="-90" />
           <scale x="0.5" y="0.09" z="0.3" />
-        </transformation>  
+        </transformation>
 
         <transformation id="structure_2">
           <translate x="0.3" y="5" z="7.5" />
           <rotate axis="y" angle="-90" />
           <scale x="0.5" y="0.09" z="0.3" />
-        </transformation> 
+        </transformation>
 
         <transformation id="structure_3">
           <translate x="3" y="4" z="0.2" />
@@ -240,25 +240,25 @@
 
         <transformation id="candles_frame1">
           <translate x="1.3" y="3.5" z="0.05" />
-        </transformation>   
+        </transformation>
 
         <transformation id="candles_frame2">
           <translate x="2.3" y="3.5" z="0.05" />
-        </transformation>   
+        </transformation>
 
         <transformation id="candles_frame3">
           <translate x="3.3" y="3.5" z="0.05" />
-        </transformation>  
+        </transformation>
 
         <transformation id="fatlady_painting">
           <translate x="5.5" y="1.5" z="0.03" />
           <scale x="2" y="3" z="1.9" />
-        </transformation>   
+        </transformation>
 
         <transformation id="candles_image">
           <translate x="7.8" y="5" z="0.1" />
           <scale x="4" y="3" z="0.1" />
-        </transformation>      
+        </transformation>
 
         <transformation id="maincarpet">
           <translate x="5.5" y="0" z="5.5" />
@@ -269,7 +269,7 @@
         <transformation id="bookshelf_1">
           <translate x="0.4" y="1.25" z="8.5" />
           <scale x="0.5" y="2.5" z="2.5" />
-        </transformation> 
+        </transformation>
 
         <transformation id="floor">
           <translate x="5.5" y="0" z="5.5" />
@@ -287,12 +287,9 @@
     </transformations>
 
     <animations>
-        <linear id="linear1" span="2">
-            <controlpoint xx="0" yy="0" zz="1" />
-            <controlpoint xx="1" yy= "0" zz="1" />
-        </linear>
 
-        <circular 
+
+        <circular
             id="circular1" span="2" center="0 0 0" radius="1" startang="0" rotang="45"
         />
     </animations>
@@ -347,6 +344,9 @@
         <component id="fatlady_door">
             <transformation>
             </transformation>
+            <animations>
+              <animationref id="circular1" />
+            </animations>
             <materials>
                 <material id="inherit" />
             </materials>
@@ -492,7 +492,7 @@
                 <componentref id="candles_frame3" />
                 <componentref id="candles_image" />
             </children>
-        </component>        
+        </component>
 
         <component id="candles_frame1">
             <transformation>
@@ -650,7 +650,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="pillar" length_s="1" length_t="1" /> 
+            <texture id="pillar" length_s="1" length_t="1" />
             <children>
                 <componentref id="cube" />
             </children>
@@ -785,7 +785,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="brick_walls" length_s="1" length_t="1" /> 
+            <texture id="brick_walls" length_s="1" length_t="1" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -798,12 +798,12 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="floor" length_s="1" length_t="1"/> 
+            <texture id="floor" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="rectangle"/>
             </children>
         </component>
-        
+
         <component id="ceiling">
             <transformation>
                 <transformationref id="ceiling"/>
@@ -811,7 +811,7 @@
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="ceiling" length_s="1" length_t="1"/> 
+            <texture id="ceiling" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="rectangle"/>
             </children>
@@ -984,7 +984,7 @@
                 <primitiveref id="torus" />
             </children>
         </component>-->
-        
+
     </components>
 
 </yas>

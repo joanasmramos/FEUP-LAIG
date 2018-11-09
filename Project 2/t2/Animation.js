@@ -5,9 +5,11 @@ class Animation {
 
     /**
      * Constructor
+     * @param {ID for animiation} id
      * @param {Total time of the animation} totalTime
      */
-    constructor(totalTime){
+    constructor(id, totalTime){
+        this.id = id;
         this.totalTime = totalTime;
         this.lastT = null;
         this.deltaT = null;

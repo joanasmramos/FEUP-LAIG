@@ -3,8 +3,8 @@
  */
 class MySceneComponent{
 
-    /** 
-    * @constructor 
+    /**
+    * @constructor
     */
     constructor() {
         this.transformationMat = null;
@@ -15,6 +15,7 @@ class MySceneComponent{
         this.lengthT = null;
         this.componentref = new Array();
         this.primitiveref = new Array();
+        this.animationref = new Array();
     }
 
     switchMaterial() {
