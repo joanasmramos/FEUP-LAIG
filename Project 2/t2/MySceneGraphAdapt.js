@@ -970,6 +970,19 @@ class MySceneGraphAdapt {
     }
 
     /**
+    * Reads npartsU and npartsV from a Plane element, returns associative array with npartU;npartsV
+    * @param {element} elem
+    */
+    readPlanearray(elem) {
+        var plane_property = [];
+
+        plane_property["npartsU"] = this.reader.getInteger(elem, "npartsU", true);
+        plane_property["npartsV"] = this.reader.getInteger(elem, "npartsV", true);
+
+        return plane_property;
+    }
+
+    /**
      * Parses the <primitives> node.
      * @param {primitives block element}
      */
@@ -980,8 +993,8 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, circleTag;
-        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], slices, radius;
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, circleTag, planeTag;
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], slices, radius;
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -1077,6 +1090,23 @@ class MySceneGraphAdapt {
 
                     this.primitives[id] = new MyTorus(this.scene, torus["inner"], torus["outer"], torus["slices"], torus["loops"]);
 
+                    break;
+
+                case 'plane':
+                    planeTag = primitive[id].getElementsByTagName('plane')[0];
+
+                    if (!this.verifyElems([planeTag]))
+                        return "<primitives> - something wrong with primitives children";
+
+                    plane = this.readPlanearray(planeTag);
+                    if (!this.verifyAssocArr(plane))
+                        return "<primitives> - something wrong with plane's values";
+
+
+                    if(this.primitives[id] != null)
+                        return "<primitves> - something wrong with primitive's id";
+
+                    this.primitives[id] = new Plane(this.scene, plane["npartsU"], plane["npartsV"]);
                     break;
 
                 default:
@@ -1297,7 +1327,7 @@ class MySceneGraphAdapt {
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
-            animationTag = components[i].getElementsByTagName('animations')[0];
+            //animationTag = components[i].getElementsByTagName('animations');
             materialsTag = components[i].getElementsByTagName('materials')[0];
             textureTag = components[i].getElementsByTagName('texture')[0];
             childrenTag = components[i].getElementsByTagName('children')[0];
@@ -1309,11 +1339,10 @@ class MySceneGraphAdapt {
             if(error != null)
                 return error;
 
-            // <animations>
-            if(animationTag =! null){
-              error = this.parseCompAnimation(id, animationTag);
-            }
-
+            /*// <animations>
+            if(animationtag.length>0)
+            error = this.parseCompAnimation(id, animationtag[0]);
+*/
             // <materials>
             error = this.parseCompMaterials(id, materialsTag);
             if(error != null)

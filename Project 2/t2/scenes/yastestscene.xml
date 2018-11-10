@@ -287,7 +287,10 @@
     </transformations>
 
     <animations>
-
+        <linear id="linear1" span="2">
+            <controlpoint xx="0" yy="0" zz="1" />
+            <controlpoint xx="1" yy= "0" zz="1" />
+        </linear>
 
         <circular
             id="circular1" span="2" center="0 0 0" radius="1" startang="0" rotang="45"
@@ -310,34 +313,41 @@
         <primitive id="torus">
             <torus inner="1" outer="2" slices="64" loops="32"/>
         </primitive>
+        <primitive id="plane">
+            <plane npartsU="1" npartsV="1"/>
+        </primitive>
     </primitives>
 
     <components>
         <component id="root">
             <transformation>
             </transformation>
+            <animations>
+            </animations>
             <materials>
                 <material id="unique_mat" />
             </materials>
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <componentref id="bookshelf_1" />
-                <componentref id="floor"/>
                 <componentref id="ceiling"/>
                 <componentref id="right_wall" />
                 <componentref id="left_wall" />
-                <componentref id="center_pillar" />
                 <componentref id="right_pillar" />
                 <componentref id="left_pillar" />
                 <componentref id="fatlady_door"/>
                 <componentref id="hogwarts_painting"/>
                 <componentref id="candles_painting"/>
                 <componentref id="maincarpet" />
-                <!--<componentref id="structure_1" />
+                <!--
+                <componentref id="floor"/>
+                <componentref id="center_pillar" />
+                <componentref id="structure_1" />
                 <componentref id="structure_2" />
                 <componentref id="structure_3" />-->
                 <componentref id="chandelier2"/>
                 <componentref id="chandelier1"/>
+                <primitiveref id="plane"/>
             </children>
         </component>
 
