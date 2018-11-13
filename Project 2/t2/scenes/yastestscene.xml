@@ -288,8 +288,9 @@
 
     <animations>
         <linear id="linear1" span="2">
-            <controlpoint xx="0" yy="0" zz="1" />
-            <controlpoint xx="1" yy= "0" zz="1" />
+            <controlpoint xx="1" yy="0" zz="1" />
+            <controlpoint xx="5" yy="0" zz="1" />
+            <controlpoint xx="5" yy="0" zz="3" />
         </linear>
 
         <circular

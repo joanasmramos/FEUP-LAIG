@@ -857,7 +857,7 @@ class MySceneGraphAdapt {
                 controlPoints.push(controlPoint);
             }
 
-            this.data.linearAnimations[id] = new LinearAnimation(id, span, controlPoints, span);
+            this.data.linearAnimations[id] = new LinearAnimation(id, controlPoints, span);
         }
 
         for(let i=0; i<circularAnimations.length; i++) {
@@ -884,6 +884,9 @@ class MySceneGraphAdapt {
 
             this.data.circularAnimations[id] = new CircularAnimation(id, span, center, radius, startang, rotang);
         }
+
+        this.log("Parsed animations");
+        return null;
 
     }
 
@@ -1233,8 +1236,8 @@ class MySceneGraphAdapt {
         else {
             this.nodes[compId].texture = this.data.textures[id];
         }
-        s = this.reader.getFloat(textureTag, 'length_s');
-        t = this.reader.getFloat(textureTag, 'length_t');
+        s = this.reader.getFloat(textureTag, 'length_s', false);
+        t = this.reader.getFloat(textureTag, 'length_t', false);
 
         this.nodes[compId].lengthS = s;
         this.nodes[compId].lengthT = t;

@@ -33,13 +33,13 @@
  * Displaying plane/surface
  */
 	display() {
-		console.log("ayy");
+		//console.log("ayy");
   this.scene.pushMatrix();
 
-		console.log("ayy1");
+		//console.log("ayy1");
   this.plane.display();
 
-		console.log("ayy2");
+		//console.log("ayy2");
   this.scene.popMatrix();
 	}
 

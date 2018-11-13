@@ -17,9 +17,8 @@ class LinearAnimation extends Animation {
         this.segmentsDistance = new Array(); // this.segmentsDistance[0] = 2 ---> segment 0 has a total distance of 2 units
         this.segments = new Array();
 
-        //this.calcSegmentsDistance();
-        //this.setActiveSegmentDistance();
-        //this.calcDeltaDistance;
+        this.calcSegmentsDistance();
+        this.setActiveSegmentDistance();
     }
 
     /**
@@ -30,12 +29,14 @@ class LinearAnimation extends Animation {
     calcSegmentsDistance() {
         for(let i=1; i<this.controlPoints.length; i++) {
             let segmentDistance = vec3.distance(this.controlPoints[i-1], this.controlPoints[i]);
-            let vector;
-            vec3.subtract(vector, this.controlPoints[i], this.controlpoints[i-1]);
+            let vector = new Array(3);
+            vec3.subtract(vector, this.controlPoints[i], this.controlPoints[i-1]);
 
             this.segmentsDistance.push(segmentDistance);
             this.segments.push(vector);
             this.totalDistance += segmentDistance;
+
+            console.log(vector);
         }
     }
 
