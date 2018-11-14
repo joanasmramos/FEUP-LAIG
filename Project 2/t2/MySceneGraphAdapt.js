@@ -1252,7 +1252,6 @@ class MySceneGraphAdapt {
       var animationref;
 
       animationref = animationTag.getElementsByTagName("animationref");
-      if(animationref != null){
         for(let i=0; i<animationref.length; i++) {
             var id;
             id=this.reader.getString(animationref[i], 'id', true);
@@ -1263,11 +1262,11 @@ class MySceneGraphAdapt {
                   this.nodes[compId].animations.push(id);
                   return;
                 }
-            this.nodes[compId].animations.push(this.data.animations[id]);
         }
-    }
-     else return;
+        
+     return;
 }
+
     /**
      * Parses <children> block (<component>'s child)
      * @param {component's id} compId
@@ -1330,7 +1329,7 @@ class MySceneGraphAdapt {
 
             // component's children
             transformationTag = components[i].getElementsByTagName('transformation')[0];
-            //animationTag = components[i].getElementsByTagName('animations');
+            animationTag = components[i].getElementsByTagName('animations');
             materialsTag = components[i].getElementsByTagName('materials')[0];
             textureTag = components[i].getElementsByTagName('texture')[0];
             childrenTag = components[i].getElementsByTagName('children')[0];
@@ -1342,10 +1341,10 @@ class MySceneGraphAdapt {
             if(error != null)
                 return error;
 
-            /*// <animations>
-            if(animationtag.length>0)
-            error = this.parseCompAnimation(id, animationtag[0]);
-*/
+            // <animations>
+            if(animationTag.length>0)
+            error = this.parseCompAnimation(id, animationTag[0]);
+
             // <materials>
             error = this.parseCompMaterials(id, materialsTag);
             if(error != null)

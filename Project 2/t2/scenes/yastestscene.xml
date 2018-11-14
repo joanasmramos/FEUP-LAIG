@@ -323,8 +323,6 @@
         <component id="root">
             <transformation>
             </transformation>
-            <animations>
-            </animations>
             <materials>
                 <material id="unique_mat" />
             </materials>

@@ -19,11 +19,11 @@ class CircularAnimation extends Animation {
       this.radius = radius;
       this.initialAngle = initialAngle;
       this.rotationalAngle = rotationalAngle;
-      this.curranimatione_time = 0;
+      this.curranimation_time = 0;
 
 
       this.transformationMatrix = mat4.create();
-      this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
+  //    this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
     calcRotationalTransformations(transMatrix, currAngle){
@@ -41,27 +41,27 @@ class CircularAnimation extends Animation {
   }
 
 
-    update(currTime) {
+    animate() {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees
-      let deltaTime = currTime/this.totalTime - deltaT;
 
-      let currAngle = this.initialAngle + this.rotationalAngle*(this.deltaTime/this.totalTime)*radToDegree;
+      let currAngle = this.initialAngle + this.rotationalAngle*(this.deltaT/this.totalTime)*radToDegree;
 
-      if(currTime < this.totalTime){
-        if(this.curranimatione_time <= 0){
-          this.curranimatione_time = currTime;
+      if(this.deltaT < this.totalTime){
+        if(this.curranimation_time <= 0){
+          this.curranimation_time = this.deltaT;
           return this.transformationMatrix;
         }
-        if(this.totalTime < deltaT)
-          deltaT = this.totalTime;
+        if(this.totalTime < this.deltaT)
+          this.deltaT = this.totalTime;
+        //  console.log(transformationMatrix);
+        //calcRotationalTransformations(transformationMatrix, currAngle);
 
-        calcRotationalTransformations(this.transformationMatrix, currAngle);
-
-        this.curranimatione_time += currTime;
+        this.curranimation_time += this.deltaT;
 
         return this.transformationMatrix;
-    }else return;
+      }
 
+    else return;
   }
 
 

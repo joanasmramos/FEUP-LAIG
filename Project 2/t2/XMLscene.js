@@ -6,7 +6,7 @@ var DEGREE_TO_RAD = Math.PI / 180;
 class XMLscene extends CGFscene {
     /**
      * @constructor
-     * @param {MyInterface} myinterface 
+     * @param {MyInterface} myinterface
      */
     constructor(myinterface) {
         super();
@@ -19,7 +19,7 @@ class XMLscene extends CGFscene {
 
     /**
      * Updates animations
-     * @param {Current time in miliseconds} currTime 
+     * @param {Current time in miliseconds} currTime
      */
     update(currTime) {
         for(let key in this.data.linearAnimations) {
@@ -29,6 +29,7 @@ class XMLscene extends CGFscene {
 
         for(let key in this.data.circularAnimations) {
             this.data.circularAnimations[key].update(currTime);
+            this.data.circularAnimations[key].animate();
         }
     }
 
@@ -71,7 +72,7 @@ class XMLscene extends CGFscene {
         for(var key in this.data.omniLights) {
             if(i>=8)
                 break;
-            
+
             this.lights[i].setPosition(this.data.omniLights[key].location["x"], this.data.omniLights[key].location["y"], this.data.omniLights[key].location["z"], this.data.omniLights[key].location["w"]);
             this.lights[i].setAmbient(this.data.omniLights[key].ambient["r"], this.data.omniLights[key].ambient["g"], this.data.omniLights[key].ambient["b"], this.data.omniLights[key].ambient["a"]);
             this.lights[i].setDiffuse(this.data.omniLights[key].diffuse["r"], this.data.omniLights[key].diffuse["g"], this.data.omniLights[key].diffuse["b"], this.data.omniLights[key].diffuse["a"]);
@@ -91,7 +92,7 @@ class XMLscene extends CGFscene {
         for(var key in this.data.spotLights) {
             if(i>=8)
                 break;
-            
+
             this.lights[i].setSpotCutOff(this.data.spotLights[key].angle);
             this.lights[i].setSpotExponent(this.data.spotLights[key].exponent);
             this.lights[i].setSpotDirection(this.data.spotLights[key].direction["x"], this.data.spotLights[key].direction["y"], this.data.spotLights[key].direction["z"]);
@@ -113,8 +114,8 @@ class XMLscene extends CGFscene {
     }
 
     /**
-     * 
-     * @param {View id} id 
+     *
+     * @param {View id} id
      */
     selectView(id) {
         this.camera = this.data.views[id];
@@ -122,7 +123,7 @@ class XMLscene extends CGFscene {
     }
 
     /**
-     * 
+     *
      */
     switchComponentMaterials() {
         for(var key in this.graph.nodes) {
@@ -132,7 +133,7 @@ class XMLscene extends CGFscene {
         console.log("Switched materials!");
     }
 
-    /* Handler called when the graph is finally loaded. 
+    /* Handler called when the graph is finally loaded.
      * As loading is asynchronous, this may be called already after the application has started the run loop
      */
     onGraphLoaded() {
@@ -154,6 +155,7 @@ class XMLscene extends CGFscene {
         this.interface.addViewsGroup();
 
         this.sceneInited = true;
+        this.setUpdatePeriod(100 / 6);
     }
 
     /**
