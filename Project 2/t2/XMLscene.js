@@ -14,7 +14,6 @@ class XMLscene extends CGFscene {
         this.interface = myinterface;
         this.data = null;
         this.lightValues = {};
-        this.transformationMatrix;
     }
 
     /**
@@ -27,15 +26,11 @@ class XMLscene extends CGFscene {
                 this.data.linearAnimations[key].update(currTime);
                 this.data.linearAnimations[key].animate();
             }
-    
-            for(let key in this.data.circularAnimations) {
-                //this.data.circularAnimations[key].update(currTime);
-            }
-        }
 
-        for(let key in this.data.circularAnimations) {
-            this.data.circularAnimations[key].update(currTime);
-            this.data.circularAnimations[key].animate();
+            for(let key in this.data.circularAnimations) {
+                this.data.circularAnimations[key].update(currTime);
+                this.data.circularAnimations[key].animate();
+            }
         }
     }
 

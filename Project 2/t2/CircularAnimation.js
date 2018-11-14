@@ -26,42 +26,48 @@ class CircularAnimation extends Animation {
   //    this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
-    calcRotationalTransformations(transMatrix, currAngle){
-      mat4.identity(transMatrix);
-      mat4.translate(transMatrix, transMatrix, this.center);
-      mat4.rotateY(transMatrix, transMatrix, currAngle);
-      mat4.rotateY(transMatrix, transMatrix, this.initialAngle);
-      mat4.translate(transMatrix, transMatrix, [this.radius, 0, 0]);
-
-      if(this.rotationalAngle < 0){
-      mat4.rotateY(transMatrix, transMatrix, 180);
-      }
-
-    return transMatrix;
-    }
-
 
     animate() {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees
+      let currAngle = this.initialAngle + this.rotationalAngle*(this.curranimation_time/this.totalTime)*radToDegree;
 
-      let currAngle = this.initialAngle + this.rotationalAngle*(this.deltaT/this.totalTime)*radToDegree;
+          console.log(this.radius);
+          console.log(this.initialAngle);
+          console.log(this.rotationalAngle);
 
-      if(this.deltaT < this.totalTime){
+      if((this.curranimation_time < this.totalTime) || (this.currAngle < this.rotationalAngle)){
+
         if(this.curranimation_time <= 0){
           this.curranimation_time = this.deltaT;
-          return this.transformationMatrix;
+          return;
         }
         if(this.totalTime < this.deltaT)
           this.deltaT = this.totalTime;
-        //  console.log(transformationMatrix);
-        //calcRotationalTransformations(transformationMatrix, currAngle);
+
+        this.calcRotationalTransformations(this.transformationMatrix, currAngle);
 
         this.curranimation_time += this.deltaT;
+
 
         return this.transformationMatrix;
       }
 
     else return;
   }
+
+
+      calcRotationalTransformations(transMatrix, currAngle){
+        mat4.identity(transMatrix);
+        mat4.translate(transMatrix, transMatrix, this.center);
+        mat4.rotateY(transMatrix, transMatrix, currAngle);
+        mat4.rotateY(transMatrix, transMatrix, this.initialAngle);
+        mat4.translate(transMatrix, transMatrix, [this.radius, 0, 0]);
+
+        if(this.rotationalAngle < 0){
+        mat4.rotateY(transMatrix, transMatrix, 180);
+        }
+
+      return transMatrix;
+      }
 
     }

@@ -16,7 +16,6 @@ class MySceneComponent{
         this.componentref = new Array();
         this.primitiveref = new Array();
         this.animationref = new Array();
-        this.animations = new Array();
     }
 
     switchMaterial() {

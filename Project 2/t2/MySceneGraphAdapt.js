@@ -882,7 +882,7 @@ class MySceneGraphAdapt {
                 }
 
 
-            this.data.circularAnimations[id] = new CircularAnimation(id, span, center, radius, startang, rotang);
+            this.data.circularAnimations[id] = new CircularAnimation(id, center, radius, startang, rotang, span);
         }
 
         this.log("Parsed animations");
@@ -1259,11 +1259,11 @@ class MySceneGraphAdapt {
             if(!this.verifyString(id)){
                 return "<components> - something wrong with animationref's id";
               } else {
-                  this.nodes[compId].animations.push(id);
+                  this.nodes[compId].animationref.push(id);
                   return;
                 }
         }
-        
+
      return;
 }
 
