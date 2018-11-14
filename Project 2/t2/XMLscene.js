@@ -22,13 +22,15 @@ class XMLscene extends CGFscene {
      * @param {Current time in miliseconds} currTime 
      */
     update(currTime) {
-        for(let key in this.data.linearAnimations) {
-            this.data.linearAnimations[key].update(currTime);
-            this.data.linearAnimations[key].animate();
-        }
-
-        for(let key in this.data.circularAnimations) {
-            this.data.circularAnimations[key].update(currTime);
+        if(this.sceneInited) {
+            for(let key in this.data.linearAnimations) {
+                this.data.linearAnimations[key].update(currTime);
+                this.data.linearAnimations[key].animate();
+            }
+    
+            for(let key in this.data.circularAnimations) {
+                //this.data.circularAnimations[key].update(currTime);
+            }
         }
     }
 
@@ -149,11 +151,12 @@ class XMLscene extends CGFscene {
 
         this.initLights();
 
-        // Adds lights group.
+        // Add lights group.
         this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
         this.interface.addViewsGroup();
 
         this.sceneInited = true;
+        this.setUpdatePeriod(10);
     }
 
     /**

@@ -38,8 +38,7 @@ class CircularAnimation extends Animation {
       }
 
     return transMatrix;
-  }
-
+    }
 
     update(currTime) {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees
@@ -60,9 +59,8 @@ class CircularAnimation extends Animation {
         this.curranimatione_time += currTime;
 
         return this.transformationMatrix;
-    }else return;
-
-  }
+      } else return;
+    }
 
 
     }

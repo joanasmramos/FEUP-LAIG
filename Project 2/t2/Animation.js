@@ -19,6 +19,7 @@ class Animation {
     update(currTime) {
         if(this.lastT != null) {
             this.deltaT = currTime - this.lastT;
+            this.deltaT *= Math.pow(10, -3); // segundos 
         }
 
         this.lastT = currTime;
