@@ -16,6 +16,9 @@ class LinearAnimation extends Animation {
         this.controlPoints = controlPoints;
         this.segmentsDistance = new Array(); // this.segmentsDistance[0] = 2 ---> segment 0 has a total distance of 2 units
         this.segments = new Array();
+        this.oldPosition = this.controlPoints[0];
+        this.translate = [0,0,0];
+        this.first = true;
 
         this.calcSegmentsDistance();
         this.setActiveSegmentDistance();
@@ -35,8 +38,6 @@ class LinearAnimation extends Animation {
             this.segmentsDistance.push(segmentDistance);
             this.segments.push(vector);
             this.totalDistance += segmentDistance;
-
-            console.log(vector);
         }
     }
 
@@ -75,12 +76,56 @@ class LinearAnimation extends Animation {
         if(this.deltaT == null || this.done) {
             return;
         }
+        
+        let newPosition = new Array(3);
 
         this.calcDeltaDistance();
 
         if(this.deltaDistance > this.activeSegmentDistance) {
             this.deltaDistance -= this.activeSegmentDistance;
+
+            for(let i=0; i<3; i++) {
+                newPosition[i] = this.controlPoints[this.activeSegment + 1][i];
+                this.translate[i] += (newPosition[i] - this.oldPosition[i]);
+            }
+
+            this.oldPosition = newPosition;
+
             this.updateActiveSegment();
+
+            if (this.done) {
+                return;
+            }
+
+            this.activeSegmentDistance = this.segmentsDistance[this.activeSegment];
         }
+        else {
+            this.activeSegmentDistance -= this.deltaDistance;
+        }
+
+        for(let i=0; i<3; i++) {
+            newPosition[i] = this.oldPosition[i] + this.deltaDistance/this.segmentsDistance[this.activeSegment] * this.segments[this.activeSegment][i];
+            this.translate[i] += (newPosition[i] - this.oldPosition[i]);
+        }
+
+        this.oldPosition = newPosition;
+    }
+
+    apply(currentMat) {
+        if(this.first) {
+            let previousTranslation = new Array(), initialTranslation = new Array();
+            mat4.getTranslation(previousTranslation, currentMat);
+            vec3.subtract(initialTranslation, this.translate, previousTranslation);
+            mat4.translate(currentMat, currentMat, initialTranslation);
+        }
+
+        let result = mat4.create();
+        mat4.translate(result, currentMat, this.translate);
+
+        for(let i=0;i<3;i++) {
+            this.translate[i] = 0;
+        }
+
+        return result;
     }
 }

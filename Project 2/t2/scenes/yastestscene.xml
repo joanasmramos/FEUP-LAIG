@@ -287,7 +287,7 @@
     </transformations>
 
     <animations>
-        <linear id="linear1" span="2">
+        <linear id="linear1" span="5">
             <controlpoint xx="1" yy="0" zz="1" />
             <controlpoint xx="5" yy="0" zz="1" />
             <controlpoint xx="5" yy="0" zz="3" />

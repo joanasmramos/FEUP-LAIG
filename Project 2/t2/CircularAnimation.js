@@ -38,7 +38,7 @@ class CircularAnimation extends Animation {
       }
 
     return transMatrix;
-  }
+    }
 
 
     animate() {
@@ -63,6 +63,5 @@ class CircularAnimation extends Animation {
 
     else return;
   }
-
 
     }
