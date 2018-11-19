@@ -326,8 +326,9 @@
             <materials>
                 <material id="unique_mat" />
             </materials>
-            <texture id="none" length_s="1" length_t="1" />
+            <texture id="none" />
             <children>
+                <componentref id="animation_test"/>
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
                 <componentref id="right_wall" />
@@ -350,12 +351,27 @@
             </children>
         </component>
 
-        <component id="fatlady_door">
+        <component id="animation_test">
             <transformation>
             </transformation>
             <animations>
-              <animationref id="circular1" />
+                <animationref id="linear1"/>
             </animations>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s = "1" length_t = "1"/>
+            <children>
+                <componentref id="cube"/>
+            </children>
+        </component>
+
+        <component id="fatlady_door">
+            <transformation>
+            </transformation>
+            <!--<animations>
+              <animationref id="circular1" />
+            </animations>-->
             <materials>
                 <material id="inherit" />
             </materials>

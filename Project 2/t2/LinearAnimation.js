@@ -17,7 +17,7 @@ class LinearAnimation extends Animation {
         this.segmentsDistance = new Array(); // this.segmentsDistance[0] = 2 ---> segment 0 has a total distance of 2 units
         this.segments = new Array();
         this.oldPosition = this.controlPoints[0];
-        this.translate = [0,0,0];
+        this.translate = vec3.create();
         this.first = true;
 
         this.calcSegmentsDistance();
@@ -77,7 +77,7 @@ class LinearAnimation extends Animation {
             return;
         }
         
-        let newPosition = new Array(3);
+        let newPosition = vec3.create();
 
         this.calcDeltaDistance();
 
@@ -111,15 +111,30 @@ class LinearAnimation extends Animation {
         this.oldPosition = newPosition;
     }
 
+    getTranslation(translation, mat4) {
+        translation[0] = mat4[12];
+        translation[1] = mat4[13];
+        translation[2] = mat4[14];
+    }
+
     apply(currentMat) {
+        if(currentMat == null) {
+            currentMat = mat4.create();
+            mat4.identity(currentMat);
+        }
+
         if(this.first) {
-            let previousTranslation = new Array(), initialTranslation = new Array();
-            mat4.getTranslation(previousTranslation, currentMat);
-            vec3.subtract(initialTranslation, this.translate, previousTranslation);
-            mat4.translate(currentMat, currentMat, initialTranslation);
+            //let previousTranslation = new Array(), initialTranslation = new Array();
+            //this.getTranslation(previousTranslation, currentMat);
+            //vec3.subtract(initialTranslation, this.translate, previousTranslation);
+            //mat4.translate(currentMat, currentMat, initialTranslation);
+            //this.first = false;
+            mat4.translate(currentMat, currentMat, this.controlPoints[0]);
+            this.first = false;
         }
 
         let result = mat4.create();
+        
         mat4.translate(result, currentMat, this.translate);
 
         for(let i=0;i<3;i++) {

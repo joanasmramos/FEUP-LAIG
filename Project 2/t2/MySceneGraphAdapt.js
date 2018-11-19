@@ -1265,7 +1265,7 @@ class MySceneGraphAdapt {
         }
 
      return;
-}
+    }
 
     /**
      * Parses <children> block (<component>'s child)
@@ -1367,9 +1367,6 @@ class MySceneGraphAdapt {
             }
 
             this.nodeIds.push(id);
-
-            var a = this.nodes[id];
-            this.log("");
         }
 
         //TO DO: fazer verificação dos ids da children
@@ -1419,11 +1416,19 @@ class MySceneGraphAdapt {
      * @param {Father's length T} fatherT
      */
     processComponent(comp, fatherMat, fatherTex, fatherS, fatherT) {
-        var currentMat, currentTex, currentS, currentT;
+        let currentMat, currentTex, currentS, currentT;
+
         this.scene.pushMatrix();
 
-        if(this.nodes[comp].transformationMat != null)
+        if(this.nodes[comp].animationref.length > 0) {
+            let animation;
+            animation = this.data.linearAnimations[this.nodes[comp].animationref[0]];
+            this.nodes[comp].transformationMat = animation.apply(this.nodes[comp].transformationMat);
+        }
+
+        if(this.nodes[comp].transformationMat != null) {
             this.scene.multMatrix(this.nodes[comp].transformationMat);
+        }
 
         currentS = this.nodes[comp].lengthS;
         currentT = this.nodes[comp].lengthT;

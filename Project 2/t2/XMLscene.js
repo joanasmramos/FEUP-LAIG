@@ -156,7 +156,7 @@ class XMLscene extends CGFscene {
         this.interface.addViewsGroup();
 
         this.sceneInited = true;
-        this.setUpdatePeriod(100 / 6);
+        this.setUpdatePeriod(10);
     }
 
     /**
