@@ -21,13 +21,16 @@ class LinearAnimation extends Animation {
 
         this.calcSegmentsDistance();
         this.setActiveSegmentDistance();
-        this.rotationAngle = this.angle([0, 0, 1], this.segments[0]); // radians, initial angle
+        this.setRotationAngle(this.segments[this.activeSegment]);
     }
 
+    /**
+     * Returns a LinearAnimation object with the same properties as this
+     */
     clone(){
         var copy = new LinearAnimation(this.controlPoints, this.totalTime);
         return copy;
-      }
+    }
 
     /**
      * Calculates vectors for each segment
@@ -53,6 +56,19 @@ class LinearAnimation extends Animation {
         this.activeSegmentDistance = this.segmentsDistance[this.activeSegment];
     }
 
+    /**
+     * Sets the current rotation angle, according to the current displacement vector
+     * @param {Displacement vector} vec 
+     */
+    setRotationAngle(vec) {
+        let copy = vec3.clone(vec);
+        copy[1] = 0; //we only care about horizontal (xz) orientation 
+
+        if(copy[0] == 0 && copy[2] == 0){
+            return;
+        }
+        this.rotationAngle = this.angle([0,0,1], copy);
+    }
 
     /**
      * Updates index of the active segment, if it reaches end of the segments, animation is done
@@ -62,7 +78,7 @@ class LinearAnimation extends Animation {
             this.done = true;
         }
         else {
-            this.rotationAngle = this.angle([0,0,1], this.segments[this.activeSegment]);
+            this.setRotationAngle(this.segments[this.activeSegment]);
         }
     }
 

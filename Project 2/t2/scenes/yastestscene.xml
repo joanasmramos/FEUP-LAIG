@@ -287,15 +287,16 @@
     </transformations>
 
     <animations>
-        <linear id="linear1" span="7">
+        <linear id="linear1" span="5">
             <controlpoint xx="1" yy="0" zz="1" />
             <controlpoint xx="5" yy="0" zz="1" />
             <controlpoint xx="5" yy="0" zz="3" />
         </linear>
 
-        <linear id="linear2" span="3">
+        <linear id="linear2" span="5">
             <controlpoint xx="5" yy="0" zz="3" />
-            <controlpoint xx="5" yy="0" zz="7" />
+            <controlpoint xx="5" yy="4" zz="3" />
+            <controlpoint xx="7" yy="0" zz="5" />
         </linear>
 
         <circular
@@ -362,13 +363,14 @@
             </transformation>
             <animations>
                 <animationref id="linear1"/>
+                <animationref id="linear2"/>
             </animations>
             <materials>
                 <material id="inherit"/>
             </materials>
             <texture id="none" length_s = "1" length_t = "1"/>
             <children>
-                <primitiveref id="rectangle"/>
+                <primitiveref id="cylinder"/>
             </children>
         </component>    
 

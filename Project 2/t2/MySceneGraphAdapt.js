@@ -836,16 +836,16 @@ class MySceneGraphAdapt {
 
         let id, span, controlPoint, center, radius, startang, rotang;
         let controlPointsNode;
-        let controlPoints = new Array();
 
         for(let i=0; i<linearAnimations.length; i++) {
             id = this.reader.getString(linearAnimations[i], "id", true);
             span = this.reader.getFloat(linearAnimations[i], "span", true);
 
-            if(this.data.linearAnimations[id] != null) {
+            if(this.data.animations[id] != null) {
                 return "<animations> - repeated id in linear animations";
             }
 
+            let controlPoints = new Array();
             controlPointsNode = linearAnimations[id].getElementsByTagName("controlpoint");
             for(let j=0; j<controlPointsNode.length;j++) {
                 controlPoint = this.readXYZ2(controlPointsNode[j]);
@@ -857,14 +857,14 @@ class MySceneGraphAdapt {
                 controlPoints.push(controlPoint);
             }
 
-            this.data.linearAnimations[id] = new LinearAnimation(controlPoints, span);
+            this.data.animations[id] = new LinearAnimation(controlPoints, span);
         }
 
         for(let i=0; i<circularAnimations.length; i++) {
             id = this.reader.getString(circularAnimations[i], "id", true);
             span = this.reader.getFloat(circularAnimations[i], "span", true);
 
-            if(this.data.circularAnimations[id] != null) {
+            if(this.data.animations[id] != null) {
                 return "<animations> - repeated id in circular animations";
             }
 
@@ -882,7 +882,7 @@ class MySceneGraphAdapt {
                 }
 
 
-            this.data.circularAnimations[id] = new CircularAnimation(center, radius, startang, rotang, span);
+            this.data.animations[id] = new CircularAnimation(center, radius, startang, rotang, span);
         }
 
         this.log("Parsed animations");
@@ -1258,10 +1258,13 @@ class MySceneGraphAdapt {
 
             if(!this.verifyString(id)){
                 return "<components> - something wrong with animationref's id";
-              } else {
-                  this.nodes[compId].animationref.push(id);
-                  return;
-                }
+            }
+            
+            if(this.data.animations[id] == null) {
+                return "<components> - animation doesn't exist";
+            }
+
+            this.nodes[compId].animations.push(this.data.animations[id].clone());
         }
 
      return;
@@ -1424,9 +1427,8 @@ class MySceneGraphAdapt {
             this.scene.multMatrix(this.nodes[comp].transformationMat);
         }
 
-        if(this.nodes[comp].animationref.length > 0) {
-            let animation;
-            animation = this.data.linearAnimations[this.nodes[comp].animationref[0]];
+        if(this.nodes[comp].animations.length > 0) {
+            let animation = this.nodes[comp].animations[this.nodes[comp].activeAnimation];
             this.scene.multMatrix(animation.apply());
         }
 

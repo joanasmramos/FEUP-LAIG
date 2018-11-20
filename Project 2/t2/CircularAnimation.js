@@ -26,6 +26,13 @@ class CircularAnimation extends Animation {
   //    this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
+     /**
+     * Returns a LinearAnimation object with the same properties as this
+     */
+    clone(){
+      var copy = new CircularAnimation(this.center, this.radius, this.initialAngle, this.rotationalAngle, this.totalTime);
+      return copy;
+    }
 
     animate() {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees

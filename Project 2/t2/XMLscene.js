@@ -22,17 +22,14 @@ class XMLscene extends CGFscene {
      */
     update(currTime) {
         if(this.sceneInited) {
-            /*
+            
             for(let key in this.graph.nodes) {
-                for(let i=0; i<this.graph.nodes[key].animations.length; i++) {
-                    this.graph.nodes[key].animations[i].update(currTime);
-                    this.graph.nodes[key].animations[i].animate();
-                    this.graph.nodes[key].switchAnimation();
+                let node = this.graph.nodes[key];
+                if(node.animations.length > 0) {
+                    node.animations[node.activeAnimation].update(currTime);
+                    node.animations[node.activeAnimation].animate();
+                    node.switchAnimation();
                 }
-            }*/
-            for(let key in this.data.linearAnimations) {
-                this.data.linearAnimations[key].update(currTime);
-                this.data.linearAnimations[key].animate();
             }
         }
     }

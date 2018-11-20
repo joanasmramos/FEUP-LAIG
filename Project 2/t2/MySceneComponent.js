@@ -17,8 +17,8 @@ class MySceneComponent{
         this.primitiveref = new Array();
         this.animated = null;
         this.animations = new Array();
-        this.animationref = new Array();
         this.activeAnimation = 0;
+        //this.animationMatrix = mat4.create(); // identity
     }
 
     switchMaterial() {
@@ -30,10 +30,14 @@ class MySceneComponent{
         }
     }
 
+
     switchAnimation() {
+        let numberOfAnims = this.animations.length - 1;
+
         if(this.animations[this.activeAnimation].done) {
-            if(this.activeAnimation < this.animations.length-1) {
-                this.activeAnimation++;
+            if(this.activeAnimation < numberOfAnims) {
+                let previousAnimation = this.activeAnimation++;
+                this.animations[this.activeAnimation].rotationAngle = this.animations[previousAnimation].rotationAngle;
             }
         }
     }
