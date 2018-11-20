@@ -8,21 +8,29 @@ class Animation {
      * @param {ID for animiation} id
      * @param {Total time of the animation} totalTime
      */
-    constructor(id, totalTime){
-        this.id = id;
+    constructor(totalTime){
         this.totalTime = totalTime;
         this.lastT = null;
         this.deltaT = null;
         this.done = false;
     }
 
+    /**
+     * Update deltaT and lastT
+     * @param {Current time in miliseconds} currTime 
+     */
     update(currTime) {
         if(this.lastT != null) {
             this.deltaT = currTime - this.lastT;
-            this.deltaT *= Math.pow(10, -3); // segundos 
+            this.deltaT *= Math.pow(10, -3); // to seconds 
         }
 
         this.lastT = currTime;
     }
+    
+    /**
+     * Apply transformations
+     * To be defined in child classes
+     */
     apply() {}
 }

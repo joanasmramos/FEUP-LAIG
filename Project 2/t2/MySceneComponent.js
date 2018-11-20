@@ -15,7 +15,10 @@ class MySceneComponent{
         this.lengthT = null;
         this.componentref = new Array();
         this.primitiveref = new Array();
+        this.animated = null;
+        this.animations = new Array();
         this.animationref = new Array();
+        this.activeAnimation = 0;
     }
 
     switchMaterial() {
@@ -24,6 +27,14 @@ class MySceneComponent{
         }
         else {
             this.defaultMaterial = 0;
+        }
+    }
+
+    switchAnimation() {
+        if(this.animations[this.activeAnimation].done) {
+            if(this.activeAnimation < this.animations.length-1) {
+                this.activeAnimation++;
+            }
         }
     }
 }

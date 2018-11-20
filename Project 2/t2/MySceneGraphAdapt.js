@@ -857,7 +857,7 @@ class MySceneGraphAdapt {
                 controlPoints.push(controlPoint);
             }
 
-            this.data.linearAnimations[id] = new LinearAnimation(id, controlPoints, span);
+            this.data.linearAnimations[id] = new LinearAnimation(controlPoints, span);
         }
 
         for(let i=0; i<circularAnimations.length; i++) {
@@ -882,7 +882,7 @@ class MySceneGraphAdapt {
                 }
 
 
-            this.data.circularAnimations[id] = new CircularAnimation(id, center, radius, startang, rotang, span);
+            this.data.circularAnimations[id] = new CircularAnimation(center, radius, startang, rotang, span);
         }
 
         this.log("Parsed animations");
@@ -1420,14 +1420,14 @@ class MySceneGraphAdapt {
 
         this.scene.pushMatrix();
 
+        if(this.nodes[comp].transformationMat != null) {
+            this.scene.multMatrix(this.nodes[comp].transformationMat);
+        }
+
         if(this.nodes[comp].animationref.length > 0) {
             let animation;
             animation = this.data.linearAnimations[this.nodes[comp].animationref[0]];
-            this.nodes[comp].transformationMat = animation.apply(this.nodes[comp].transformationMat);
-        }
-
-        if(this.nodes[comp].transformationMat != null) {
-            this.scene.multMatrix(this.nodes[comp].transformationMat);
+            this.scene.multMatrix(animation.apply());
         }
 
         currentS = this.nodes[comp].lengthS;

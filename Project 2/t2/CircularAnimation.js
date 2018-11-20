@@ -12,8 +12,8 @@ class CircularAnimation extends Animation {
      * @param {Total rotation angle for the animation} rotationalAngle
      * @param {Total duration of the circular animation} totalTime
      */
-    constructor(id, center, radius, initialAngle, rotationalAngle, totalTime){
-      super(id, totalTime);
+    constructor(center, radius, initialAngle, rotationalAngle, totalTime){
+      super(totalTime);
 
       this.center = center;
       this.radius = radius;
@@ -31,9 +31,9 @@ class CircularAnimation extends Animation {
       let radToDegree = 180 / Math.PI; // convert the angle to degrees
       let currAngle = this.initialAngle + this.rotationalAngle*(this.curranimation_time/this.totalTime)*radToDegree;
 
-          console.log(this.radius);
-          console.log(this.initialAngle);
-          console.log(this.rotationalAngle);
+          //console.log(this.radius);
+          //console.log(this.initialAngle);
+          //console.log(this.rotationalAngle);
 
       if((this.curranimation_time < this.totalTime) || (this.currAngle < this.rotationalAngle)){
 

@@ -7,8 +7,8 @@ class LinearAnimation extends Animation {
      * @param {vec3 Array containing the coordinates of each control point} controlPoints
      * @param {Total time of the animation} totalTime
      */
-    constructor(id, controlPoints, totalTime){
-        super(id, totalTime);
+    constructor(controlPoints, totalTime){
+        super(totalTime);
 
         this.activeSegment = 0;
         this.totalDistance = 0;
@@ -18,11 +18,16 @@ class LinearAnimation extends Animation {
         this.segments = new Array();
         this.oldPosition = this.controlPoints[0];
         this.translate = vec3.create();
-        this.first = true;
 
         this.calcSegmentsDistance();
         this.setActiveSegmentDistance();
+        this.rotationAngle = this.angle([0, 0, 1], this.segments[0]); // radians, initial angle
     }
+
+    clone(){
+        var copy = new LinearAnimation(this.controlPoints, this.totalTime);
+        return copy;
+      }
 
     /**
      * Calculates vectors for each segment
@@ -56,6 +61,9 @@ class LinearAnimation extends Animation {
         if(++this.activeSegment == this.segments.length) {
             this.done = true;
         }
+        else {
+            this.rotationAngle = this.angle([0,0,1], this.segments[this.activeSegment]);
+        }
     }
 
     /**
@@ -63,10 +71,6 @@ class LinearAnimation extends Animation {
      */
     calcDeltaDistance(){
         this.deltaDistance = (this.deltaT * this.totalDistance) / this.totalTime;
-    }
-
-    rectifyDirection() {
-
     }
 
     /**
@@ -111,35 +115,38 @@ class LinearAnimation extends Animation {
         this.oldPosition = newPosition;
     }
 
-    getTranslation(translation, mat4) {
-        translation[0] = mat4[12];
-        translation[1] = mat4[13];
-        translation[2] = mat4[14];
+    /**
+     * Angle in radians between two vectors
+     * @param {Vector 1} a 
+     * @param {Vector 2} b 
+     */
+    angle(a, b) {
+        let tempA = vec3.fromValues(a[0], a[1], a[2]);
+        let tempB = vec3.fromValues(b[0], b[1], b[2]);
+        vec3.normalize(tempA, tempA);
+        vec3.normalize(tempB, tempB);
+        let cosine = vec3.dot(tempA, tempB);
+        if(cosine > 1.0) {
+          return 0;
+        }
+        else if(cosine < -1.0) {
+          return Math.PI;
+        } else {
+          return Math.acos(cosine);
+        }
     }
 
-    apply(currentMat) {
-        if(currentMat == null) {
-            currentMat = mat4.create();
-            mat4.identity(currentMat);
-        }
+    /**
+     * Apply transformations to the matrix
+     * @param {Current matrix} currentMat 
+     */
+    apply() {
+        let result = mat4.create()
+        mat4.identity(result);
 
-        if(this.first) {
-            //let previousTranslation = new Array(), initialTranslation = new Array();
-            //this.getTranslation(previousTranslation, currentMat);
-            //vec3.subtract(initialTranslation, this.translate, previousTranslation);
-            //mat4.translate(currentMat, currentMat, initialTranslation);
-            //this.first = false;
-            mat4.translate(currentMat, currentMat, this.controlPoints[0]);
-            this.first = false;
-        }
-
-        let result = mat4.create();
-        
-        mat4.translate(result, currentMat, this.translate);
-
-        for(let i=0;i<3;i++) {
-            this.translate[i] = 0;
-        }
+        mat4.translate(result, result, this.translate);
+        mat4.translate(result, result, this.controlPoints[0]); // translate inicial
+        mat4.rotate(result, result, this.rotationAngle, [0,1,0]);
 
         return result;
     }
