@@ -270,11 +270,6 @@
     </transformations>
 
     <animations>
-        <linear id="linear1" span="5">
-            <controlpoint xx="1" yy="0" zz="1" />
-            <controlpoint xx="5" yy="0" zz="1" />
-            <controlpoint xx="5" yy="0" zz="3" />
-        </linear>
 
         <linear id="linear2" span="5">
             <controlpoint xx="5" yy="0" zz="3" />
@@ -283,7 +278,7 @@
         </linear>
 
         <circular
-            id="circular1" span="2" center="0 0 0" radius="1" startang="0" rotang="45"
+            id="circular1" span="3" center="5 1 0" radius="0" startang="0" rotang="-90"
         />
     </animations>
 
