@@ -977,7 +977,7 @@ class MySceneGraphAdapt {
     * @param {element} elem
     */
     readPlanearray(elem) {
-        var plane_property = [];
+        let plane_property = [];
 
         plane_property["npartsU"] = this.reader.getInteger(elem, "npartsU", true);
         plane_property["npartsV"] = this.reader.getInteger(elem, "npartsV", true);

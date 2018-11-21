@@ -13,19 +13,27 @@
 
 				this.npartsU = npartsU;
 				this.npartsV = npartsV;
-				var plane_controlPoints = [ [
-					[-0.5,0,0.5,1],
-					[-0.5,0,-0.5,1]
-				],[
-					[0.5,0,0.5,1],
-					[0.5,0,-0.5,1]]];
+				var plane_controlPoints = 
+				[	
+					// U = 0
+					[ // V = 0..1;
+						 [-0.5, 0, 0.5, 1 ],
+						 [-0.5, 0, -0.5, 1 ]
+						
+					],
+					// U = 1
+					[ // V = 0..1
+						 [ 0.5, 0, 0.5, 1 ],
+						 [ 0.5, 0, -0.5, 1 ]							 
+					]
+				];
 
 			   this.degree_U = npartsU - 1;
 			   this.degree_V = npartsV - 1;
 
-		    var NURBS_surface = new CGFnurbsSurface(this.degree_U, this.degree_V, plane_controlPoints);
+		    var NURBS_surface = new CGFnurbsSurface(1, 1, plane_controlPoints);
 
-		    this.plane = new CGFnurbsObject(this.scene, NURBS_surface, this.npartsU, this.npartsV);
+		    this.plane = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, NURBS_surface);
 
      };
 
@@ -33,14 +41,9 @@
  * Displaying plane/surface
  */
 	display() {
-		//console.log("ayy");
-  this.scene.pushMatrix();
-
-		//console.log("ayy1");
-  this.plane.display();
-
-		//console.log("ayy2");
-  this.scene.popMatrix();
+		this.scene.pushMatrix();
+		this.plane.display();
+		this.scene.popMatrix();
 	}
 
 }
