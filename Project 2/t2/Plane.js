@@ -28,10 +28,7 @@
 					]
 				];
 
-			   this.degree_U = npartsU - 1;
-			   this.degree_V = npartsV - 1;
-
-		    var NURBS_surface = new CGFnurbsSurface(1, 1, plane_controlPoints);
+		    let NURBS_surface = new CGFnurbsSurface(1, 1, plane_controlPoints);
 
 		    this.plane = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, NURBS_surface);
 

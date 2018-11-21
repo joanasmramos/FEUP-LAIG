@@ -986,6 +986,27 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Reads control points from an array of control point tags, returns an array with all the control points
+     * @param {Control point tags} elem 
+     */
+    readControlPoints(elem) {
+        let controlPoints = new Array();
+
+        for(let i=0; i<elem.length; i++) {
+            let controlPoint = new Array();
+
+            controlPoint.push(this.reader.getFloat(elem[i], 'xx', true));
+            controlPoint.push(this.reader.getFloat(elem[i], 'yy', true));
+            controlPoint.push(this.reader.getFloat(elem[i], 'zz', true));
+            controlPoint.push(1); //weight
+            
+            controlPoints.push(controlPoint);
+        }
+
+        return controlPoints;
+    }
+
+    /**
      * Parses the <primitives> node.
      * @param {primitives block element}
      */
@@ -996,7 +1017,7 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, circleTag, planeTag;
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag;
         var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], slices, radius;
 
         for (let i = 0; i < primitive.length; i++) {
@@ -1056,7 +1077,7 @@ class MySceneGraphAdapt {
                     cylinder = this.readCylinderarray(cylinderTag);
                     if (!this.verifyAssocArr(cylinder))
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
-                    //semtampa
+                    
                     this.primitives[id] = new MyCylinder (this.scene, cylinder["base"], cylinder["top"], cylinder["height"], cylinder["slices"], cylinder["stacks"]);
 
                     break;
@@ -1089,7 +1110,7 @@ class MySceneGraphAdapt {
 
 
                     if(this.primitives[id] != null)
-                        return "<primitves> - something wrong with primitive's id";
+                        return "<primitives> - something wrong with primitive's id";
 
                     this.primitives[id] = new MyTorus(this.scene, torus["inner"], torus["outer"], torus["slices"], torus["loops"]);
 
@@ -1112,8 +1133,34 @@ class MySceneGraphAdapt {
                     this.primitives[id] = new Plane(this.scene, plane["npartsU"], plane["npartsV"]);
                     break;
 
+                case 'patch':
+                    patchTag = primitive[id].getElementsByTagName('patch')[0];
+                    
+                    if(!this.verifyElems([patchTag])) {
+                        return "<primitives> - something wrong with primitives children";
+                    }
+
+                    let npointsU = this.reader.getInteger(patchTag, "npointsU", true);
+                    let npointsV = this.reader.getInteger(patchTag, "npointsV", true);
+                    let npartsU = this.reader.getInteger(patchTag, "npartsU", true);
+                    let npartsV = this.reader.getInteger(patchTag, "npartsV", true);
+
+                    if(!this.verifyStringsFloats([],[npointsU, npointsV, npartsU, npartsV])) {
+                        return "<primitives> - something wrong with patch's values";
+                    }
+
+                    let controlPointsTags = patchTag.getElementsByTagName('controlpoint');
+                    if(controlPointsTags.length != (npointsU*npointsV)) {
+                        return "<primitives> - patch: wrong number of control points";
+                    }
+
+                    let controlPoints = this.readControlPoints(controlPointsTags);
+
+                    this.primitives[id] = new MyPatch(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints);
+                    break;
                 default:
                     break;
+
 
             }
 

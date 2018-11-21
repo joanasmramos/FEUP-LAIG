@@ -306,6 +306,16 @@
         <primitive id="plane">
             <plane npartsU="10" npartsV="10"/>
         </primitive>
+        <primitive id="patch">
+            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+                <controlpoint xx="-1.5" yy="-1.5" zz="0" /> 
+                <controlpoint xx="-1.5" yy="1.5" zz="0" />
+                <controlpoint xx="0" yy="-1.5" zz="3" />
+                <controlpoint xx="0" yy="1.5" zz="3" />
+                <controlpoint xx="1.5" yy="-1.5" zz="0" />
+                <controlpoint xx="1.5" yy="1.5" zz="0" />
+            </patch>
+        </primitive>
     </primitives>
 
     <components>
@@ -317,7 +327,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="animation_test"/>
+                <!--<componentref id="animation_test"/>-->
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
                 <componentref id="floor"/>
@@ -356,9 +366,9 @@
             </children>
         </component>  
 
-        <component id="plane_test">
+        <component id="patch_test">
             <transformation>
-                <translate x="3" y="3" z="3"/>
+                <translate x="4" y="3" z="2"/>
             </transformation>
             <animations>
             </animations>
@@ -367,7 +377,7 @@
             </materials>
             <texture id="none" length_s = "1" length_t = "1"/>
             <children>
-                <primitiveref id="plane"/>
+                <primitiveref id="patch"/>
             </children>
         </component>  
 
