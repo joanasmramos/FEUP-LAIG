@@ -271,14 +271,8 @@
 
     <animations>
 
-        <linear id="linear2" span="5">
-            <controlpoint xx="5" yy="0" zz="3" />
-            <controlpoint xx="5" yy="4" zz="3" />
-            <controlpoint xx="7" yy="0" zz="5" />
-        </linear>
-
         <circular
-            id="circular1" span="3" center="5 1 0" radius="0" startang="0" rotang="-90"
+            id="circular1" span="5" center="5 0 0" radius="0.01" startang="0" rotang="-90"
         />
     </animations>
 
@@ -301,16 +295,6 @@
         <primitive id="plane">
             <plane npartsU="10" npartsV="10"/>
         </primitive>
-        <primitive id="patch">
-            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
-                <controlpoint xx="-1.5" yy="-1.5" zz="0" /> 
-                <controlpoint xx="-1.5" yy="1.5" zz="0" />
-                <controlpoint xx="0" yy="-1.5" zz="3" />
-                <controlpoint xx="0" yy="1.5" zz="3" />
-                <controlpoint xx="1.5" yy="-1.5" zz="0" />
-                <controlpoint xx="1.5" yy="1.5" zz="0" />
-            </patch>
-        </primitive>
     </primitives>
 
     <components>
@@ -322,7 +306,6 @@
             </materials>
             <texture id="none" />
             <children>
-                <!--<componentref id="animation_test"/>-->
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
                 <componentref id="floor"/>
@@ -344,26 +327,9 @@
             </children>
         </component>
 
-        <component id="animation_test">
+        <component id="plane_test">
             <transformation>
-                <translate x="0" y="0.5" z="0"/>
-            </transformation>
-            <animations>
-                <animationref id="linear1"/>
-                <animationref id="linear2"/>
-            </animations>
-            <materials>
-                <material id="inherit"/>
-            </materials>
-            <texture id="none" length_s = "1" length_t = "1"/>
-            <children>
-                <primitiveref id="cylinder"/>
-            </children>
-        </component>  
-
-        <component id="patch_test">
-            <transformation>
-                <translate x="4" y="3" z="2"/>
+                <translate x="3" y="3" z="3"/>
             </transformation>
             <animations>
             </animations>
@@ -372,16 +338,16 @@
             </materials>
             <texture id="none" length_s = "1" length_t = "1"/>
             <children>
-                <primitiveref id="patch"/>
+                <primitiveref id="plane"/>
             </children>
-        </component>  
+        </component>
 
         <component id="fatlady_door">
             <transformation>
             </transformation>
-            <!--<animations>
+            <animations>
               <animationref id="circular1" />
-            </animations>-->
+            </animations>
             <materials>
                 <material id="inherit" />
             </materials>

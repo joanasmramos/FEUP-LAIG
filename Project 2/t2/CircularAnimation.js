@@ -20,7 +20,6 @@ class CircularAnimation extends Animation {
       this.initialAngle = initialAngle;
       this.rotationalAngle = rotationalAngle;
       this.curranimation_time = 0;
-  //    this.circular_length = (2 * Math.PI * this.radius) * this.rotationalAngle /360;
     }
 
      /**
@@ -58,13 +57,8 @@ class CircularAnimation extends Animation {
         let transformationMatrix = mat4.create();
         mat4.identity(transformationMatrix);
         mat4.translate(transformationMatrix, transformationMatrix, this.center);
-        mat4.rotate(transformationMatrix, transformationMatrix, currAngle, [0,1,0]);
         mat4.rotate(transformationMatrix, transformationMatrix, this.initialAngle, [0,1,0]);
-        mat4.translate(transformationMatrix, transformationMatrix, [this.radius, 0, 0]);
-
-        if(this.rotationalAngle < 0){
-        mat4.rotateY(transformationMatrix, transformationMatrix, 180);
-        }
+        mat4.rotate(transformationMatrix, transformationMatrix, currAngle, [0,1,0]);
 
       return transformationMatrix;
       }
