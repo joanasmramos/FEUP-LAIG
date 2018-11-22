@@ -28,6 +28,7 @@ class MyPatch extends CGFobject{
 
         let nurbsSurface = new CGFnurbsSurface(this.degreeU, this.degreeV, this.controlVertexes);
         this.patch = new CGFnurbsObject(this.scene, npartsU, npartsV, nurbsSurface);
+        this.patch.initBuffers();
     }
 
     /**

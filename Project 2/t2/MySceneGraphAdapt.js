@@ -1017,8 +1017,8 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag;
-        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], slices, radius;
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag, cylinder2Tag;
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], cylinder2 = [];
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -1158,6 +1158,21 @@ class MySceneGraphAdapt {
 
                     this.primitives[id] = new MyPatch(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints);
                     break;
+
+                case 'cylinder2':
+                    cylinder2Tag = primitive[id].getElementsByTagName('cylinder2')[0];
+
+                    if (!this.verifyElems([cylinder2Tag]))
+                        return "<primitives> - something wrong with primitives children";
+
+                    cylinder2 = this.readCylinderarray(cylinder2Tag);
+                    if (!this.verifyAssocArr(cylinder2))
+                        return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
+                    
+                    this.primitives[id] = new MyCylinder2 (this.scene, cylinder2["base"], cylinder2["top"], cylinder2["height"], cylinder2["slices"], cylinder2["stacks"]);
+
+                    break;
+
                 default:
                     break;
 

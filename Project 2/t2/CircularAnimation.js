@@ -17,50 +17,67 @@ class CircularAnimation extends Animation {
 
       this.center = center;
       this.radius = radius;
-      this.initialAngle = initialAngle;
-      this.rotationalAngle = rotationalAngle;
-      this.curranimation_time = 0;
+      this.initialAngle = (Math.PI * initialAngle) / 180; //degrees to radians
+      this.rotationalAngle = (Math.PI * rotationalAngle) / 180; //degrees to radians
+      this.translate = vec3.create();
+      this.translate[1] = 0; // y
+      this.rotate = 0;
+      this.deltaAngle = 0;
+
+      this.reverseToOrigin = vec3.create();
+      for(let i=0; i<this.reverseToOrigin.length; i++) {
+        this.reverseToOrigin[i] = -this.center[i];
+      }
     }
 
      /**
      * Returns a LinearAnimation object with the same properties as this
      */
     clone(){
-      var copy = new CircularAnimation(this.center, this.radius, this.initialAngle, this.rotationalAngle, this.totalTime);
+      let initialAngle = (this.initialAngle * 180) / Math.PI; //radians to degrees
+      let rotationalAngle = (this.rotationalAngle * 180) / Math.PI //radians to degrees 
+      var copy = new CircularAnimation(this.center, this.radius, initialAngle, rotationalAngle, this.totalTime);
       return copy;
     }
 
-    animate() {
-      if((this.curranimation_time < this.totalTime) || (this.currAngle < this.rotationalAngle)){
-
-        if(this.curranimation_time <= 0){
-          this.curranimation_time = this.deltaT;
-          return;
-        }
-
-        if(this.totalTime < this.deltaT)
-          this.deltaT = this.totalTime;
-
-        this.curranimation_time += this.deltaT;
-
-        return;
+    /**
+     * Calculates delta angle
+     */
+    calcDeltaAngle() {
+      if(this.deltaT != null) {
+        this.deltaAngle = (this.rotationalAngle * this.deltaT) / this.totalTime;
       }
-
-    else return;
-  }
-
-
-      apply(){
-        let degreetoRad = 0.0174532925;
-        let currAngle = ((this.initialAngle + this.rotationalAngle/this.totalTime) * this.curranimation_time) * degreetoRad;
-
-        let transformationMatrix = mat4.create();
-        mat4.identity(transformationMatrix);
-        mat4.translate(transformationMatrix, transformationMatrix, this.center);
-        mat4.rotate(transformationMatrix, transformationMatrix, this.initialAngle, [0,1,0]);
-        mat4.rotate(transformationMatrix, transformationMatrix, currAngle, [0,1,0]);
-
-      return transformationMatrix;
-      }
-
     }
+
+    animate() {
+    }
+
+
+    apply(){
+      if(!this.done) {
+        this.calcDeltaAngle();
+        this.rotate += this.deltaAngle;
+        if(Math.abs(this.rotate) > Math.abs(this.rotationalAngle)) {
+          this.rotate = this.rotationalAngle;
+          this.done = true;
+          this.rotationAngle = this.rotationalAngle;
+        }
+      }
+      
+      if(this.rotate != 0) {
+        this.translate[0] = Math.cos(this.rotate) * this.radius; //x
+        this.translate[2] = Math.sin(this.rotate) * this.radius; //z
+      }
+
+      let result = mat4.create();
+      mat4.identity(result);
+      mat4.translate(result, result, this.translate);
+      mat4.translate(result, result, this.center);
+      mat4.rotate(result, result, this.rotate, [0, 1, 0]);
+      mat4.rotate(result, result, this.initialAngle, [0, 1, 0]);
+      mat4.translate(result, result, this.reverseToOrigin);
+
+      return result;
+    }
+
+}

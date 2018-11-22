@@ -106,11 +106,18 @@
             <specular r="0.9" g="0.9" b="0.9" a="1" />
         </material>
 
-         <material id="metal2" shininess="30">
+        <material id="metal2" shininess="30">
             <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
             <diffuse r="0.3" g="0.3" b="0.3" a="1" />
             <specular r="0.9" g="0.9" b="0.9" a="1" />
+        </material>
+
+        <material id="outside" shininess="30">
+            <emission r="0.075" g="0.125" b="0.150" a="1.0"/>
+            <ambient r="0" g="0" b="0" a="1" />
+            <diffuse r="0" g="0" b="0" a="1" />
+            <specular r="0" g="0" b="0" a="1" />
         </material>
 
     </materials>
@@ -236,7 +243,18 @@
 
         <transformation id="fatlady_painting">
           <translate x="5.5" y="1.5" z="0.03" />
-          <scale x="2" y="3" z="1.9" />
+          <scale x="2" y="3" z="1" />
+        </transformation>
+
+        <transformation id="fatlady_painting2">
+          <translate x="5.5" y="1.5" z="0.02" />
+          <rotate axis="y" angle="-180"/>
+          <scale x="2" y="3" z="1" />
+        </transformation>
+
+        <transformation id="wall_hole">
+          <translate x="5.5" y="1.55" z="0.02"/>
+          <scale x="2" y="3.1" z="1" />
         </transformation>
 
         <transformation id="candles_image">
@@ -270,10 +288,24 @@
     </transformations>
 
     <animations>
+        <linear id="linear1" span="5">
+            <controlpoint xx="1" yy="0" zz="1" />
+            <controlpoint xx="5" yy="0" zz="1" />
+            <controlpoint xx="5" yy="0" zz="3" />
+        </linear>
 
-        <circular
-            id="circular1" span="5" center="5 0 0" radius="0.01" startang="0" rotang="-90"
-        />
+        <linear id="linear2" span="5">
+            <controlpoint xx="5" yy="0" zz="3" />
+            <controlpoint xx="5" yy="4" zz="3" />
+            <controlpoint xx="7" yy="0" zz="5" />
+        </linear>
+
+        <circular id="door" span="5" center="4.5 0 0" radius="0" startang="0" rotang="-90" />
+
+        <linear id="teste" span="5">
+            <controlpoint xx="0" yy="0" zz="0"/>
+            <controlpoint xx="0" yy="0" zz="5"/>
+        </linear>
     </animations>
 
     <primitives>
@@ -295,6 +327,27 @@
         <primitive id="plane">
             <plane npartsU="10" npartsV="10"/>
         </primitive>
+        <primitive id="patch">
+            <!--<patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+                <controlpoint xx="-1.5" yy="-1.5" zz="0" /> 
+                <controlpoint xx="-1.5" yy="1.5" zz="0" />
+                <controlpoint xx="0" yy="-1.5" zz="3" />
+                <controlpoint xx="0" yy="1.5" zz="3" />
+                <controlpoint xx="1.5" yy="-1.5" zz="0" />
+                <controlpoint xx="1.5" yy="1.5" zz="0" />
+            </patch>-->
+            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+                <controlpoint xx="-1" yy="0" zz="0.5" />
+                <controlpoint xx="-1" yy="0" zz="-0.5" />
+                <controlpoint xx="0" yy="1" zz="0.5" />
+                <controlpoint xx="0" yy="1" zz="-0.5"/>
+                <controlpoint xx="1" yy="0" zz="0.5" />
+                <controlpoint xx="1" yy="0" zz="-0.5" />
+            </patch>
+        </primitive>
+        <primitive id="cylinder2">
+            <cylinder2 base="1" top="1" height="1" slices="10" stacks="10" />
+        </primitive>
     </primitives>
 
     <components>
@@ -306,6 +359,7 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="fatlady_door"/>
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
                 <componentref id="floor"/>
@@ -313,23 +367,18 @@
                 <componentref id="left_wall" />
                 <componentref id="right_pillar" />
                 <componentref id="left_pillar" />
-                <componentref id="fatlady_door"/>
                 <componentref id="hogwarts_painting"/>
                 <componentref id="candles_painting"/>
                 <componentref id="maincarpet" />
-                <!--
-                <componentref id="center_pillar" />
-                <componentref id="structure_1" />
-                <componentref id="structure_2" />
-                <componentref id="structure_3" />-->
                 <componentref id="chandelier2"/>
                 <componentref id="chandelier1"/>
+                <componentref id="wall_hole"/>
             </children>
         </component>
 
-        <component id="plane_test">
+        <component id="cylinder_test">
             <transformation>
-                <translate x="3" y="3" z="3"/>
+                <translate x="2" y="2" z="2"/>
             </transformation>
             <animations>
             </animations>
@@ -338,15 +387,29 @@
             </materials>
             <texture id="none" length_s = "1" length_t = "1"/>
             <children>
-                <primitiveref id="plane"/>
+                <primitiveref id="cylinder2"/>
             </children>
-        </component>
+        </component>  
+
+        <component id="animation_test">
+            <transformation>
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" length_s = "1" length_t = "1"/>
+            <children>
+                <primitiveref id="rectangle"/>
+            </children>
+        </component> 
 
         <component id="fatlady_door">
             <transformation>
             </transformation>
             <animations>
-              <animationref id="circular1" />
+              <animationref id="door" />
             </animations>
             <materials>
                 <material id="inherit" />
@@ -354,10 +417,37 @@
             <texture id="none" length_s="1" length_t="1" />
             <children>
                 <componentref id="fatlady_painting"/>
+                <componentref id="fatlady_painting2"/>
                 <componentref id="top_frame"/>
                 <componentref id="bottom_frame"/>
                 <componentref id="right_frame"/>
                 <componentref id="left_frame"/>
+            </children>
+        </component>
+
+        <component id="wall_hole">
+            <transformation>
+                <transformationref id="wall_hole" />
+            </transformation>
+            <materials>
+                <material id="outside" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="fatlady_painting2">
+            <transformation>
+                <transformationref id="fatlady_painting2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="fatlady" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="rectangle" />
             </children>
         </component>
 
@@ -946,45 +1036,6 @@
                 <primitiveref id="cylinder"/>
             </children>
         </component>
-
-        <!--<component id="structure_1">
-            <transformation>
-                <transformationref id="structure_1" />
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="structure_2" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="torus" />
-            </children>
-        </component>
-
-        <component id="structure_2">
-            <transformation>
-                <transformationref id="structure_2" />
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="structure_2" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="torus" />
-            </children>
-        </component>
-
-        <component id="structure_3">
-            <transformation>
-                <transformationref id="structure_3" />
-            </transformation>
-            <materials>
-                <material id="metal" />
-            </materials>
-            <texture id="structure_2" length_s="1" length_t="1" />
-            <children>
-                <primitiveref id="torus" />
-            </children>
-        </component>-->
 
     </components>
 
