@@ -89,6 +89,11 @@
         <texture id="floor" file="scenes/images/wooden_floors.png" />
         <texture id="candle" file="scenes/images/candle.jpg" />
         <texture id="metal" file="scenes/images/metal.jpg"/>
+        <texture id="terrain" file="scenes/images/terrain.jpg"/>
+        <texture id="water" file="scenes/images/water.jpg"/>
+        <texture id="heightmap" file="scenes/images/heightmap_terrain.jpg"/>
+        <texture id="wavemap" file="scenes/images/heightmap_water.jpg"/>
+        
     </textures>
 
     <materials>
@@ -328,31 +333,31 @@
             <plane npartsU="10" npartsV="10"/>
         </primitive>
         <primitive id="patch">
-            <!--<patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
                 <controlpoint xx="-1.5" yy="-1.5" zz="0" /> 
                 <controlpoint xx="-1.5" yy="1.5" zz="0" />
                 <controlpoint xx="0" yy="-1.5" zz="3" />
                 <controlpoint xx="0" yy="1.5" zz="3" />
                 <controlpoint xx="1.5" yy="-1.5" zz="0" />
                 <controlpoint xx="1.5" yy="1.5" zz="0" />
-            </patch>-->
-            <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
+            </patch>
+            <!-- <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
                 <controlpoint xx="-1" yy="0" zz="0.5" />
                 <controlpoint xx="-1" yy="0" zz="-0.5" />
                 <controlpoint xx="0" yy="1" zz="0.5" />
                 <controlpoint xx="0" yy="1" zz="-0.5"/>
                 <controlpoint xx="1" yy="0" zz="0.5" />
                 <controlpoint xx="1" yy="0" zz="-0.5" />
-            </patch>
+            </patch> -->
         </primitive>
         <primitive id="cylinder2">
             <cylinder2 base="1" top="1" height="1" slices="10" stacks="10" />
         </primitive>
         <primitive id="terrain">
-            <terrain idtexture="idtex" idheightmap="idheight" parts="5" heightscale="1"/>
+            <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="5"/>
         </primitive>
         <primitive id="water">
-            <water idtexture="idtex" idwavemap="idwave" parts="5" heightscale="1" texscale="1" />
+            <water idtexture="water" idwavemap="wavemap" parts="5" heightscale="5" texscale="1" />
         </primitive>
     </primitives>
 
@@ -365,6 +370,7 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="terrain_test"/>
                 <componentref id="fatlady_door"/>
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
@@ -382,34 +388,21 @@
             </children>
         </component>
 
-        <component id="cylinder_test">
+        <component id="terrain_test">
             <transformation>
-                <translate x="2" y="2" z="2"/>
+                <translate x="-7" y="0" z="-7"/>
+                <scale x="10" y="1" z="10"/>
             </transformation>
             <animations>
             </animations>
             <materials>
                 <material id="inherit"/>
             </materials>
-            <texture id="none" length_s = "1" length_t = "1"/>
+            <texture id="none" />
             <children>
-                <primitiveref id="cylinder2"/>
+                <primitiveref id="terrain"/>
             </children>
         </component>  
-
-        <component id="animation_test">
-            <transformation>
-            </transformation>
-            <animations>
-            </animations>
-            <materials>
-                <material id="inherit"/>
-            </materials>
-            <texture id="none" length_s = "1" length_t = "1"/>
-            <children>
-                <primitiveref id="rectangle"/>
-            </children>
-        </component> 
 
         <component id="fatlady_door">
             <transformation>

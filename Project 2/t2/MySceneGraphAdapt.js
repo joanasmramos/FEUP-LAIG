@@ -1201,7 +1201,7 @@ class MySceneGraphAdapt {
                         return "<primitives> - invalid attributes in terrain";
                     }
 
-                    //TO DO estrutura de dados
+                    this.primitives[id] = new Terrain(this.scene, this.data.textures[terrain["idtexture"]], this.data.textures[terrain["idheightmap"]], terrain["parts"], terrain["heightscale"]);
 
                     break;
 
