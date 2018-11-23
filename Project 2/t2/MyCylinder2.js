@@ -29,33 +29,34 @@ class MyCylinder2 extends CGFobject {
     }
     
     initBuffers() {
-        let controlPoints1 = new Array(), controlPoints2 = new Array();
+        let controlPoints1 = new Array();
 
         //quadric surface
-        let npointsU = 3, npointsV = 2;
+        let npointsU = 5, npointsV = 2;
         let npartsU = this.slices, npartsV = this.stacks;
 
-        controlPoints1.push([-this.base, 0, this.height/2, 1]);
+        controlPoints1.push([-this.top, 0, this.height/2, 1]);
         controlPoints1.push([-this.base, 0, -this.height/2, 1]);
-        controlPoints1.push([0, this.base, this.height/2, 1]);
+        controlPoints1.push([-this.top, this.top, this.height/2, 0.707]);
+        controlPoints1.push([-this.base, this.base, -this.height/2, 0.707]);
+        controlPoints1.push([0, this.top, this.height/2, 1]);
         controlPoints1.push([0, this.base, -this.height/2, 1]);
-        controlPoints1.push([this.base, 0, this.height/2, 1]);
+        controlPoints1.push([this.top, this.top, this.height/2, 0.707]);
+        controlPoints1.push([this.base, this.base, -this.height/2, 0.707]);
+        controlPoints1.push([this.top, 0, this.height/2, 1]);
         controlPoints1.push([this.base, 0, -this.height/2, 1]);
 
-        controlPoints2.push([-this.base, 0, -this.height/2, 1]);
-        controlPoints2.push([-this.base, 0, this.height/2, 1]);
-        controlPoints2.push([0, -this.base, -this.height/2, 1]);
-        controlPoints2.push([0, -this.base, this.height/2, 1]);
-        controlPoints2.push([this.base, 0, -this.height/2, 1]);
-        controlPoints2.push([this.base, 0, this.height/2, 1]);
-
         this.topPatch = new MyPatch(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints1);
-        this.bottomPatch = new MyPatch(this.scene, npartsU, npartsV, npointsU, npointsV, controlPoints2);
     }
 
     display() {
         this.topPatch.display();
-        this.bottomPatch.display();
+        //this.bottomPatch.display();
+
+        this.scene.pushMatrix();
+            this.scene.rotate(Math.PI, 0, 0, 1);
+            this.topPatch.display();
+        this.scene.popMatrix();
     }
 
 }

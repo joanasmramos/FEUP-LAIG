@@ -375,6 +375,7 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="water_test"/>
                 <componentref id="terrain_test"/>
                 <componentref id="fatlady_door"/>
                 <componentref id="bookshelf_1" />
@@ -393,7 +394,7 @@
             </children>
         </component>
 
-        <component id="terrain_test">
+        <component id="water_test">
             <transformation>
                 <translate x="-7" y="0" z="-7"/>
                 <scale x="10" y="1" z="10"/>
@@ -406,6 +407,22 @@
             <texture id="none" />
             <children>
                 <primitiveref id="water"/>
+            </children>
+        </component>  
+
+        <component id="terrain_test">
+            <transformation>
+                <translate x="-7" y="0" z="3"/>
+                <scale x="10" y="1" z="10"/>
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="terrain"/>
             </children>
         </component>  
 
