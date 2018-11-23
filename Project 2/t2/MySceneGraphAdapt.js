@@ -1201,7 +1201,9 @@ class MySceneGraphAdapt {
                         return "<primitives> - invalid attributes in terrain";
                     }
 
-                    this.primitives[id] = new Terrain(this.scene, this.data.textures[terrain["idtexture"]], this.data.textures[terrain["idheightmap"]], terrain["parts"], terrain["heightscale"]);
+                    this.primitives[id] = new Terrain(this.scene, this.data.textures[terrain["idtexture"]], 
+                                                      this.data.textures[terrain["idheightmap"]], terrain["parts"], 
+                                                      terrain["heightscale"]);
 
                     break;
 
@@ -1220,7 +1222,9 @@ class MySceneGraphAdapt {
                         return "<primitives> - invalid attributes in terrain";
                     }
 
-                    //TO DO estrutura de dados
+                    this.primitives[id] = new Water(this.scene, this.data.textures[water["idtexture"]], 
+                                                    this.data.textures[water["idwavemap"]], water["parts"], 
+                                                    water["heightscale"], water["texscale"]);
 
                     break;
 

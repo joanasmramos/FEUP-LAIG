@@ -1,21 +1,23 @@
-class Terrain extends CGFobject{
+class Water extends CGFobject{
     /**
      * 
      * @param {Scene} scene 
      * @param {Color texture} texture 
-     * @param {Height map texture} heightmap 
-     * @param {Parts} parts 
+     * @param {Height map texture} wavemap 
+     * @param {Number of parts} parts 
      * @param {Height scale} heightscale 
+     * @param {Texture scale} texscale 
      */
-    constructor(scene, texture, heightmap, parts, heightscale) {
+    constructor(scene, texture, wavemap, parts, heightscale, texscale) {
         super(scene);
 
-        this.shader = new CGFshader(this.scene.gl, "shaders/terrain.vert", "shaders/terrain.frag");
+        this.shader = new CGFshader(this.scene.gl, "shaders/water.vert", "shaders/water.frag");
         this.plane = new Plane(this.scene, parts, parts);
 
         this.texture = texture;
-        this.heightmap = heightmap;
+        this.wavemap = wavemap;
         this.heightscale = heightscale;
+        this.texscale = texscale;
 
         this.shader.setUniformsValues({texture: 0});
         this.shader.setUniformsValues({heightmap: 1});
@@ -26,10 +28,12 @@ class Terrain extends CGFobject{
      * Display
      */
     display(){
+        this.shader.setUniformsValues({timeFactor: this.scene.timeFactor});
+
         this.scene.setActiveShader(this.shader);
 
         this.texture.bind(0);
-        this.heightmap.bind(1);
+        this.wavemap.bind(1);
 
         this.plane.display();
 

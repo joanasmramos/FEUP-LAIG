@@ -1,7 +1,7 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Perspective" >
+    <views default="Water" >
         <perspective id="Fat Lady Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
@@ -10,6 +10,11 @@
         <perspective id="Perspective" near="0.1" far="500" angle="20">
             <from x="20" y="20" z="20" />
             <to x="0" y="0" z="0" />
+        </perspective>
+
+        <perspective id="Water" near="0.1" far="500" angle="20">
+            <from x="15" y="20" z="15" />
+            <to x="-7" y="3" z="-7" />
         </perspective>
 
         <ortho id="Orthographic" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
@@ -92,7 +97,7 @@
         <texture id="terrain" file="scenes/images/terrain.jpg"/>
         <texture id="water" file="scenes/images/water.jpg"/>
         <texture id="heightmap" file="scenes/images/heightmap_terrain.jpg"/>
-        <texture id="wavemap" file="scenes/images/heightmap_water.jpg"/>
+        <texture id="wavemap" file="scenes/images/heightmap_water2.jpg"/>
         
     </textures>
 
@@ -357,7 +362,7 @@
             <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="5"/>
         </primitive>
         <primitive id="water">
-            <water idtexture="water" idwavemap="wavemap" parts="5" heightscale="5" texscale="1" />
+            <water idtexture="water" idwavemap="wavemap" parts="5" heightscale="2" texscale="1" />
         </primitive>
     </primitives>
 
@@ -400,7 +405,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="terrain"/>
+                <primitiveref id="water"/>
             </children>
         </component>  
 
