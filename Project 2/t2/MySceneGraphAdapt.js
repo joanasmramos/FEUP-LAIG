@@ -1007,6 +1007,20 @@ class MySceneGraphAdapt {
     }
 
     /**
+     * Reads common attributes from a terrain/water tag
+     * @param {Shader tag} elem 
+     */
+    readPrimitiveShader(elem) {
+        let shader = new Object();
+
+        shader["idtexture"] = this.reader.getString(elem, 'idtexture', true);
+        shader["parts"] = this.reader.getInteger(elem, 'parts', true);
+        shader["heightscale"] = this.reader.getFloat(elem, 'heightscale', true);
+
+        return shader;
+    }
+
+    /**
      * Parses the <primitives> node.
      * @param {primitives block element}
      */
@@ -1017,8 +1031,8 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag, cylinder2Tag;
-        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], cylinder2 = [];
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag, cylinder2Tag, terrainTag, waterTag;
+        var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], cylinder2 = [], terrain = [], water = [];
 
         for (let i = 0; i < primitive.length; i++) {
             var children = primitive[i].children;
@@ -1167,9 +1181,46 @@ class MySceneGraphAdapt {
 
                     cylinder2 = this.readCylinderarray(cylinder2Tag);
                     if (!this.verifyAssocArr(cylinder2))
-                        return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
+                        return "<primitives> - something wrong with cylinder2";
                     
                     this.primitives[id] = new MyCylinder2 (this.scene, cylinder2["base"], cylinder2["top"], cylinder2["height"], cylinder2["slices"], cylinder2["stacks"]);
+
+                    break;
+
+                case 'terrain':
+                    terrainTag = primitive[id].getElementsByTagName('terrain')[0];
+
+                    if(!this.verifyElems([terrainTag])){
+                        return "<primitives> - something wrong with primitive's children";
+                    }
+
+                    terrain = this.readPrimitiveShader(terrainTag);
+                    terrain["idheightmap"] = this.reader.getString(terrainTag, 'idheightmap', true);
+
+                    if (!this.verifyStringsFloats([terrain["idtexture"], terrain["idheightmap"]], [terrain["parts"], terrain["heightscale"]])) {
+                        return "<primitives> - invalid attributes in terrain";
+                    }
+
+                    //TO DO estrutura de dados
+
+                    break;
+
+                case 'water':
+                    waterTag = primitive[id].getElementsByTagName('water')[0];
+
+                    if(!this.verifyElems([waterTag])){
+                        return "<primitives> - something wrong with primitive's children";
+                    }
+
+                    water = this.readPrimitiveShader(waterTag);
+                    water["idwavemap"] = this.reader.getString(waterTag, 'idwavemap', true);
+                    water["texscale"] = this.reader.getFloat(waterTag, 'texscale', true);
+
+                    if (!this.verifyStringsFloats([water["idtexture"], water["idwavemap"]], [water["parts"], water["heightscale"], water["texscale"]])) {
+                        return "<primitives> - invalid attributes in terrain";
+                    }
+
+                    //TO DO estrutura de dados
 
                     break;
 

@@ -348,6 +348,12 @@
         <primitive id="cylinder2">
             <cylinder2 base="1" top="1" height="1" slices="10" stacks="10" />
         </primitive>
+        <primitive id="terrain">
+            <terrain idtexture="idtex" idheightmap="idheight" parts="5" heightscale="1"/>
+        </primitive>
+        <primitive id="water">
+            <water idtexture="idtex" idwavemap="idwave" parts="5" heightscale="1" texscale="1" />
+        </primitive>
     </primitives>
 
     <components>
