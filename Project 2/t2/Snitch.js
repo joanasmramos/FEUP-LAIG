@@ -7,9 +7,8 @@ class Snitch extends CGFobject {
      super(scene);
 
      //Vehicle parts
-     this.snitch_body = new MySphere(this.scene, 1, 32, 32);
-     this.snitch_wing_left = this.wing_making();
-     this.snitch_wing_right = this.wing_making();
+     this.snitchBody = new MySphere(this.scene, 1, 32, 32);
+     this.snitchWing= this.wingMaking();
 
      this.goldenAppearance = new CGFappearance(this.scene);
      this.goldenAppearance.setAmbient(1, 0.90, 0, 1);
@@ -24,7 +23,7 @@ class Snitch extends CGFobject {
     *Creates the wing for Snitch Vehicle
     *@returns {Patch} representing wing
     */
-    wing_making() {
+    wingMaking() {
       let controlPoints = [
               [0, 0, 0, 1],
               [0, 0, -1.9, 1],
@@ -78,15 +77,16 @@ class Snitch extends CGFobject {
  * Displays the vehicle.
  */
 display() {
+  this.goldenAppearance.apply();
   this.scene.pushMatrix();
-    this.goldenAppearance.apply();
+
+    this.scene.translate(2, 2, 2);
     this.scene.scale(0.2, 0.2, 0.2);
-    this.scene.translate(6, 30, 6);
 
     //Display body
     this.scene.pushMatrix();
       this.scene.scale(0.5, 0.5, 0.5);
-    this.snitch_body.display();
+    this.snitchBody.display();
     this.scene.popMatrix();
 
 
@@ -94,7 +94,7 @@ display() {
     this.scene.pushMatrix();
     this.scene.rotate(Math.PI/6, 0, 1, 1);
     this.scene.translate(-0.3, 0, 0.2);
-    this.snitch_wing_right.display();
+    this.snitchWing.display();
     this.scene.popMatrix();
 
     //Display left wing
@@ -103,7 +103,7 @@ display() {
     this.scene.rotate(Math.PI/6, 0, 1, 1);
     this.scene.scale(1, -1, -1);
     this.scene.translate(0.3, 0, 0.1);
-    this.snitch_wing_left.display();
+    this.snitchWing.display();
     this.scene.popMatrix();
 
   this.scene.popMatrix();

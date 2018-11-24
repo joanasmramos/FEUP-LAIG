@@ -1,7 +1,7 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Fat Lady Door" >
+    <views default="Perspective" >
         <perspective id="Fat Lady Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
@@ -102,6 +102,7 @@
     </textures>
 
     <materials>
+
         <material id="unique_mat" shininess = "1" >
             <emission r="0" g="0" b="0" a="1" />
             <ambient r="0" g="0" b="0" a="1" />
@@ -346,14 +347,6 @@
                 <controlpoint xx="1.5" yy="-1.5" zz="0" />
                 <controlpoint xx="1.5" yy="1.5" zz="0" />
             </patch>
-            <!-- <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
-                <controlpoint xx="-1" yy="0" zz="0.5" />
-                <controlpoint xx="-1" yy="0" zz="-0.5" />
-                <controlpoint xx="0" yy="1" zz="0.5" />
-                <controlpoint xx="0" yy="1" zz="-0.5"/>
-                <controlpoint xx="1" yy="0" zz="0.5" />
-                <controlpoint xx="1" yy="0" zz="-0.5" />
-            </patch> -->
         </primitive>
         <primitive id="cylinder2">
             <cylinder2 base="1" top="1" height="1" slices="10" stacks="10" />
@@ -362,7 +355,7 @@
               <vehicle/>
         </primitive>
         <primitive id="terrain">
-            <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="3"/>
+            <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="4"/>
         </primitive>
         <primitive id="water">
             <water idtexture="water" idwavemap="wavemap" parts="5" heightscale="2" texscale="1" />
@@ -378,6 +371,7 @@
             </materials>
             <texture id="none" />
             <children>
+                <componentref id="snitch"/>
                 <componentref id="water_test"/>
                 <componentref id="terrain_test"/>
                 <componentref id="fatlady_door"/>
@@ -394,14 +388,28 @@
                 <componentref id="chandelier2"/>
                 <componentref id="chandelier1"/>
                 <componentref id="wall_hole"/>
-                <primitiveref id="vehicle" />
+            </children>
+        </component>
+
+        <component id="snitch">
+            <transformation>
+                <!-- <scale x="10" y="10" z="10"/> -->
+            </transformation>
+            <animations>
+            </animations>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="none" />
+            <children>
+                <primitiveref id="vehicle"/>
             </children>
         </component>
 
         <component id="water_test">
             <transformation>
                 <translate x="-7" y="0" z="-7"/>
-                <scale x="10" y="1" z="10"/>
+                <scale x="8" y="1" z="8"/>
             </transformation>
             <animations>
             </animations>
