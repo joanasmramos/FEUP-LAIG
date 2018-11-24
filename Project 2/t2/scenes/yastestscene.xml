@@ -1,7 +1,7 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Perspective" >
+    <views default="Fat Lady Door" >
         <perspective id="Fat Lady Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
@@ -97,8 +97,8 @@
         <texture id="terrain" file="scenes/images/terrain.jpg"/>
         <texture id="water" file="scenes/images/water.jpg"/>
         <texture id="heightmap" file="scenes/images/heightmap_terrain.jpg"/>
-        <texture id="wavemap" file="scenes/images/heightmap_water2.jpg"/>
-        
+        <texture id="wavemap" file="scenes/images/heightmap_water.jpg"/>
+
     </textures>
 
     <materials>
@@ -339,7 +339,7 @@
         </primitive>
         <primitive id="patch">
             <patch npointsU="3" npointsV="2" npartsU="10" npartsV="10" >
-                <controlpoint xx="-1.5" yy="-1.5" zz="0" /> 
+                <controlpoint xx="-1.5" yy="-1.5" zz="0" />
                 <controlpoint xx="-1.5" yy="1.5" zz="0" />
                 <controlpoint xx="0" yy="-1.5" zz="3" />
                 <controlpoint xx="0" yy="1.5" zz="3" />
@@ -357,6 +357,9 @@
         </primitive>
         <primitive id="cylinder2">
             <cylinder2 base="1" top="1" height="1" slices="10" stacks="10" />
+        </primitive>
+        <primitive id="vehicle">
+              <vehicle/>
         </primitive>
         <primitive id="terrain">
             <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="5"/>
@@ -391,6 +394,7 @@
                 <componentref id="chandelier2"/>
                 <componentref id="chandelier1"/>
                 <componentref id="wall_hole"/>
+                <primitiveref id="vehicle" />
             </children>
         </component>
 
@@ -408,7 +412,7 @@
             <children>
                 <primitiveref id="water"/>
             </children>
-        </component>  
+        </component>
 
         <component id="terrain_test">
             <transformation>
@@ -424,7 +428,7 @@
             <children>
                 <primitiveref id="terrain"/>
             </children>
-        </component>  
+        </component>
 
         <component id="fatlady_door">
             <transformation>

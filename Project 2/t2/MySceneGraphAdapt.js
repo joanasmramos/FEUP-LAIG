@@ -987,7 +987,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads control points from an array of control point tags, returns an array with all the control points
-     * @param {Control point tags} elem 
+     * @param {Control point tags} elem
      */
     readControlPoints(elem) {
         let controlPoints = new Array();
@@ -999,7 +999,7 @@ class MySceneGraphAdapt {
             controlPoint.push(this.reader.getFloat(elem[i], 'yy', true));
             controlPoint.push(this.reader.getFloat(elem[i], 'zz', true));
             controlPoint.push(1); //weight
-            
+
             controlPoints.push(controlPoint);
         }
 
@@ -1008,7 +1008,7 @@ class MySceneGraphAdapt {
 
     /**
      * Reads common attributes from a terrain/water tag
-     * @param {Shader tag} elem 
+     * @param {Shader tag} elem
      */
     readPrimitiveShader(elem) {
         let shader = new Object();
@@ -1091,7 +1091,7 @@ class MySceneGraphAdapt {
                     cylinder = this.readCylinderarray(cylinderTag);
                     if (!this.verifyAssocArr(cylinder))
                         return "<primitives> - something wrong with cylinder's base;top;height;slices;stacks' values";
-                    
+
                     this.primitives[id] = new MyCylinder (this.scene, cylinder["base"], cylinder["top"], cylinder["height"], cylinder["slices"], cylinder["stacks"]);
 
                     break;
@@ -1149,7 +1149,7 @@ class MySceneGraphAdapt {
 
                 case 'patch':
                     patchTag = primitive[id].getElementsByTagName('patch')[0];
-                    
+
                     if(!this.verifyElems([patchTag])) {
                         return "<primitives> - something wrong with primitives children";
                     }
@@ -1182,9 +1182,13 @@ class MySceneGraphAdapt {
                     cylinder2 = this.readCylinderarray(cylinder2Tag);
                     if (!this.verifyAssocArr(cylinder2))
                         return "<primitives> - something wrong with cylinder2";
-                    
+
                     this.primitives[id] = new MyCylinder2 (this.scene, cylinder2["base"], cylinder2["top"], cylinder2["height"], cylinder2["slices"], cylinder2["stacks"]);
 
+                    break;
+
+                case 'vehicle':
+                    this.primitives[id] = new Snitch(this.scene);
                     break;
 
                 case 'terrain':
@@ -1201,8 +1205,8 @@ class MySceneGraphAdapt {
                         return "<primitives> - invalid attributes in terrain";
                     }
 
-                    this.primitives[id] = new Terrain(this.scene, this.data.textures[terrain["idtexture"]], 
-                                                      this.data.textures[terrain["idheightmap"]], terrain["parts"], 
+                    this.primitives[id] = new Terrain(this.scene, this.data.textures[terrain["idtexture"]],
+                                                      this.data.textures[terrain["idheightmap"]], terrain["parts"],
                                                       terrain["heightscale"]);
 
                     break;
@@ -1222,8 +1226,8 @@ class MySceneGraphAdapt {
                         return "<primitives> - invalid attributes in terrain";
                     }
 
-                    this.primitives[id] = new Water(this.scene, this.data.textures[water["idtexture"]], 
-                                                    this.data.textures[water["idwavemap"]], water["parts"], 
+                    this.primitives[id] = new Water(this.scene, this.data.textures[water["idtexture"]],
+                                                    this.data.textures[water["idwavemap"]], water["parts"],
                                                     water["heightscale"], water["texscale"]);
 
                     break;
@@ -1376,7 +1380,7 @@ class MySceneGraphAdapt {
             if(!this.verifyString(id)){
                 return "<components> - something wrong with animationref's id";
             }
-            
+
             if(this.data.animations[id] == null) {
                 return "<components> - animation doesn't exist";
             }

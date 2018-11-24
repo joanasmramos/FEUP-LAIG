@@ -5,12 +5,12 @@ class MyPatch extends CGFobject{
 
     /**
      * Constructs a new patch
-     * @param {scene} scene 
-     * @param {number of parts in dimension U} npartsU 
-     * @param {number of parts in dimension V} npartsV 
-     * @param {number of points in dimension U} npointsU 
-     * @param {number of points in dimension V} npointsV 
-     * @param {control points} controlPoints 
+     * @param {scene} scene
+     * @param {number of parts in dimension U} npartsU
+     * @param {number of parts in dimension V} npartsV
+     * @param {number of points in dimension U} npointsU
+     * @param {number of points in dimension V} npointsV
+     * @param {control points} controlPoints
      */
     constructor(scene, npartsU, npartsV, npointsU, npointsV, controlPoints) {
         super(scene);
@@ -21,7 +21,7 @@ class MyPatch extends CGFobject{
         this.degreeV = npointsV - 1;
 
         this.constructControlVertexes(npointsU, npointsV, controlPoints);
-
+        
         //console.log(this.controlVertexes);
 
         let nurbsSurface = new CGFnurbsSurface(this.degreeU, this.degreeV, this.controlVertexes);
@@ -31,9 +31,9 @@ class MyPatch extends CGFobject{
 
     /**
      * Constructs control vertexes from control points
-     * @param {number of points in dimension U} npointsU 
-     * @param {number of points in dimension V} npointsV 
-     * @param {control points} controlPoints 
+     * @param {number of points in dimension U} npointsU
+     * @param {number of points in dimension V} npointsV
+     * @param {control points} controlPoints
      */
     constructControlVertexes(npointsU, npointsV, controlPoints) {
         this.controlVertexes = new Array();
@@ -41,7 +41,7 @@ class MyPatch extends CGFobject{
         for(let i=0; i<npointsU;i++){
             let controlPointU = new Array();
 
-            for(let j=0; j<npointsV;j++) {
+            for(let j=0; j<npointsV ;j++) {
                 controlPointU.push(controlPoints[npointsV*i+j]);
             }
 
