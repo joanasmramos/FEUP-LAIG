@@ -16,6 +16,7 @@ class Snitch extends CGFobject {
      this.goldenAppearance.setDiffuse(0.80, 0.80, 0.80, 1);
      this.goldenAppearance.setSpecular(0.8, 0.8, 0.8, 1);
      this.goldenAppearance.setShininess(25);
+     this.goldenAppearance.loadTexture("scenes/images/threeway_painting.jpg");
    }
 
 
