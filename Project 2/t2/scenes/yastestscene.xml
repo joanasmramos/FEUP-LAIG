@@ -400,7 +400,6 @@
 
         <component id="snitch">
             <transformation>
-                <!-- <scale x="10" y="10" z="10"/> -->
             </transformation>
             <animations>
               <animationref id ="snitch1"/>

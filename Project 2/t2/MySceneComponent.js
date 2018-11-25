@@ -18,7 +18,6 @@ class MySceneComponent{
         this.animated = null;
         this.animations = new Array();
         this.activeAnimation = 0;
-        //this.animationMatrix = mat4.create(); // identity
     }
 
     switchMaterial() {
