@@ -36,7 +36,7 @@ class MySceneComponent{
         if(this.animations[this.activeAnimation].done) {
             if(this.activeAnimation < numberOfAnims) {
                 let previousAnimation = this.activeAnimation++;
-                this.animations[this.activeAnimation].rotationAngle = this.animations[previousAnimation].rotationAngle;
+                //this.animations[this.activeAnimation].rotationAngle = this.animations[previousAnimation].rotationAngle;
             }
         }
     }

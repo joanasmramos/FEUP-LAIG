@@ -64,18 +64,23 @@ class CircularAnimation extends Animation {
         }
       }
       
-      if(this.rotate != 0) {
-        this.translate[0] = Math.cos(this.rotate) * this.radius; //x
-        this.translate[2] = Math.sin(this.rotate) * this.radius; //z
-      }
+      // if(this.rotate != 0) {
+      //   this.translate[0] = Math.cos(this.rotate) * this.radius; //x
+      //   this.translate[2] = Math.sin(this.rotate) * this.radius; //z
+      // }
 
       let result = mat4.create();
       mat4.identity(result);
-      mat4.translate(result, result, this.translate);
+      // mat4.translate(result, result, this.translate);
+      // mat4.translate(result, result, this.center);
+      // mat4.rotate(result, result, this.rotate, [0, 1, 0]);
+      // mat4.rotate(result, result, this.initialAngle, [0, 1, 0]);
+      // mat4.translate(result, result, this.reverseToOrigin);
+
       mat4.translate(result, result, this.center);
       mat4.rotate(result, result, this.rotate, [0, 1, 0]);
       mat4.rotate(result, result, this.initialAngle, [0, 1, 0]);
-      mat4.translate(result, result, this.reverseToOrigin);
+      mat4.translate(result, result, [this.radius, 0, 0]);
 
       return result;
     }
