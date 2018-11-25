@@ -14,7 +14,7 @@
 
         <perspective id="Hogwarts History" near="0.1" far="150" angle="10">
             <from x="4" y="5" z="6" />
-            <to x="0.5" y="1" z="2"/>
+            <to x="0.5" y="1.2" z="2"/>
         </perspective>
 
         <ortho id="Orthographic" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
@@ -82,6 +82,7 @@
     <textures>
         <texture id="fatlady" file="scenes/images/fatlady.jpg" />
         <texture id="brick_walls" file="scenes/images/brick_walls.png" />
+        <texture id="history" file="scenes/images/history.jpg" />
         <texture id="wooden_walls" file="scenes/images/wooden_walls.png" />
         <texture id="pillar" file="scenes/images/pilar.png" />
         <texture id="frame" file="scenes/images/frame.png" />
@@ -166,6 +167,13 @@
         <transformation id="base_wall">
             <scale x="11" y="8" z="1" />
             <rotate axis="x" angle="90"/>
+        </transformation>
+
+        <transformation id="history_wall">
+            <translate x="0.01" y="1" z="1.5" />
+            <rotate axis="y" angle="90" />
+            <rotate axis="x" angle="90" />
+            <scale x="1" y="0.8" z="1" />
         </transformation>
 
         <transformation id="right_wall">
@@ -380,6 +388,7 @@
                 <componentref id="water_test"/>
                 <componentref id="terrain_test"/>
                 <componentref id="terrain_water_support"/>
+                <componentref id="history_hogwarts"/>
                 <componentref id="fatlady_door"/>
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
@@ -459,7 +468,18 @@
                 <componentref id="chandelier_bigbase-3"/>
             </children>
         </component>
-
+        <component id="history_hogwarts">
+            <transformation>
+              <transformationref id="history_wall"/>
+            </transformation>
+            <materials>
+                    <material id="inherit" />
+            </materials>
+            <texture id="history" length_s="1" length_t="1" />
+            <children>
+                <primitiveref id="plane" />
+            </children>
+        </component>
         <component id="fatlady_door">
             <transformation>
             </transformation>
