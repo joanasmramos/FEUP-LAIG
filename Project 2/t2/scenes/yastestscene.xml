@@ -411,8 +411,8 @@
             <transformation>
             </transformation>
             <animations>
-              <animationref id ="snitch1"/>
-              <animationref id ="snitch2"/>
+              <!-- <animationref id ="snitch1"/>
+              <animationref id ="snitch2"/> -->
             </animations>
             <materials>
                 <material id="inherit"/>
@@ -454,6 +454,7 @@
                 <primitiveref id="terrain"/>
             </children>
         </component>
+
         <component id="terrain_water_support">
             <transformation>
             <translate x="-5.5" y="0" z="2" />
@@ -468,6 +469,7 @@
                 <componentref id="chandelier_bigbase-3"/>
             </children>
         </component>
+
         <component id="history_hogwarts">
             <transformation>
               <transformationref id="history_wall"/>
@@ -480,11 +482,14 @@
                 <primitiveref id="plane" />
             </children>
         </component>
+
         <component id="fatlady_door">
             <transformation>
+                <translate x="4.5" y="0" z="0" />
+                <rotate axis="y" angle="-90"/>
+                <translate x="-4.5" y="0" z="0" />
             </transformation>
             <animations>
-              <animationref id="door" />
             </animations>
             <materials>
                 <material id="inherit" />

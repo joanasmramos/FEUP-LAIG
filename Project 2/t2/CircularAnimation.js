@@ -19,15 +19,9 @@ class CircularAnimation extends Animation {
       this.radius = radius;
       this.initialAngle = (Math.PI * initialAngle) / 180; //degrees to radians
       this.rotationalAngle = (Math.PI * rotationalAngle) / 180; //degrees to radians
-      this.translate = vec3.create();
-      this.translate[1] = 0; // y
       this.rotate = 0;
       this.deltaAngle = 0;
 
-      this.reverseToOrigin = vec3.create();
-      for(let i=0; i<this.reverseToOrigin.length; i++) {
-        this.reverseToOrigin[i] = -this.center[i];
-      }
     }
 
      /**
@@ -52,7 +46,6 @@ class CircularAnimation extends Animation {
     animate() {
     }
 
-
     apply(){
       if(!this.done) {
         this.calcDeltaAngle();
@@ -63,19 +56,9 @@ class CircularAnimation extends Animation {
           this.rotationAngle = this.rotationalAngle;
         }
       }
-      
-      // if(this.rotate != 0) {
-      //   this.translate[0] = Math.cos(this.rotate) * this.radius; //x
-      //   this.translate[2] = Math.sin(this.rotate) * this.radius; //z
-      // }
 
       let result = mat4.create();
       mat4.identity(result);
-      // mat4.translate(result, result, this.translate);
-      // mat4.translate(result, result, this.center);
-      // mat4.rotate(result, result, this.rotate, [0, 1, 0]);
-      // mat4.rotate(result, result, this.initialAngle, [0, 1, 0]);
-      // mat4.translate(result, result, this.reverseToOrigin);
 
       mat4.translate(result, result, this.center);
       mat4.rotate(result, result, this.rotate, [0, 1, 0]);
