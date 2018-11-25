@@ -21,7 +21,7 @@ class LinearAnimation extends Animation {
 
         this.calcSegmentsDistance();
         this.setActiveSegmentDistance();
-        this.setRotationAngle(this.segments[this.activeSegment]);
+        this.setRotationAngle(this.segments[this.activeSegment], [0, 0, 1]);
     }
 
     /**
@@ -60,14 +60,27 @@ class LinearAnimation extends Animation {
      * Sets the current rotation angle, according to the current displacement vector
      * @param {Displacement vector} vec 
      */
-    setRotationAngle(vec) {
+    setRotationAngle(vec, oldvec) {
         let copy = vec3.clone(vec);
-        copy[1] = 0; //we only care about horizontal (xz) orientation 
+        let copy2 = vec3.clone(oldvec)
+
+         //we only care about horizontal (xz) orientation
+         copy[1] = 0;
+         copy2[1] = 0; 
 
         if(copy[0] == 0 && copy[2] == 0){
             return;
         }
         this.rotationAngle = this.angle([0,0,1], copy);
+
+        if(copy[0] < 0) { //x
+            if(copy[2] > 0) { //z
+                this.rotationAngle = -this.rotationAngle;
+            }
+            if(copy[2] < 0) { //z
+                this.rotationAngle = -this.rotationAngle;
+            }
+        }
     }
 
     /**
@@ -78,7 +91,7 @@ class LinearAnimation extends Animation {
             this.done = true;
         }
         else {
-            this.setRotationAngle(this.segments[this.activeSegment]);
+            this.setRotationAngle(this.segments[this.activeSegment], this.segments[this.activeSegment - 1]);
         }
     }
 
