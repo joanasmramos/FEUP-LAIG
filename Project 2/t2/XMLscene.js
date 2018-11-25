@@ -32,11 +32,7 @@ class XMLscene extends CGFscene {
                 }
 
         }
-      /*  for(let key in this.graph.primitives) {
-        if(this.graph.primitives[key] instanceof Water)
-        this.graph.primitives[key].update(currTime);
-    }
-    */
+
         this.timeFactor += 0.002;
     }}
 
