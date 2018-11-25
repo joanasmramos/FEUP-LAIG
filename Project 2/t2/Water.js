@@ -22,6 +22,7 @@ class Water extends CGFobject{
         this.shader.setUniformsValues({texture: 0});
         this.shader.setUniformsValues({heightmap: 1});
         this.shader.setUniformsValues({heightscale: heightscale});
+        this.shader.setUniformsValues({texscale: texscale});
     }
 
     /**
