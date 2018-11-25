@@ -1,7 +1,7 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Fat Lady Door" >
+    <views default="Perspective" >
         <perspective id="Fat Lady Door" near="0.1" far="500" angle="20">
             <from x="3.5" y="1.5" z="20" />
             <to x="3.5" y="1.5" z="0" />
@@ -237,12 +237,14 @@
         </transformation>
 
         <transformation id="hogwarts_frame">
+          <translate x="0" y="0" z="-1" />
           <rotate axis="y" angle="-90" />
           <translate x="0.5" y="2.5" z="-0.1" />
           <scale x="0.7" y="1" z="0.9" />
         </transformation>
 
         <transformation id="hogwarts_image">
+          <translate x="0" y="0" z="-1" />
           <translate x="0.1" y="4" z="4.35" />
           <scale x="1" y="3" z="1.3" />
           <rotate axis="y" angle="90"/>
@@ -333,7 +335,7 @@
 
         <circular id="snitch2" span="3" center="4 1 3" radius="2" startang="0" rotang="-180" />
 
-        <circular id="door" span="8" center="0 0 0" radius="0.01" startang="0" rotang="-90" />
+        <circular id="door" span="8" center="0 0 0" radius="0.01" startang="0" rotang="-89" />
 
     </animations>
 
@@ -405,7 +407,6 @@
                 <componentref id="left_pillar" />
                 <componentref id="hogwarts_painting"/>
                 <componentref id="candles_painting"/>
-                <!-- <componentref id="maincarpet" /> -->
                 <componentref id="chandelier2"/>
                 <componentref id="chandelier1"/>
                 <componentref id="wall_hole"/>
