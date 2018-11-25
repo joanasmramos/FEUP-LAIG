@@ -12,14 +12,14 @@ class Snitch extends CGFobject {
 
      this.goldenAppearance = new CGFappearance(this.scene);
      this.goldenAppearance.setAmbient(1, 0.90, 0, 1);
-     this.goldenAppearance.setDiffuse(0.80, 0.80, 0.80, 1);
-     this.goldenAppearance.setSpecular(0.8, 0.8, 0.8, 1);
+     this.goldenAppearance.setDiffuse(0.3, 0.3, 0.3, 1);
+     this.goldenAppearance.setSpecular(0.3, 0.3, 0.3, 1);
      this.goldenAppearance.setShininess(25);
      this.goldenAppearance.loadTexture("scenes/images/gold.jpg");
      this.wingAppearance = new CGFappearance(this.scene);
      this.wingAppearance.setAmbient(1, 0.90, 0, 1);
-     this.wingAppearance.setDiffuse(0.80, 0.80, 0.80, 1);
-     this.wingAppearance.setSpecular(0.8, 0.8, 0.8, 1);
+     this.wingAppearance.setDiffuse(0.3, 0.3, 0.3, 1);
+     this.wingAppearance.setSpecular(0.3, 0.3, 0.3, 1);
      this.wingAppearance.setShininess(25);
      this.wingAppearance.loadTexture("scenes/images/snitch-wings.jpg");
    }
@@ -33,7 +33,7 @@ class Snitch extends CGFobject {
       let controlPointsRight = [
         [0, 0, 0, 0.1],
         [0, 0, 0, 0.1],
-        
+
         [0.3, 0, -0.5, 1],
         [0.2, 0.5, -0.5, 1],
 
@@ -44,7 +44,7 @@ class Snitch extends CGFobject {
       let controlPointsLeft = [
         [0, 0, 0, 0.1],
         [0, 0, 0, 0.1],
-        
+
         [0.2, 0.5, -0.5, 1],
         [0.3, 0, -0.5, 1],
 

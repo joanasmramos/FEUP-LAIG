@@ -379,12 +379,14 @@
                 <componentref id="snitch"/>
                 <componentref id="water_test"/>
                 <componentref id="terrain_test"/>
+                <componentref id="terrain_water_support"/>
                 <componentref id="fatlady_door"/>
                 <componentref id="bookshelf_1" />
                 <componentref id="ceiling"/>
                 <componentref id="floor"/>
                 <componentref id="right_wall" />
                 <componentref id="left_wall" />
+                <componentref id="center_pillar" />
                 <componentref id="right_pillar" />
                 <componentref id="left_pillar" />
                 <componentref id="hogwarts_painting"/>
@@ -415,8 +417,8 @@
 
         <component id="water_test">
             <transformation>
-                <translate x="-7" y="0" z="-7"/>
-                <scale x="8" y="1" z="8"/>
+                <translate x="0.5" y="1.44" z="2.99"/>
+                <scale x="0.41" y="0.11" z="0.41"/>
             </transformation>
             <animations>
             </animations>
@@ -431,8 +433,8 @@
 
         <component id="terrain_test">
             <transformation>
-                <translate x="-7" y="0" z="-7"/>
-                <scale x="10" y="1" z="10"/>
+                <translate x="0.5" y="1.45" z="3"/>
+                <scale x="0.5" y="0.1" z="0.5"/>
             </transformation>
             <animations>
             </animations>
@@ -442,6 +444,20 @@
             <texture id="none" />
             <children>
                 <primitiveref id="terrain"/>
+            </children>
+        </component>
+        <component id="terrain_water_support">
+            <transformation>
+            <translate x="-5.5" y="0" z="2" />
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="metal" length_s="5.0" length_t="5.0"/>
+            <children>
+                <componentref id="chandelier_base"/>
+                <componentref id="chandelier_bigbase-0"/>
+                <componentref id="chandelier_bigbase-3"/>
             </children>
         </component>
 
@@ -735,6 +751,19 @@
             </children>
         </component>
 
+        <component id="center_pillar">
+            <transformation>
+                <transformationref id="center_pillar" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_pillar" />
+            </children>
+        </component>
+
         <component id="left_pillar">
             <transformation>
                 <transformationref id="left_pillar" />
@@ -761,18 +790,6 @@
             </children>
         </component>
 
-        <component id="center_pillar">
-            <transformation>
-                <transformationref id="center_pillar" />
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none" length_s="1" length_t="1" />
-            <children>
-                <componentref id="base_pillar" />
-            </children>
-        </component>
 
         <component id="base_pillar">
             <transformation>
@@ -1020,6 +1037,21 @@
             <transformation>
                 <translate x="6" y="1.5" z="1" />
                 <scale x="0.3" y="0.06" z="0.3"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="metal"/>
+                <material id="metal2"/>
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+        <component id="chandelier_bigbase-3">
+            <transformation>
+                <translate x="6" y="1.5" z="1" />
+                <scale x="0.4" y="0.06" z="0.45"/>
                 <rotate axis="x" angle="-90"/>
             </transformation>
             <materials>
