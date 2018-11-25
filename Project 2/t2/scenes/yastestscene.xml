@@ -313,10 +313,15 @@
 
         <circular id="door" span="5" center="4.5 0 0" radius="0" startang="0" rotang="-90" />
 
-        <linear id="teste" span="5">
-            <controlpoint xx="0" yy="0" zz="0"/>
-            <controlpoint xx="0" yy="0" zz="5"/>
+        <linear id="snitch1" span="30">
+            <controlpoint xx="5" yy="2" zz="-4"/>
+            <controlpoint xx="5" yy="2" zz="6"/>
+            <controlpoint xx="13" yy="2" zz="6"/>
+            <controlpoint xx="13" yy="2" zz="-4"/>
+            <controlpoint xx="5" yy="2" zz="-4"/>
         </linear>
+        <circular id="snitch2" span="5" center="4 2 4" radius="1" startang="0" rotang="360" />
+
     </animations>
 
     <primitives>
@@ -396,6 +401,8 @@
                 <!-- <scale x="10" y="10" z="10"/> -->
             </transformation>
             <animations>
+              <animationref id ="snitch1"/>
+              <animationref id ="snitch2"/>
             </animations>
             <materials>
                 <material id="inherit"/>

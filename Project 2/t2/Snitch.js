@@ -69,7 +69,7 @@ class Snitch extends CGFobject {
               [0.2, 4, 0, 1]
       ];
 
-      return new MyPatch(this.scene, 16, 32, 6, 4, controlPoints);
+      return new MyPatch(this.scene, 16, 32, 7, 5, controlPoints);
     }
 
 
@@ -79,8 +79,6 @@ class Snitch extends CGFobject {
 display() {
   this.goldenAppearance.apply();
   this.scene.pushMatrix();
-
-    this.scene.translate(2, 2, 2);
     this.scene.scale(0.2, 0.2, 0.2);
 
     //Display body
