@@ -33,7 +33,7 @@ class XMLscene extends CGFscene {
             }
         }
 
-        this.timeFactor = Math.sin(currTime/1000) * 0.04;
+        this.timeFactor = Math.sin(currTime/1000) * 0.03;
     }
 
     /**
