@@ -333,6 +333,8 @@
 
         <circular id="snitch2" span="3" center="4 1 3" radius="2" startang="0" rotang="-180" />
 
+        <circular id="door" span="8" center="0 0 0" radius="0.01" startang="0" rotang="-90" />
+
     </animations>
 
     <primitives>
@@ -490,10 +492,10 @@
         <component id="fatlady_door">
             <transformation>
                 <translate x="4.5" y="0" z="0" />
-                <rotate axis="y" angle="-90"/>
                 <translate x="-4.5" y="0" z="0" />
             </transformation>
             <animations>
+              <animationref id="door"/>
             </animations>
             <materials>
                 <material id="inherit" />
