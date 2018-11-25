@@ -22,7 +22,7 @@ class XMLscene extends CGFscene {
      */
     update(currTime) {
         if(this.sceneInited) {
-            
+
             for(let key in this.graph.nodes) {
                 let node = this.graph.nodes[key];
                 if(node.animations.length > 0) {
@@ -30,11 +30,15 @@ class XMLscene extends CGFscene {
                     node.animations[node.activeAnimation].animate();
                     node.switchAnimation();
                 }
-            }
-        }
 
-        this.timeFactor = Math.sin(currTime/1000) * 0.03;
+        }
+      /*  for(let key in this.graph.primitives) {
+        if(this.graph.primitives[key] instanceof Water)
+        this.graph.primitives[key].update(currTime);
     }
+    */
+        this.timeFactor += 0.002;
+    }}
 
     /**
      * Initializes the scene, setting some WebGL defaults, initializing the camera and the axis.
@@ -48,6 +52,7 @@ class XMLscene extends CGFscene {
         this.initCameras();
         this.omniValues = [];
         this.spotValues = [];
+        this.timeFactor = 0;
 
         this.enableTextures(true);
 

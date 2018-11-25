@@ -1,12 +1,12 @@
 class Water extends CGFobject{
     /**
-     * 
-     * @param {Scene} scene 
-     * @param {Color texture} texture 
-     * @param {Height map texture} wavemap 
-     * @param {Number of parts} parts 
-     * @param {Height scale} heightscale 
-     * @param {Texture scale} texscale 
+     *
+     * @param {Scene} scene
+     * @param {Color texture} texture
+     * @param {Height map texture} wavemap
+     * @param {Number of parts} parts
+     * @param {Height scale} heightscale
+     * @param {Texture scale} texscale
      */
     constructor(scene, texture, wavemap, parts, heightscale, texscale) {
         super(scene);
@@ -19,9 +19,13 @@ class Water extends CGFobject{
         this.heightscale = heightscale;
         this.texscale = texscale;
 
+        this.offset = 0;
+        this.time = 0;
+
         this.shader.setUniformsValues({texture: 0});
         this.shader.setUniformsValues({heightmap: 1});
         this.shader.setUniformsValues({heightscale: heightscale});
+        this.shader.setUniformsValues({offset: this.offset});
         this.shader.setUniformsValues({texscale: texscale});
     }
 
@@ -38,6 +42,12 @@ class Water extends CGFobject{
 
         this.plane.display();
 
+        this.texture.unbind(0);
+        this.wavemap.unbind(1);
+        
         this.scene.setActiveShader(this.scene.defaultShader);
     }
+
+
+
 }

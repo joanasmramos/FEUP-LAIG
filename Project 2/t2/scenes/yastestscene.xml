@@ -371,7 +371,7 @@
             <terrain idtexture="terrain" idheightmap="heightmap" parts="10" heightscale="4"/>
         </primitive>
         <primitive id="water">
-            <water idtexture="water" idwavemap="wavemap" parts="5" heightscale="2" texscale="1" />
+            <water idtexture="water" idwavemap="wavemap" parts="50" heightscale="0.2" texscale="1" />
         </primitive>
     </primitives>
 
@@ -425,8 +425,8 @@
 
         <component id="water_test">
             <transformation>
-                <translate x="0.5" y="1.44" z="2.99"/>
-                <scale x="0.41" y="0.11" z="0.41"/>
+                <translate x="0.5" y="1.6" z="2.99"/>
+                <scale x="0.40" y="0.10" z="0.40"/>
             </transformation>
             <animations>
             </animations>
