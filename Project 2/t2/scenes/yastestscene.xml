@@ -12,9 +12,9 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
-        <perspective id="Water" near="0.1" far="500" angle="20">
-            <from x="15" y="20" z="15" />
-            <to x="-7" y="3" z="-7" />
+        <perspective id="Hogwarts History" near="0.1" far="150" angle="10">
+            <from x="4" y="5" z="6" />
+            <to x="0.5" y="1" z="2"/>
         </perspective>
 
         <ortho id="Orthographic" near="0.1" far="500" left="-20" right="20" top="10" bottom="-10" >
@@ -314,7 +314,7 @@
         <circular id="door" span="5" center="4.5 0 0" radius="0" startang="0" rotang="-90" />
 
         <linear id="snitch1" span="30">
-            <controlpoint xx="5" yy="2" zz="-4"/>
+            <controlpoint xx="5" yy="2" zz="-5"/>
             <controlpoint xx="5" yy="2" zz="6"/>
             <controlpoint xx="13" yy="2" zz="6"/>
             <controlpoint xx="13" yy="2" zz="-4"/>
