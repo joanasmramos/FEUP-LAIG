@@ -117,6 +117,10 @@
             <water idtexture="water" idwavemap="wavemap" parts="50" heightscale="0.2" texscale="1" />
         </primitive>
 
+        <primitive id="board">
+            <board dimensions="5" />
+        </primitive>
+
     </primitives>
 
     <components>
@@ -129,7 +133,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="rectangle"/>
+                <primitiveref id="board"/>
             </children>
         </component>
 

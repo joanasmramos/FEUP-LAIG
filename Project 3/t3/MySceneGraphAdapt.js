@@ -1031,7 +1031,7 @@ class MySceneGraphAdapt {
             return "You must define a primitive in the <primitives> tag";
 
         var id;
-        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag, cylinder2Tag, terrainTag, waterTag;
+        var rectangleTag, triangleTag, cylinderTag, sphereTag, torusTag, planeTag, patchTag, cylinder2Tag, terrainTag, waterTag, boardTag;
         var rectangle = [], triangle = [], cylinder = [], sphere = [], torus = [], plane = [], cylinder2 = [], terrain = [], water = [];
 
         for (let i = 0; i < primitive.length; i++) {
@@ -1227,6 +1227,22 @@ class MySceneGraphAdapt {
                                                     water["heightscale"], water["texscale"]);
 
                     break;
+
+                case 'board':
+                    boardTag = primitive[id].getElementsByTagName('board')[0];
+
+                    if(!this.verifyElems([boardTag])) {
+                        return "<primitives> - something wrong with board";
+                    }
+
+                    let dimensions = this.reader.getInteger(boardTag, 'dimensions', true);
+                    
+                    if(!this.verifyFloat(dimensions)) {
+                        return "<primitives> - something wrong with board's dimensions";
+                    }
+
+                    this.primitives[id] = new MyBoard(this.scene, dimensions);
+                    
 
                 default:
                     break;
