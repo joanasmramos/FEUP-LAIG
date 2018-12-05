@@ -1044,7 +1044,7 @@
             </materials>
             <texture id="inherit" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="cylinder"/>
+                <primitiveref id="cylinder2"/>
             </children>
         </component>
 
