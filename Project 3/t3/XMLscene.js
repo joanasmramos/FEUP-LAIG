@@ -14,6 +14,7 @@ class XMLscene extends CGFscene {
         this.interface = myinterface;
         this.data = null;
         this.lightValues = {};
+        
     }
 
     /**
@@ -224,6 +225,9 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.axis.display();
         }
+        
+        this.piece = new MyPiece(this);
+        this.piece.display();
 
         this.popMatrix();
     }
