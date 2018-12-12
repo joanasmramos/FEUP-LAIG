@@ -161,6 +161,10 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
         this.setUpdatePeriod(10);
+
+        let boardDimensions = this.interface.getBoardDimensions();
+        this.graph.boardDimensions = boardDimensions;
+        this.graph.board = new MyBoard(this, boardDimensions);
     }
 
     /**

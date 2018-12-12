@@ -56,7 +56,6 @@
             <specular r="0.9" g="0.9" b="0.9" a="1" />
         </material>
 
-
     </materials>
 
     <transformations>
@@ -175,19 +174,6 @@
                 <componentref id="floor"/>
                 <componentref id="right_wall" />
                 <componentref id="left_wall" />
-                <componentref id="board"/>
-            </children>
-        </component>
-
-        <component id="board">
-            <transformation>
-            </transformation>
-            <materials>
-                <material id="inherit" />
-            </materials>
-            <texture id="none"/>
-            <children>
-                <primitiveref id="board" />
             </children>
         </component>
 
@@ -242,7 +228,6 @@
                 <primitiveref id="plane" />
             </children>
         </component>
-
 
     </components>
 

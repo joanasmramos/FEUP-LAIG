@@ -39,6 +39,8 @@ class MySceneGraphAdapt {
         this.nodeIds = [];
         this.idRoot = null;                    // The id of the root element.
         this.primitives = [];
+        this.board = null;
+        this.boardDimensions = null;
         // File reading
         this.reader = new CGFXMLreader();
 
@@ -1624,6 +1626,7 @@ class MySceneGraphAdapt {
     displayScene() {
         this.nodes[this.idRoot].transformationMat = mat4.create();
         var material = new CGFappearance();
+        this.board.display();
         this.processComponent(this.idRoot, material, this.nodes[this.idRoot].texture, this.nodes[this.idRoot].lengthS, this.nodes[this.idRoot].lengthT);
     }
 
