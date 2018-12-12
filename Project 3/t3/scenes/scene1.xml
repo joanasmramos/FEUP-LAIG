@@ -56,7 +56,6 @@
             <specular r="0.9" g="0.9" b="0.9" a="1" />
         </material>
 
-
     </materials>
 
     <transformations>
@@ -156,6 +155,10 @@
             <water idtexture="water" idwavemap="wavemap" parts="50" heightscale="0.2" texscale="1" />
         </primitive>
 
+        <primitive id="board">
+            <board dimensions="5"/>
+        </primitive>
+
     </primitives>
 
     <components>
@@ -173,8 +176,6 @@
                 <componentref id="left_wall" />
             </children>
         </component>
-
-
 
         <component id="left_wall">
             <transformation>
@@ -227,7 +228,6 @@
                 <primitiveref id="plane" />
             </children>
         </component>
-
 
     </components>
 

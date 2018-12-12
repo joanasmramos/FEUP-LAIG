@@ -24,8 +24,8 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>
 
-        <omni id="General 2" enabled="1" >
-            <location x="6" y="8" z="6" w="1" />
+        <omni id="General Origin" enabled="1" >
+            <location x="0" y="8" z="0" w="1" />
             <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
@@ -117,6 +117,10 @@
             <water idtexture="water" idwavemap="wavemap" parts="50" heightscale="0.2" texscale="1" />
         </primitive>
 
+        <primitive id="board">
+            <board dimensions="5" />
+        </primitive>
+
     </primitives>
 
     <components>
@@ -129,7 +133,7 @@
             </materials>
             <texture id="none" />
             <children>
-                <primitiveref id="rectangle"/>
+                <primitiveref id="board"/>
             </children>
         </component>
 

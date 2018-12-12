@@ -74,4 +74,17 @@ class MyInterface extends CGFinterface {
 
     }
 
+    /**
+     * Prompt user for board dimensions
+     */
+    getBoardDimensions() {
+        let boardDimensions = Number(prompt("Choose board dimensions.\nOptions: 5, 6 or 7"));
+
+        while(boardDimensions != 5 && boardDimensions != 6 && boardDimensions != 7) {
+            console.log(boardDimensions);
+            boardDimensions = Number(prompt("Choose board dimensions.\nOptions: 5, 6 or 7"));
+        }
+
+        return boardDimensions;
+    }
 }
