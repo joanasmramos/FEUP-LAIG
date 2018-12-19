@@ -76,15 +76,68 @@ class MyInterface extends CGFinterface {
 
     /**
      * Prompt user for board dimensions
+     * @param {*} document 
      */
-    getBoardDimensions() {
-        let boardDimensions = Number(prompt("Choose board dimensions.\nOptions: 5, 6 or 7"));
+    getBoardDimensions(document) {
+        let dimensions = prompt("Insert board dimensions.\nPossible options: 5, 6 or 7");
+        while(dimensions != 5 && dimensions != 6 && dimensions != 7) {
+            dimensions = prompt("Insert board dimensions.\nPossible options: 5, 6 or 7");
+        }
+        
+        return dimensions;
 
-        while(boardDimensions != 5 && boardDimensions != 6 && boardDimensions != 7) {
-            console.log(boardDimensions);
-            boardDimensions = Number(prompt("Choose board dimensions.\nOptions: 5, 6 or 7"));
+        // let body = document.getElementsByTagName('body')[0];
+
+        // let form = document.createElement('form');
+        // form.setAttribute('method', 'post');
+        // form.innerHTML = 
+        //     '<label for="dimensions">Choose board dimensions (5/7):</label>' +
+        //     '<input type="text" id="dimensions" name="dimensions" required="true">' +
+        //     '<input type="submit" id="submit" value="Ready!" />';
+        // console.log(form.outerHTML);
+
+        // body.appendChild(form);
+
+        /* CSS
+        input, label {
+        font: 'Verdana', sans-serif;
+        text-align: center;
+        width: auto;
+        margin: .3em;
+        justify-self: center;
+        font-size: 1em;
+        color: #6461a0;
         }
 
-        return boardDimensions;
+        input[type="text"] {
+        border: ridge;
+        border-color: #b497d6;
+        border-width: .1em;
+        border-radius: .5em;
+        }
+
+        input[type="submit"] {
+        border-style: solid;
+        border-width: .1em;
+        border-color: gray;
+        }
+
+        label {
+        font-size: 1.1em;
+        font-weight: 600;
+        }
+
+        form {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-template-columns: 1fr;
+        padding: 1em;
+        font-size: 1em;
+        border-style: ridge;
+        border-color: #b497d6;
+        border-radius: .8em;
+        background-color: #e1e2ef;
+        }
+        */
     }
 }

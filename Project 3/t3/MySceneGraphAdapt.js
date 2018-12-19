@@ -1626,7 +1626,13 @@ class MySceneGraphAdapt {
     displayScene() {
         this.nodes[this.idRoot].transformationMat = mat4.create();
         var material = new CGFappearance();
-        this.board.display();
+        
+        if (this.board != null) {
+            this.scene.pushMatrix();
+            this.scene.translate(this.boardDimensions/2, 0.1, this.boardDimensions/2);
+            this.board.display();
+            this.scene.popMatrix();
+        }
         this.processComponent(this.idRoot, material, this.nodes[this.idRoot].texture, this.nodes[this.idRoot].lengthS, this.nodes[this.idRoot].lengthT);
     }
 
