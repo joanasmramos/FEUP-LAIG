@@ -1629,7 +1629,7 @@ class MySceneGraphAdapt {
         
         if (this.board != null) {
             this.scene.pushMatrix();
-            this.scene.translate(this.boardDimensions/2, 0.1, this.boardDimensions/2);
+            this.scene.translate(this.boardDimensions/2, 0.05, this.boardDimensions/2);
             this.board.display();
             this.scene.popMatrix();
         }

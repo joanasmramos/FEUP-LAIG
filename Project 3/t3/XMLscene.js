@@ -166,9 +166,7 @@ class XMLscene extends CGFscene {
         this.graph.boardDimensions = this.interface.getBoardDimensions(this.document);
         this.graph.board = new MyBoard(this, this.graph.boardDimensions);
 
-        //let boardDimensions = this.interface.getBoardDimensions();
-        //this.graph.boardDimensions = boardDimensions;
-        //this.graph.board = new MyBoard(this, boardDimensions);
+        this.setPickEnabled(true);
     }
 
     /**
@@ -233,8 +231,8 @@ class XMLscene extends CGFscene {
             this.axis.display();
         }
         
-        this.piece = new MyPiece(this);
-        this.piece.display();
+        //this.piece = new MyPiece(this);
+        //this.piece.display();
 
         this.popMatrix();
     }
