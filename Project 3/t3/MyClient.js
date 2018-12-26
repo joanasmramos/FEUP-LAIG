@@ -14,11 +14,12 @@ class MyClient {
     }
 
     /**
-     * Sends a request string to prolog server followed by handle success or error cases. 
+    * Sending a request string to prolog server
+    * in which success/error cases for handler are treated 
     * @param requestString
     * @param onSuccess
     * @param onError
-     */
+    */
     getPrologRequest(requestString, onSuccess, onError) {
         let request = new XMLHttpRequest();
         request.open('GET', 'http://localhost:' + this.requested_port + '/' + requestString, true);
@@ -38,7 +39,7 @@ class MyClient {
         let requestString = [];
 
         // Make Request
-        getPrologRequest(requestString, this.handleReply);
+        this.getPrologRequest(requestString, this.handleReply);
     };
 
     /**
