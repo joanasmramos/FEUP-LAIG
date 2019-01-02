@@ -4,7 +4,7 @@
     <views default="Perspective" >
 
         <perspective id="Perspective" near="0.1" far="500" angle="20">
-            <from x="20" y="20" z="20" />
+            <from x="25" y="25" z="25" />
             <to x="0" y="0" z="0" />
         </perspective>
 
@@ -65,27 +65,22 @@
         </transformation>
 
         <transformation id="base_wall">
-            <scale x="11" y="8" z="1" />
+            <scale x="14" y="9" z="1" />
             <rotate axis="x" angle="90"/>
         </transformation>
 
         <transformation id="right_wall">
-            <translate x="5.5" y="4" z="0" />
+            <translate x="3" y="4.5" z="-4" />
         </transformation>
 
         <transformation id="left_wall">
-            <translate x="0" y="4" z="5.5" />
+            <translate x="-4" y="4.5" z="3" />
             <rotate axis="y" angle="90" />
         </transformation>
 
         <transformation id="floor">
-          <translate x="5.5" y="0" z="5.5" />
-          <scale x="11" y="1" z="11" />
-        </transformation>
-
-        <transformation id="floor">
-          <translate x="5.5" y="0" z="5.5" />
-          <scale x="11" y="1" z="11" />
+          <translate x="3" y="0" z="3" />
+          <scale x="14" y="1" z="14" />
         </transformation>
 
         <transformation id="maincarpet">

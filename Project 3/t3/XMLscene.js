@@ -166,7 +166,11 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
         this.setUpdatePeriod(10);
 
-        this.graph.boardDimensions = this.interface.getBoardDimensions(this.document);
+        // this.graph.boardDimensions = this.interface.getBoardDimensions(this.document);
+        // this.graph.board = new MyBoard(this, this.graph.boardDimensions);
+        
+        // provisório só pra testing
+        this.graph.boardDimensions = 5;
         this.graph.board = new MyBoard(this, this.graph.boardDimensions);
 
         this.setPickEnabled(true);
@@ -193,7 +197,7 @@ class XMLscene extends CGFscene {
 
         if (this.sceneInited) {
             // Draw axis
-            this.axis.display();
+            //this.axis.display();
 
             var i = 0;
             for (var key in this.omniValues) {
