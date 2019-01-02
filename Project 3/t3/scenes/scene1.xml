@@ -38,6 +38,7 @@
         <texture id="cat_popart" file="scenes/images/cat_popart.png" />
         <texture id="popart_wall" file="scenes/images/popart_wall.jpg" />
         <texture id="wooden_floor" file="scenes/images/wooden_floor.png" />
+        <texture id="purple" file="scenes/images/purple.jpg" />
 
     </textures>
 
@@ -45,7 +46,7 @@
 
         <material id="unique_mat" shininess = "1" >
             <emission r="0" g="0" b="0" a="1" />
-            <ambient r="0" g="0" b="0" a="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
             <diffuse r="0.6" g="0.6" b="0.6" a="1" />
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </material>
@@ -265,7 +266,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="purple" length_s="1" length_t="1" />
             <children>
                 <componentref id="piece_holder" />
             </children>
@@ -279,7 +280,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="none" />
+            <texture id="purple" length_s="1" length_t="1" />
             <children>
                 <componentref id="piece_holder" />
             </children>

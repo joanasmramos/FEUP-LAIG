@@ -170,8 +170,7 @@ class XMLscene extends CGFscene {
         // this.graph.board = new MyBoard(this, this.graph.boardDimensions);
         
         // provisório só pra testing
-        this.graph.boardDimensions = 5;
-        this.graph.board = new MyBoard(this, this.graph.boardDimensions);
+        this.graph.setupBoard(5);
 
         this.setPickEnabled(true);
     }
