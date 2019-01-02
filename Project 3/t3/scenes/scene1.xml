@@ -89,6 +89,35 @@
           <scale x="5" y="6" z="0.1" />
         </transformation>
 
+        <transformation id="cube_part1">
+            <translate x="0" y="0.5" z="0" />
+            <rotate axis="x" angle="-90" />
+        </transformation>
+
+        <transformation id="cube_part2">
+            <translate x="0" y="-0.5" z="0" />
+            <rotate axis="x" angle="90" />
+        </transformation>
+
+        <transformation id="cube_part3">
+            <translate x="0" y="0" z="0.5" />
+        </transformation>
+
+        <transformation id="cube_part4">
+            <translate x="0" y="0" z="-0.5" />
+            <rotate axis="x" angle="-180" />
+        </transformation>
+
+        <transformation id="cube_part5">
+            <translate x="-0.5" y="0" z="0" />
+            <rotate axis="y" angle="-90" />
+        </transformation>
+
+        <transformation id="cube_part6">
+            <translate x="0.5" y="0" z="0" />
+            <rotate axis="y" angle="90" />
+        </transformation>
+
     </transformations>
 
     <animations>
@@ -169,6 +198,9 @@
                 <componentref id="floor"/>
                 <componentref id="right_wall" />
                 <componentref id="left_wall" />
+                <componentref id="piece_holder_orange"/>
+                <componentref id="piece_holder_brown"/>
+                
             </children>
         </component>
 
@@ -223,6 +255,212 @@
                 <primitiveref id="plane" />
             </children>
         </component>
+
+        <component id="piece_holder_brown">
+            <transformation>
+                <translate x="2.5" y="0.5" z="-2"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="2" y="1" z="3"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="piece_holder" />
+            </children>
+        </component>
+
+        <component id="piece_holder_orange">
+            <transformation>
+                <translate x="-2" y="0.5" z="2"/>
+                <scale x="2" y="1" z="3"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="piece_holder" />
+            </children>
+        </component>
+
+        <component id="piece_holder">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="piece_holder_right" />
+                <componentref id="piece_holder_left" />
+                <componentref id="piece_holder_back" />
+                <componentref id="piece_holder_front" />
+                <componentref id="piece_holder_bottom" />
+            </children>
+        </component>
+
+        <component id="piece_holder_bottom">
+            <transformation>
+                <transformationref id="cube_part2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="piece_holder_front">
+            <transformation>
+                <transformationref id="cube_part3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="piece_holder_back">
+            <transformation>
+                <transformationref id="cube_part4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="piece_holder_left">
+            <transformation>
+                <transformationref id="cube_part5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="piece_holder_right">
+            <transformation>
+                <transformationref id="cube_part6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="parallelepiped">
+            <transformation>
+                <scale x="1" y="1" z="0.1"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="cube_part1" />
+                <componentref id="cube_part2" />
+                <componentref id="cube_part3" />
+                <componentref id="cube_part4" />
+                <componentref id="cube_part5" />
+                <componentref id="cube_part6" />
+            </children>
+        </component>
+
+        <component id="cube_part1">
+            <transformation>
+                <transformationref id="cube_part1" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="cube_part2">
+            <transformation>
+                <transformationref id="cube_part2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="cube_part3">
+            <transformation>
+                <transformationref id="cube_part3" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="cube_part4">
+            <transformation>
+                <transformationref id="cube_part4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="cube_part5">
+            <transformation>
+                <transformationref id="cube_part5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="cube_part6">
+            <transformation>
+                <transformationref id="cube_part6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>>
 
     </components>
 
