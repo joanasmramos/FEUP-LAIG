@@ -170,7 +170,7 @@ class XMLscene extends CGFscene {
         // this.graph.board = new MyBoard(this, this.graph.boardDimensions);
         
         // provisório só pra testing
-        this.graph.setupBoard(5);
+        this.game = new Game(this, 5);
 
         this.setPickEnabled(true);
     }
@@ -230,6 +230,8 @@ class XMLscene extends CGFscene {
             }
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
+            this.game.displayBoard();
+            this.game.displayPieces();
 
         }
         else {
