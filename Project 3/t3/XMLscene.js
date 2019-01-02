@@ -62,7 +62,7 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
 
         this.server = new MyClient(8081);
-        this.server.makeRequest();
+        //this.server.makeRequest();
     }
 
     /**
@@ -236,10 +236,7 @@ class XMLscene extends CGFscene {
         else {
             // Draw axis
             this.axis.display();
-        }
-        
-        //this.piece = new MyPiece(this);
-        //this.piece.display();
+        }  
 
         this.popMatrix();
     }
