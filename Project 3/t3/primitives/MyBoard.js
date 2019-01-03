@@ -64,6 +64,23 @@ class MyBoard extends CGFobject {
         for(let row=0; row<this.dimensions; row++) { // rows (0..dimensions-1)
             for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
                 this.scene.pushMatrix();
+                    this.scene.translate(column, 0, row);
+                    this.scene.translate(0.5, 0.25, 0.5);
+                    this.scene.registerForPick(i, this.cells[i-1]);
+                    if(this.scene.pickMode) {
+                        this.cells[i-1].display();
+                    }
+                    i++;
+                this.scene.popMatrix();
+            }
+        }
+
+        this.scene.clearPickRegistration();
+
+        i=1;
+        for(let row=0; row<this.dimensions; row++) { // rows (0..dimensions-1)
+            for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
+                this.scene.pushMatrix();
                     if(i == this.greenOne) {
                         this.picked.apply();
                     }
@@ -72,14 +89,11 @@ class MyBoard extends CGFobject {
                     }
                     this.scene.translate(column, 0, row);
                     this.scene.translate(0.5, 0, 0.5);
-                    this.scene.registerForPick(i, this.cells[i-1]);
                     this.cells[i-1].display();
                     i++;
                 this.scene.popMatrix();
             }
         }
-
-        this.scene.clearPickRegistration();
 
         this.scene.popMatrix();
     }
