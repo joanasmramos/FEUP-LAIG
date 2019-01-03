@@ -7,6 +7,7 @@ class MySceneComponent{
     * @constructor
     */
     constructor() {
+        this.isActive = true;
         this.transformationMat = null;
         this.materials = new Array();
         this.defaultMaterial = 0;

@@ -42,6 +42,7 @@ class MySceneGraphAdapt {
         this.board = null;
         this.boardDimensions = null;
         // File reading
+        this.filename = 'scenes/' + filename;
         this.reader = new CGFXMLreader();
 
         /*
@@ -50,7 +51,7 @@ class MySceneGraphAdapt {
          * If any error occurs, the reader calls onXMLError on this object, with an error message
          */
 
-        this.reader.open('scenes/' + filename, this);
+        this.reader.open(this.filename, this);
     }
 
     /*
@@ -1554,6 +1555,7 @@ class MySceneGraphAdapt {
      * @param {Father's length T} fatherT
      */
     processComponent(comp, fatherMat, fatherTex, fatherS, fatherT) {
+        if(this.nodes[comp].isActive){
         let currentMat, currentTex, currentS, currentT;
 
         this.scene.pushMatrix();
@@ -1617,8 +1619,8 @@ class MySceneGraphAdapt {
         }
 
         this.scene.popMatrix();
-
     }
+}
 
     /**
      * Displays the scene, processing each node, starting in the root node.

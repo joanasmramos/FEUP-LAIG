@@ -38,6 +38,8 @@
         <texture id="cat_popart" file="scenes/images/cat_popart.png" />
         <texture id="popart_wall" file="scenes/images/popart_wall.jpg" />
         <texture id="wooden_floor" file="scenes/images/wooden_floor.png" />
+        <texture id="1920s_wall" file="scenes/images/1920s_wall.jpg" />
+        <texture id="1920s_floor" file="scenes/images/1920s_floor.jpg" />
         <texture id="purple" file="scenes/images/purple.jpg" />
 
     </textures>
@@ -196,16 +198,46 @@
             </materials>
             <texture id="none" />
             <children>
-                <componentref id="floor"/>
-                <componentref id="right_wall" />
-                <componentref id="left_wall" />
+                <componentref id="retro"/>
+                <componentref id="1920" />
+                
+            </children>
+        </component>
+
+        <component id="retro">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="unique_mat" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="floor_r"/>
+                <componentref id="right_wall_r" />
+                <componentref id="left_wall_r" />
                 <componentref id="piece_holder_orange"/>
                 <componentref id="piece_holder_brown"/>
                 
             </children>
         </component>
 
-        <component id="left_wall">
+        <component id="1920">
+            <transformation>
+            </transformation>
+            <materials>
+                <material id="unique_mat" />
+            </materials>
+            <texture id="none" />
+            <children>
+                <componentref id="floor_1920"/>
+                <componentref id="right_wall_1920" />
+                <componentref id="left_wall_1920" />
+                <componentref id="piece_holder_orange"/>
+                <componentref id="piece_holder_brown"/>
+            </children>
+        </component>
+
+        <component id="left_wall_r">
             <transformation>
                 <transformationref id="left_wall" />
             </transformation>
@@ -218,7 +250,7 @@
             </children>
         </component>
 
-        <component id="right_wall">
+        <component id="right_wall_r">
             <transformation>
                 <transformationref id="right_wall" />
             </transformation>
@@ -231,7 +263,7 @@
             </children>
         </component>
         
-        <component id="floor">
+        <component id="floor_r">
             <transformation>
                 <transformationref id="floor"/>
             </transformation>
@@ -244,6 +276,45 @@
             </children>
         </component>
 
+        <component id="left_wall_1920">
+            <transformation>
+                <transformationref id="left_wall" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="1920s_wall" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
+            </children>
+        </component>
+
+        <component id="right_wall_1920">
+            <transformation>
+                <transformationref id="right_wall" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="1920s_wall" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
+            </children>
+        </component>
+        
+        <component id="floor_1920">
+            <transformation>
+                <transformationref id="floor"/>
+            </transformation>
+            <materials>
+                <material id="inherit"/>
+            </materials>
+            <texture id="1920s_floor" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="plane"/>
+            </children>
+        </component>
+        
         <component id="base_wall">
             <transformation>
                 <transformationref id="base_wall" />
@@ -461,7 +532,7 @@
             <children>
                 <primitiveref id="rectangle" />
             </children>
-        </component>>
+        </component>
 
     </components>
 

@@ -17,14 +17,19 @@ class MyInterface extends CGFinterface {
         super.init(application);
         // init GUI. For more information on the methods, check:
         //  http://workshop.chromeexperiments.com/examples/gui
-
+        
         this.gui = new dat.GUI();
-
         // add a group of controls (and open/expand by defult)
 
         return true;
     }
 
+    addOptionsGroup(){
+        var group = this.gui.addFolder("General Options");
+        group.open();
+        
+        group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
+    }
     /**
      * Adds a folder for lights control
      * @param {array} lights

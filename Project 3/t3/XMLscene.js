@@ -52,6 +52,11 @@ class XMLscene extends CGFscene {
         this.spotValues = [];
         this.timeFactor = 0;
 
+        this.themes = {};
+        this.themes['retro'] = 0;
+        this.themes['1920'] = 1;
+        this.currentTheme = 0;
+
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -162,6 +167,7 @@ class XMLscene extends CGFscene {
         // Add lights group.
         this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
         this.interface.addViewsGroup();
+        this.interface.addOptionsGroup();
 
         this.sceneInited = true;
         this.setUpdatePeriod(10);
@@ -228,6 +234,16 @@ class XMLscene extends CGFscene {
                     i++;
                 }
             }
+
+            if(this.currentTheme == 0) {
+                this.graph.nodes["retro"].isActive = true;
+                this.graph.nodes["1920"].isActive = false;
+            }
+            else {
+                this.graph.nodes["retro"].isActive = false;
+                this.graph.nodes["1920"].isActive = true;
+            }
+
             // Displays the scene (MySceneGraph function).
             this.graph.displayScene();
             this.game.display();
