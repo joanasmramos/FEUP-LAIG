@@ -2,13 +2,8 @@
 :-use_module(library(sockets)).
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
-:- ensure_loaded('ai.pl').
-:- ensure_loaded('coffee.pl').
-:- ensure_loaded('display.pl').
-:- ensure_loaded('game_logic.pl').
-:- ensure_loaded('input.pl').
-:- ensure_loaded('internal_representation.pl').
-:- ensure_loaded('menus.pl').
+
+:- include('server_inputs.pl').
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

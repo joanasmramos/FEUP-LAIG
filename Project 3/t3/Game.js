@@ -15,6 +15,17 @@ class Game {
         this.orangePiece = new MyPiece(this.scene, "orange");
         this.brownPiece = new MyPiece(this.scene, "brown");
         this.client = new MyClient();
+
+        this.getInternalBoard();
+    }
+
+    getInternalBoard() {
+        let this_t = this;
+        
+        //currently working on this
+        this.client.getPrologRequest("create_empty_board(" + JSON.stringify(this.boardDimensions) + ")", function(data) {}, function(data){});
+
+        this.client.getPrologRequest("quit", function(data) {}, function(data) {});
     }
 
     /**
