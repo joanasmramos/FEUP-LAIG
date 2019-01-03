@@ -14,6 +14,7 @@ class Game {
         this.board = new MyBoard(this.scene, boardDimensions);
         this.orangePiece = new MyPiece(this.scene, "orange");
         this.brownPiece = new MyPiece(this.scene, "brown");
+        this.client = new MyClient();
     }
 
     /**
@@ -29,9 +30,9 @@ class Game {
     }
 
     /**
-     * Displays pieces
+     * Displays pieces that are in the piece holders
      */
-    displayPieces() {
+    displayStationaryPieces() {
         let row = 0;
 
         let numberOfPieces = (this.numberOfOrangePieces>this.numberOfBrownPieces)? this.numberOfOrangePieces : this.numberOfBrownPieces;
@@ -66,6 +67,6 @@ class Game {
 
     display() {
         this.displayBoard();
-        this.displayPieces();
+        this.displayStationaryPieces();
     }
 }

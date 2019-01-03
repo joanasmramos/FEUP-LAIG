@@ -44,11 +44,16 @@ class MyBoard extends CGFobject {
                         let customId = this.scene.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         this.greenOne = customId;
+                        this.pickedCell(customId);
                     }
                 }
                 this.scene.pickResults.splice(0,this.scene.pickResults.length);
             }		
         }
+    }
+
+    pickedCell(id){
+        
     }
 
     display() {
