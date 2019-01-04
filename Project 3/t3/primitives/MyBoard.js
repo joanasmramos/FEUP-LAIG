@@ -12,29 +12,44 @@ class MyBoard extends CGFobject {
         super(scene);
 
         this.dimensions = dimensions;
+        this.pickedOne = null;
         this.cells = new Array();
+        this.internalBoard = new Array();
+        this.setupMaterials();
 
-        this.cellMaterial = new CGFappearance(scene);
+        for(let i=0; i<dimensions*dimensions; i++) {
+            this.cells.push(new Plane(scene, 5, 5));
+        }
+
+    }
+
+    setupMaterials(){
+        this.cellMaterial = new CGFappearance(this.scene);
         this.cellMaterial.loadTexture("scenes/images/cell.png");
         this.cellMaterial.setShininess(0);
         this.cellMaterial.setAmbient(0, 0, 0, 1);
         this.cellMaterial.setDiffuse(0.7, 0.7, 0.7, 1);
         this.cellMaterial.setSpecular(0, 0, 0, 1);
 
-        this.picked = new CGFappearance(scene);
-        this.picked.loadTexture("scenes/images/cell.png");
-        this.picked.setShininess(100);
-        this.picked.setAmbient(0, 0, 0, 1);
-        this.picked.setDiffuse(0.6, 0.9, 0.6, 1);
-        this.picked.setSpecular(0, 0, 0, 1);
+        this.validCell = new CGFappearance(this.scene);
+        this.validCell.loadTexture("scenes/images/cell_valid.png");
+        this.validCell.setShininess(100);
+        this.validCell.setAmbient(0, 0, 0, 1);
+        this.validCell.setDiffuse(0.6, 0.9, 0.6, 1);
+        this.validCell.setSpecular(0, 0, 0, 1);
 
-        for(let i=0; i<dimensions*dimensions; i++) {
-            this.cells.push(new Plane(scene, 5, 5));
-        }
+        this.invalidCell = new CGFappearance(this.scene);
+        this.invalidCell.loadTexture("scenes/images/cell_invalid.png");
+        this.invalidCell.setShininess(100);
+        this.invalidCell.setAmbient(0, 0, 0, 1);
+        this.invalidCell.setDiffuse(0.6, 0.9, 0.6, 1);
+        this.invalidCell.setSpecular(0, 0, 0, 1);
 
-        this.greenOne = -1;
     }
 
+    /**
+     * Log picking
+     */
     logPicking() {
         if (this.scene.pickMode == false) {
             if (this.scene.pickResults != null && this.scene.pickResults.length > 0) {
@@ -43,7 +58,7 @@ class MyBoard extends CGFobject {
                     if (obj) {
                         let customId = this.scene.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        this.greenOne = customId;
+                        this.pickedOne = customId;
                         this.pickedCell(customId);
                     }
                 }
@@ -86,8 +101,8 @@ class MyBoard extends CGFobject {
         for(let row=0; row<this.dimensions; row++) { // rows (0..dimensions-1)
             for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
                 this.scene.pushMatrix();
-                    if(i == this.greenOne) {
-                        this.picked.apply();
+                    if(i == this.pickedOne) {
+                        this.validCell.apply();
                     }
                     else {
                         this.cellMaterial.apply();

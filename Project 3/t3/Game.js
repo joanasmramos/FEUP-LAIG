@@ -16,14 +16,18 @@ class Game {
         this.brownPiece = new MyPiece(this.scene, "brown");
         this.client = new MyClient();
 
-        this.getInternalBoard();
+        this.setupProlog();
     }
 
-    getInternalBoard() {
+    setupProlog() {
         let this_t = this;
         
         //currently working on this
-        this.client.getPrologRequest("create_empty_board(" + JSON.stringify(this.boardDimensions) + ")", function(data) {}, function(data){});
+        this.client.getPrologRequest("create_empty_board(" + JSON.stringify(this.boardDimensions) + ")", function(data) {
+            this_t.board.internalBoard = JSON.parse(data.target.response);
+        }, function(data){});
+
+        this.client.getPrologRequest("assert_dimensions(" + JSON.stringify(this.boardDimensions) + ")", function(data){}, function(data){});
 
         this.client.getPrologRequest("quit", function(data) {}, function(data) {});
     }

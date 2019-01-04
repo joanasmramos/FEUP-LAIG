@@ -15,4 +15,8 @@ test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 parse_input(create_empty_board(Dimensions), Board) :-
-  create_empty_board(Dimensions, Dimensions, Board).
+  create_empty_board(Dimensions, Dimensions, B),
+  boardToNumbers(B, Board).
+
+parse_input(assert_dimensions(Dimensions), 'Done my dude') :-
+  asserta(board_size(Dimensions)).

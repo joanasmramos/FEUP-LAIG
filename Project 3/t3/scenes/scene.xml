@@ -31,6 +31,13 @@
             <specular r="0.1" g="0.1" b="0.1" a="1" />
         </omni>
 
+        <omni id="General 3" enabled="1" >
+            <location x="-3" y="8" z="-3" w="1" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1" />
+            <diffuse r="0.6" g="0.6" b="0.6" a="1" />
+            <specular r="0.1" g="0.1" b="0.1" a="1" />
+        </omni>
+
     </lights>
 
     <textures>

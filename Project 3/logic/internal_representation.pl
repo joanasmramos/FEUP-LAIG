@@ -22,3 +22,26 @@ set_element(1, Column, Element, [H|T], [HNew|T]) :- set_element_in_list(H, Colum
 set_element(Row, Column, Element, [B|Bs], [B|BsNew]) :- Row > 1, !,
                                                         Row1 is Row - 1,
                                                         set_element(Row1, Column, Element, Bs, BsNew).
+
+boardToNumbers([], []).
+boardToNumbers([List | R], [NumberList | Numbers]):-
+  boardToNumbersLine(List, NumberList),
+  boardToNumbers(R, Numbers).
+
+boardToNumbersLine([], []).
+boardToNumbersLine([Element | Rest], [Number | NumberRest]):-
+  atomString(Element,Number),
+  boardToNumbersLine(Rest, NumberRest).
+
+
+atomString(e, 0).
+atomString(b, 1).
+atomString(o, 2).
+atomString(vb, 3).
+atomString(hb, 4).
+atomString(db1, 5).
+atomString(db2, 6).
+atomString(vo, 7).
+atomString(ho, 8).
+atomString(do1, 9).
+atomString(do2, 10).
