@@ -19,6 +19,9 @@ class Game {
         this.setupProlog();
     }
 
+    /**
+     * Gets initial board form prolog and asserts board dimensions
+     */
     setupProlog() {
         let this_t = this;
         

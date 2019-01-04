@@ -15,6 +15,7 @@ class MyBoard extends CGFobject {
         this.pickedOne = null;
         this.cells = new Array();
         this.internalBoard = new Array();
+        this.pickedMove = new Array(3);
         this.setupMaterials();
 
         for(let i=0; i<dimensions*dimensions; i++) {
@@ -23,6 +24,9 @@ class MyBoard extends CGFobject {
 
     }
 
+    /**
+     * Creates cell materials
+     */
     setupMaterials(){
         this.cellMaterial = new CGFappearance(this.scene);
         this.cellMaterial.loadTexture("scenes/images/cell.png");
@@ -68,7 +72,19 @@ class MyBoard extends CGFobject {
     }
 
     pickedCell(id){
-        
+        let rowIndex = 0, columnIndex = 1;
+        let row = Math.ceil(id/this.dimensions);
+        let column;
+        if(row > 1) {
+            column = id - ((row - 1) * this.dimensions + 1) + 1;
+        }
+        else {
+            column = id;
+        }
+
+
+        this.pickedMove[rowIndex] = row;
+        this.pickedMove[columnIndex] = column;
     }
 
     display() {
