@@ -7,7 +7,7 @@ class Game {
     constructor(scene, boardDimensions) {
         this.scene = scene;
         this.boardDimensions = boardDimensions;
-        this.player = 1;
+        this.player = 1; // brown
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
 
@@ -69,7 +69,7 @@ class Game {
 
             if(i < this.numberOfOrangePieces) {
                 this.scene.pushMatrix();
-                this.scene.translate(-2.5 + column, level, 1.1 + row);
+                this.scene.translate(1.55 + row, level, 6.5 + column);
                 this.orangePiece.display();
                 this.scene.popMatrix();
             }

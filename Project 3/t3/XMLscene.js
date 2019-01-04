@@ -156,7 +156,9 @@ class XMLscene extends CGFscene {
 
         //<views>
         this.camera = this.data.views[this.data.defaultView];
+        this.camera.orbit(CGFcameraAxis.Y, 0);
         this.interface.setActiveCamera(this.camera);
+        this.interface.setActiveCamera(null);
 
         //<ambient>
         this.setGlobalAmbientLight(this.data.ambientLight["r"], this.data.ambientLight["g"], this.data.ambientLight["b"], this.data.ambientLight["a"]);
@@ -166,7 +168,7 @@ class XMLscene extends CGFscene {
 
         // Add lights group.
         this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
-        this.interface.addViewsGroup();
+        //this.interface.addViewsGroup();
         this.interface.addOptionsGroup();
 
         this.sceneInited = true;

@@ -1,11 +1,16 @@
 <yas>
     <scene root="root" axis_length="5" />
 
-    <views default="Perspective" >
+    <views default="Perspective 2" >
 
         <perspective id="Perspective" near="0.1" far="500" angle="20">
             <from x="25" y="25" z="25" />
             <to x="0" y="0" z="0" />
+        </perspective>
+
+        <perspective id="Perspective 2" near="0.1" far="500" angle="40">
+            <from x="7" y="25" z="7" />
+            <to x="2.5" y="0" z="2.5" />
         </perspective>
 
     </views>
@@ -80,7 +85,8 @@
         </transformation>
 
         <transformation id="right_wall">
-            <translate x="3" y="4.5" z="-4" />
+            <translate x="10" y="4.5" z="3"/>
+            <rotate axis="y" angle="-90"/>       
         </transformation>
 
         <transformation id="left_wall">
@@ -352,7 +358,8 @@
 
         <component id="piece_holder_orange">
             <transformation>
-                <translate x="-2" y="0.5" z="2"/>
+                <translate x="2.5" y="0.5" z="7"/>
+                <rotate axis="y" angle="90"/>
                 <scale x="2" y="1" z="3"/>
             </transformation>
             <materials>

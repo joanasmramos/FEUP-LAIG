@@ -49,6 +49,13 @@ class MyBoard extends CGFobject {
         this.invalidCell.setDiffuse(0.6, 0.9, 0.6, 1);
         this.invalidCell.setSpecular(0, 0, 0, 1);
 
+        this.awaitingCell = new CGFappearance(this.scene);
+        this.awaitingCell.loadTexture("scenes/images/cell_awaiting.png");
+        this.awaitingCell.setShininess(100);
+        this.awaitingCell.setAmbient(0, 0, 0, 1);
+        this.awaitingCell.setDiffuse(0.6, 0.9, 0.6, 1);
+        this.awaitingCell.setSpecular(0, 0, 0, 1);
+
     }
 
     /**
@@ -118,7 +125,7 @@ class MyBoard extends CGFobject {
             for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
                 this.scene.pushMatrix();
                     if(i == this.pickedOne) {
-                        this.validCell.apply();
+                        this.awaitingCell.apply();
                     }
                     else {
                         this.cellMaterial.apply();
