@@ -29,11 +29,13 @@ class MyPiece extends CGFobject {
 
     display(){
     this.scene.pushMatrix();
+        this.appearance.apply();
         this.scene.rotate(-Math.PI/2, 1, 0, 0);
         this.scene.scale(0.8, 0.8, 0.25);
-        this.appearance.apply();
         this.piece.display();
     this.scene.popMatrix();
+
+    this.scene.defaultAppearance.apply();
     
     };
 }

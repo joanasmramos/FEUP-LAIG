@@ -22,19 +22,26 @@ class XMLscene extends CGFscene {
      * @param {Current time in miliseconds} currTime
      */
     update(currTime) {
-        if(this.sceneInited) {
-
-            for(let key in this.graph.nodes) {
-                let node = this.graph.nodes[key];
-                if(node.animations.length > 0) {
-                    node.animations[node.activeAnimation].update(currTime);
-                    node.animations[node.activeAnimation].animate();
-                    node.switchAnimation();
-                }
-
+        if(this.countdown <= 0) {
+            return;
         }
 
-        this.timeFactor += 0.002;
+        if(this.sceneInited) {
+            let delta;
+            if(this.lastT == null) {
+                this.lastT = currTime;
+                delta = 0;
+            }
+            else {
+                delta = currTime - this.lastT;
+                this.lastT = currTime;
+            }
+            delta *= Math.pow(10, -3); // mili seconds to seconds
+            this.countdown -= delta;
+
+            if(this.countdown <= 0){
+                this.game.startGame();
+            }
         }
     }
 
@@ -44,6 +51,8 @@ class XMLscene extends CGFscene {
      */
     init(application) {
         super.init(application);
+
+        this.defaultAppearance = new CGFappearance(this);
 
         this.sceneInited = false;
 
@@ -68,6 +77,8 @@ class XMLscene extends CGFscene {
 
         this.server = new MyClient(8081);
         //this.server.makeRequest();
+        this.lastT = null;
+        this.countdown = 0.1;
     }
 
     /**
@@ -75,6 +86,8 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
+        this.cameraBrown = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, -4), vec3.fromValues(2.5, 0, 2.5));
+        this.cameraOrange = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, 10), vec3.fromValues(2.5, 0, 2.5));
     }
 
     /**
@@ -156,8 +169,6 @@ class XMLscene extends CGFscene {
 
         //<views>
         this.camera = this.data.views[this.data.defaultView];
-        this.camera.orbit(CGFcameraAxis.Y, 0);
-        this.interface.setActiveCamera(this.camera);
         this.interface.setActiveCamera(null);
 
         //<ambient>

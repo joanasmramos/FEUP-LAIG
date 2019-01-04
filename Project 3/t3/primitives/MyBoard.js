@@ -13,13 +13,19 @@ class MyBoard extends CGFobject {
 
         this.dimensions = dimensions;
         this.pickedOne = null;
+        this.choosingDirection = false;
         this.cells = new Array();
         this.internalBoard = new Array();
         this.pickedMove = new Array(3);
+        this.directions = new Array();
         this.setupMaterials();
 
         for(let i=0; i<dimensions*dimensions; i++) {
-            this.cells.push(new Plane(scene, 5, 5));
+            this.cells.push(new Plane(scene, 20, 20));
+        }
+        
+        for(let i = 0; i < 4; i++) {
+            this.directions.push(new Plane(scene, 20, 20));
         }
 
     }
@@ -82,6 +88,7 @@ class MyBoard extends CGFobject {
         let rowIndex = 0, columnIndex = 1;
         let row = Math.ceil(id/this.dimensions);
         let column;
+
         if(row > 1) {
             column = id - ((row - 1) * this.dimensions + 1) + 1;
         }
@@ -89,9 +96,30 @@ class MyBoard extends CGFobject {
             column = id;
         }
 
-
         this.pickedMove[rowIndex] = row;
         this.pickedMove[columnIndex] = column;
+        this.choosingDirection = true;
+    }
+
+    displayDirections() {
+        this.scene.clearPickRegistration();
+        let angle = [0, Math.PI/2, -Math.PI/2/2, Math.PI/2/2]
+
+        let i=0;
+        for(let row=0; row<2; row++) {
+            for(let column=0; column<2; column++) {
+                this.scene.pushMatrix();
+                this.scene.translate(6 + column*1.5, 0.1, 3 - row*1.5);
+                this.scene.rotate(angle[i], 0, 1, 0);
+                this.scene.scale(0.5, 1, 1.2);
+                this.scene.registerForPick(this.dimensions*this.dimensions + i + 1, this.directions[i]);
+                this.directions[i].display();
+                this.scene.popMatrix();
+                i++;
+            }
+        }
+
+        this.scene.clearPickRegistration();
     }
 
     display() {

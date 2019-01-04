@@ -7,7 +7,6 @@ class Game {
     constructor(scene, boardDimensions) {
         this.scene = scene;
         this.boardDimensions = boardDimensions;
-        this.player = 1; // brown
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
 
@@ -32,7 +31,17 @@ class Game {
 
         this.client.getPrologRequest("assert_dimensions(" + JSON.stringify(this.boardDimensions) + ")", function(data){}, function(data){});
 
-        this.client.getPrologRequest("quit", function(data) {}, function(data) {});
+        // this.client.getPrologRequest("quit", function(data) {}, function(data) {});
+    }
+
+    /**
+     * Called after countdown
+     */
+    startGame(){
+        this.player = 0; // brown
+        this.scene.camera = this.scene.cameraBrown;
+
+        console.log("Brown player's turn");
     }
 
     /**
@@ -86,5 +95,8 @@ class Game {
     display() {
         this.displayBoard();
         this.displayStationaryPieces();
+        if(this.board.choosingDirection) {
+            this.board.displayDirections();
+        }
     }
 }
