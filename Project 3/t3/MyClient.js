@@ -16,9 +16,9 @@ class MyClient {
     /**
     * Sending a request string to prolog server
     * in which success/error cases for handler are treated 
-    * @param requestString
-    * @param onSuccess
-    * @param onError
+    * @param requestString request in proccess 
+    * @param onSuccess recall for effective request 
+    * @param onError recall for denied request 
     */
     getPrologRequest(requestString, onSuccess, onError) {
         let request = new XMLHttpRequest();

@@ -22,10 +22,6 @@ class XMLscene extends CGFscene {
      * @param {Current time in miliseconds} currTime
      */
     update(currTime) {
-        if(this.countdown <= 0) {
-            return;
-        }
-
         if(this.sceneInited) {
             let delta;
             if(this.lastT == null) {
@@ -39,9 +35,27 @@ class XMLscene extends CGFscene {
             delta *= Math.pow(10, -3); // mili seconds to seconds
             this.countdown -= delta;
 
+            
             if(this.countdown <= 0){
                 this.game.startGame();
+                this.camera_perspectiveTurn(delta);
             }
+
+        }
+    }
+
+    camera_perspectiveTurn(delta) {
+        if(this.time_passed >= this.rotTime && this.game.board.next_turn) {
+            this.rotational_angle = (Math.PI/this.rotTime) * (this.rotTime - this.time_passed);
+            this.camera.orbit([0,1,0], this.rotational_angle);
+
+            this.rotational_angle = 0;
+            this.time_passed = 0;
+            this.game.board.next_turn = false;
+        } else if (this.game.board.next_turn) {
+            this.time_passed += delta;
+            this.rotational_angle = (Math.PI/this.rotTime)*delta;
+            this.camera.orbit([0,1,0], this.rotational_angle);
         }
     }
 
@@ -78,6 +92,9 @@ class XMLscene extends CGFscene {
         this.server = new MyClient(8081);
         //this.server.makeRequest();
         this.lastT = null;
+        this.rotTime = 2;
+        this.rotational_angle = 0;
+        this.time_passed = 0;
         this.countdown = 0.1;
     }
 
@@ -183,7 +200,7 @@ class XMLscene extends CGFscene {
         this.interface.addOptionsGroup();
 
         this.sceneInited = true;
-        this.setUpdatePeriod(10);
+        this.setUpdatePeriod(1000/60);
 
         // this.graph.boardDimensions = this.interface.getBoardDimensions(this.document);
         // this.graph.board = new MyBoard(this, this.graph.boardDimensions);
