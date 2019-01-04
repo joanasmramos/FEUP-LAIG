@@ -8,15 +8,18 @@ class MyBoard extends CGFobject {
      * @param {Scene} scene 
      * @param {Board Dimensions} dimensions 
      */
-    constructor(scene, dimensions){
+    constructor(scene, dimensions, client){
         super(scene);
 
+        this.client = client;
         this.dimensions = dimensions;
         this.pickedOne = null;
         this.choosingDirection = false;
+        this.pickable = false;
         this.cells = new Array();
         this.internalBoard = new Array();
-        this.pickedMove = new Array(3);
+        this.pickedMove = [null,null,null];
+        this.oldMove = [null,null,null];
         this.directions = new Array();
         this.setupMaterials();
 
@@ -76,7 +79,7 @@ class MyBoard extends CGFobject {
                         let customId = this.scene.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         this.pickedOne = customId;
-                        this.pickedCell(customId);
+                        this.picked(customId);
                     }
                 }
                 this.scene.pickResults.splice(0,this.scene.pickResults.length);
@@ -84,36 +87,63 @@ class MyBoard extends CGFobject {
         }
     }
 
-    pickedCell(id){
-        let rowIndex = 0, columnIndex = 1;
-        let row = Math.ceil(id/this.dimensions);
-        let column;
+    picked(id){
+        if(id <= this.dimensions * this.dimensions) {
+            this.pickedMove = [null,null,null]; // reset
+            let rowIndex = 0, columnIndex = 1;
+            let row = Math.ceil(id/this.dimensions);
+            let column;
 
-        if(row > 1) {
-            column = id - ((row - 1) * this.dimensions + 1) + 1;
-        }
-        else {
-            column = id;
+            if(row > 1) {
+                column = id - ((row - 1) * this.dimensions + 1) + 1;
+            }
+            else {
+                column = id;
+            }
+
+            this.pickedMove[rowIndex] = row;
+            this.pickedMove[columnIndex] = column;
+            this.choosingDirection = true;
+        } else if(id > this.dimensions * this.dimensions) {
+            let directionIndex = 2;
+            let direction = id - this.dimensions*this.dimensions;
+            this.pickedMove[directionIndex] = direction;
+            this.validateMove(this.pickedMove, this.oldMove, this.internalBoard);
         }
 
-        this.pickedMove[rowIndex] = row;
-        this.pickedMove[columnIndex] = column;
-        this.choosingDirection = true;
+    }
+
+    validateMove(move, oldMove, internalBoard) {
+        let this_t = this;
+
+        if(oldMove[0] == null) {
+            oldMove = 1; // there is no old move, this is the first move
+        }
+        
+        // valid_move(Move, OldMove, Board)
+        this.client.getPrologRequest("valid_move(" + JSON.stringify(move) + "," + JSON.stringify(oldMove) + "," + JSON.stringify(internalBoard)
+                                    + ")", function(data){}, function(data){});
     }
 
     displayDirections() {
         this.scene.clearPickRegistration();
         let angle = [0, Math.PI/2, -Math.PI/2/2, Math.PI/2/2]
 
-        let i=0;
+        let i=1;
         for(let row=0; row<2; row++) {
             for(let column=0; column<2; column++) {
+                if((i + this.dimensions*this.dimensions) == this.pickedOne) {
+                    this.awaitingCell.apply();
+                }
+                else {
+                    this.scene.defaultAppearance.apply();
+                }
                 this.scene.pushMatrix();
                 this.scene.translate(6 + column*1.5, 0.1, 3 - row*1.5);
-                this.scene.rotate(angle[i], 0, 1, 0);
+                this.scene.rotate(angle[i-1], 0, 1, 0);
                 this.scene.scale(0.5, 1, 1.2);
-                this.scene.registerForPick(this.dimensions*this.dimensions + i + 1, this.directions[i]);
-                this.directions[i].display();
+                this.scene.registerForPick(this.dimensions*this.dimensions + i, this.directions[i-1]);
+                this.directions[i-1].display();
                 this.scene.popMatrix();
                 i++;
             }
@@ -137,7 +167,9 @@ class MyBoard extends CGFobject {
                 this.scene.pushMatrix();
                     this.scene.translate(column, 0, row);
                     this.scene.translate(0.5, 0.25, 0.5);
-                    this.scene.registerForPick(i, this.cells[i-1]);
+                    if(this.pickable) {
+                        this.scene.registerForPick(i, this.cells[i-1]);
+                    }
                     if(this.scene.pickMode) {
                         this.cells[i-1].display();
                     }

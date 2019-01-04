@@ -10,10 +10,10 @@ class Game {
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
 
-        this.board = new MyBoard(this.scene, boardDimensions);
+        this.client = new MyClient();
+        this.board = new MyBoard(this.scene, boardDimensions, this.client);
         this.orangePiece = new MyPiece(this.scene, "orange");
         this.brownPiece = new MyPiece(this.scene, "brown");
-        this.client = new MyClient();
 
         this.setupProlog();
     }
@@ -24,14 +24,13 @@ class Game {
     setupProlog() {
         let this_t = this;
         
-        //currently working on this
         this.client.getPrologRequest("create_empty_board(" + JSON.stringify(this.boardDimensions) + ")", function(data) {
             this_t.board.internalBoard = JSON.parse(data.target.response);
         }, function(data){});
 
         this.client.getPrologRequest("assert_dimensions(" + JSON.stringify(this.boardDimensions) + ")", function(data){}, function(data){});
 
-        // this.client.getPrologRequest("quit", function(data) {}, function(data) {});
+        //this.client.getPrologRequest("quit", function(data) {}, function(data) {});
     }
 
     /**
@@ -40,6 +39,7 @@ class Game {
     startGame(){
         this.player = 0; // brown
         this.scene.camera = this.scene.cameraBrown;
+        this.board.pickable = true;
 
         console.log("Brown player's turn");
     }

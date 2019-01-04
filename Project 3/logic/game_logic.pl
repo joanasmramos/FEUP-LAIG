@@ -23,7 +23,7 @@ play(Board, Player, OldMove, Result) :- write('Invalid move, try again'), nl,
                                         display_game(Board, player),
                                         play(Board, Player, OldMove, Result).
 
-move(Move, ['first'], Player, Board, NewBoard) :- get_row_column_direction(Move, Row, Column, Direction),
+move(Move, [null,null,null], Player, Board, NewBoard) :- get_row_column_direction(Move, Row, Column, Direction),
                                                   valid_move(Move, ['first'], Board), !,
                                                   symbol_piece(Player, Direction, Element),
                                                   set_element(Row, Column, Element, Board, NewBoard).
@@ -41,6 +41,11 @@ move(Move, OldMove, Player, Board, NewBoard) :- get_row_column_direction(Move, R
 valid_move(Move, ['first'], Board) :- get_row_column_direction(Move, Row, Column, Direction),
                                       get_element(Board, Row, Column, Element),
                                       Element = e, !.
+valid_move(Move, 1, Board) :- get_row_column_direction(Move, Row, Column, Direction),
+  write('entrou bem'),
+                                    get_element(Board, Row, Column, Element),
+                                    Element = e, !.
+
 % in a valid move:
 % (1)-> the piece is placed in an empty cell (element = e)
 % (2)-> the piece is placed in the direction imposed by the last move (in_the_direction)
@@ -60,6 +65,17 @@ in_the_direction(Row, Column, OldRow, OldColumn, d1) :- !, board_size(Size),
 in_the_direction(Row, Column, OldRow, OldColumn, d2) :- !, board_size(Size),
                                                         go_to_border_d2(OldRow, OldColumn, BorderRow, BorderColumn, Size),
                                                         check_diagonal_d2(Row, Column, BorderRow, BorderColumn, Size).
+
+% -----------LAIG
+in_the_direction(Row, Column, OldRow, OldColumn, 1) :- !, Column = OldColumn.
+in_the_direction(Row, Column, OldRow, OldColumn, 2) :- !, Row = OldRow.
+in_the_direction(Row, Column, OldRow, OldColumn, 3) :- !, board_size(Size),
+                                                        go_to_border_d1(OldRow, OldColumn, BorderRow, BorderColumn, Size),
+                                                        check_diagonal_d1(Row, Column, BorderRow, BorderColumn, Size).
+in_the_direction(Row, Column, OldRow, OldColumn, 4) :- !, board_size(Size),
+                                                        go_to_border_d2(OldRow, OldColumn, BorderRow, BorderColumn, Size),
+                                                        check_diagonal_d2(Row, Column, BorderRow, BorderColumn, Size).
+% -----------LAIG
 
 go_to_border_d1(1, AuxColumn, BorderRow, BorderColumn, BoardSize) :- BorderRow = 1,
                                                                      BorderColumn = AuxColumn, !.
