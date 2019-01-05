@@ -5,7 +5,7 @@ start_game(Dimensions) :- Dimensions >= 5,
                           asserta(board(Board)),
                           asserta(board_size(Dimensions)),
                           display_game(Board, brown), %brown player is the first one to play
-                          play(Board, brown, ['first'], Result).
+                          play(Board, brown, 1, Result).
 
 start_game(Dimensions) :- write('Invalid dimensions!'), fail.
 
@@ -23,7 +23,7 @@ play(Board, Player, OldMove, Result) :- write('Invalid move, try again'), nl,
                                         display_game(Board, player),
                                         play(Board, Player, OldMove, Result).
 
-move(Move, [null,null,null], Player, Board, NewBoard) :- get_row_column_direction(Move, Row, Column, Direction),
+move(Move, 1, Player, Board, NewBoard) :- get_row_column_direction(Move, Row, Column, Direction),
                                                   valid_move(Move, ['first'], Board), !,
                                                   symbol_piece(Player, Direction, Element),
                                                   set_element(Row, Column, Element, Board, NewBoard).
@@ -42,9 +42,8 @@ valid_move(Move, ['first'], Board) :- get_row_column_direction(Move, Row, Column
                                       get_element(Board, Row, Column, Element),
                                       Element = e, !.
 valid_move(Move, 1, Board) :- get_row_column_direction(Move, Row, Column, Direction),
-  write('entrou bem'),
-                                    get_element(Board, Row, Column, Element),
-                                    Element = e, !.
+                              get_element(Board, Row, Column, Element),
+                              Element = e, !.
 
 % in a valid move:
 % (1)-> the piece is placed in an empty cell (element = e)

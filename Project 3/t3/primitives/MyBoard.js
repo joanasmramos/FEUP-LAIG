@@ -8,15 +8,19 @@ class MyBoard extends CGFobject {
      * @param {Scene} scene 
      * @param {Board Dimensions} dimensions 
      */
-    constructor(scene, dimensions){
+    constructor(scene, dimensions, game){
         super(scene);
 
+        this.game = game;
         this.dimensions = dimensions;
         this.pickedOne = null;
+        this.validOne = null;
         this.choosingDirection = false;
         this.cells = new Array();
         this.internalBoard = new Array();
-        this.pickedMove = new Array(3);
+        this.boardSequency = new Array();
+        this.pickedMove = [null,null,null];
+        this.oldMove = [null,null,null];
         this.directions = new Array();
         this.setupMaterials();
 
@@ -94,6 +98,7 @@ class MyBoard extends CGFobject {
         let row = Math.ceil(id/this.dimensions);
         let column;
 
+<<<<<<< HEAD
         if(row > 1) {
             column = id - ((row - 1) * this.dimensions + 1) + 1;
         }
@@ -104,6 +109,18 @@ class MyBoard extends CGFobject {
         this.pickedMove[rowIndex] = row;
         this.pickedMove[columnIndex] = column;
         this.choosingDirection = true;
+=======
+            this.pickedMove[rowIndex] = row;
+            this.pickedMove[columnIndex] = column;
+            this.choosingDirection = true;
+        } else if(id > this.dimensions * this.dimensions) {
+            let directionIndex = 2;
+            let direction = id - this.dimensions*this.dimensions;
+            this.pickedMove[directionIndex] = direction;
+            this.game.validateMove(this.pickedMove, this.oldMove, this.internalBoard);
+        }
+
+>>>>>>> mais de valid move
     }
 
     displayDirections() {
@@ -158,7 +175,15 @@ class MyBoard extends CGFobject {
             for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
                 this.scene.pushMatrix();
                     if(i == this.pickedOne) {
-                        this.awaitingCell.apply();
+                        console.log(this.validOne);
+                        if(this.validOne === true) {
+                            this.validCell.apply();
+                        }
+                        else if(this.validOne === false) {
+                            this.invalidCell.apply();
+                        } else {
+                            this.awaitingCell.apply();
+                        }
                     }
                     else {
                         this.cellMaterial.apply();

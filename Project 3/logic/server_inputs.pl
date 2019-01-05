@@ -24,13 +24,23 @@ parse_input(assert_dimensions(Dimensions), 'Done my dude') :-
 parse_input(valid_move(Move, OldMove, BoardNumbers), IsValid) :-
   boardToNumbers(Board, BoardNumbers),
   valid_move(Move, OldMove, Board), !,
-  write(Board),
   IsValid = true.
 
 parse_input(valid_move(Move, OldMove, BoardNumbers), IsValid) :-
   boardToNumbers(Board, BoardNumbers),
   \+valid_move(Move, OldMove, Board), !,
-  write(Board),
+  IsValid = false.
+
+parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoard]) :-
+  boardToNumbers(Board, BoardNumbers),
+  symbol_player(PlayerNumber, Player),
+  move(Move, OldMove, Player, Board, NewBoard), !,
+  IsValid = true.
+
+parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoard]) :-
+  boardToNumbers(Board, BoardNumbers),
+  symbol_player(PlayerNumber, Player),
+  \+move(Move, OldMove, Player, Board, NewBoard), !,
   IsValid = false.
 
 symbol_player(0, brown).

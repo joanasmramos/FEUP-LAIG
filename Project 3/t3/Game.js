@@ -11,7 +11,7 @@ class Game {
         this.numberOfBrownPieces = this.numberOfOrangePieces;
 
         this.client = new MyClient();
-        this.board = new MyBoard(this.scene, boardDimensions, this.client);
+        this.board = new MyBoard(this.scene, boardDimensions, this);
         this.orangePiece = new MyPiece(this.scene, "orange");
         this.brownPiece = new MyPiece(this.scene, "brown");
 
@@ -31,6 +31,34 @@ class Game {
         this.client.getPrologRequest("assert_dimensions(" + JSON.stringify(this.boardDimensions) + ")", function(data){}, function(data){});
 
         //this.client.getPrologRequest("quit", function(data) {}, function(data) {});
+    }
+
+    validateMove(move, oldMove, internalBoard) {
+        let this_t = this;
+
+        if(oldMove[0] == null) {
+            oldMove = 1; // there is no old move, this is the first move
+        }
+        
+        // move(Move, OldMove, PlayerNumber, BoardNumbers)
+        this.client.getPrologRequest("move(" + JSON.stringify(move) + "," + JSON.stringify(oldMove) + "," +
+                                    JSON.stringify(this_t.player) + "," + JSON.stringify(internalBoard) + ")", 
+            function(data){
+                let valid = data.target.response[0];
+                if(valid) {
+                    this_t.board.boardSequency.push(internalBoard);
+                    this_t.board.internalBoard = data.target.response[1];
+                    this_t.board.validOne = true;
+                    this_t.updatePlayer();
+                } else {
+                    this_t.board.validOne = false;
+                }
+                
+            }, function(data){});
+    }
+
+    updatePlayer() {
+        this.player = (this.player)? 0 : 1;
     }
 
     /**
