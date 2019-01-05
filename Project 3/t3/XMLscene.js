@@ -22,9 +22,6 @@ class XMLscene extends CGFscene {
      * @param {Current time in miliseconds} currTime
      */
     update(currTime) {
-        if(this.countdown <= 0) {
-            return;
-        }
         if(this.sceneInited) {
             let delta;
             if(this.lastT == null) {
@@ -39,9 +36,11 @@ class XMLscene extends CGFscene {
             this.countdown -= delta;
             this.countdown_starter -= delta;
             
+
+
             if(this.countdown <= 0){
                 this.game.startGame();
-                //this.camera_perspectiveTurn(delta);
+                this.camera_perspectiveTurn(delta);
             }
 
         }
@@ -83,14 +82,14 @@ class XMLscene extends CGFscene {
      * @param {Time in seconds} delta 
      */
     camera_perspectiveTurn(delta) {
-        if(this.time_passed >= this.rotTime && this.game.board.next_turn) {
+        if(this.time_passed >= this.rotTime && this.game.nextTurn) {
             this.rotational_angle = (Math.PI/this.rotTime) * (this.rotTime - this.time_passed);
             this.camera.orbit([0,1,0], this.rotational_angle);
 
             this.rotational_angle = 0;
             this.time_passed = 0;
-            this.game.board.next_turn = false;
-        } else if (this.game.board.next_turn) {
+            this.game.nextTurn = false;
+        } else if (this.game.nextTurn) {
             this.time_passed += delta;
             this.rotational_angle = (Math.PI/this.rotTime)*delta;
             this.camera.orbit([0,1,0], this.rotational_angle);

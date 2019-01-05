@@ -9,6 +9,7 @@ class Game {
         this.boardDimensions = boardDimensions;
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
+        this.boardPieces = new Array();
 
         this.client = new MyClient();
         this.board = new MyBoard(this.scene, boardDimensions, this);
@@ -50,7 +51,8 @@ class Game {
                     this_t.board.boardSequency.push(internalBoard);
                     this_t.board.internalBoard = response[1];
                     this_t.board.validCell = true;
-                    this_t.updatePlayer();
+                    this_t.setPiece(move);
+                    this_t.changeTurns(move);
                 } else {
                     this_t.board.validCell = false;
                 }
@@ -60,6 +62,20 @@ class Game {
 
     updatePlayer() {
         this.player = (this.player)? 0 : 1;
+    }
+
+    setPiece(move) {
+        let row = move[0], column = move[1];
+        this.boardPieces.push([this.player, row, column]);
+    }
+
+    changeTurns(move) {
+        this.board.validCell = null;
+        this.board.pickedCell = null;
+        this.board.oldMove = move;
+        this.board.pickedMove = [null, null, null];
+        this.nextTurn = true;
+        this.updatePlayer();
     }
 
     /**
