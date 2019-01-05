@@ -13,8 +13,8 @@ class MyBoard extends CGFobject {
 
         this.game = game;
         this.dimensions = dimensions;
-        this.pickedOne = null;
-        this.validOne = null;
+        this.pickedCell = null;
+        this.validCell = null;
         this.choosingDirection = false;
         this.cells = new Array();
         this.internalBoard = new Array();
@@ -45,19 +45,19 @@ class MyBoard extends CGFobject {
         this.cellMaterial.setDiffuse(0.7, 0.7, 0.7, 1);
         this.cellMaterial.setSpecular(0, 0, 0, 1);
 
-        this.validCell = new CGFappearance(this.scene);
-        this.validCell.loadTexture("scenes/images/cell_valid.png");
-        this.validCell.setShininess(100);
-        this.validCell.setAmbient(0, 0, 0, 1);
-        this.validCell.setDiffuse(0.6, 0.9, 0.6, 1);
-        this.validCell.setSpecular(0, 0, 0, 1);
+        this.validMove = new CGFappearance(this.scene);
+        this.validMove.loadTexture("scenes/images/cell_valid.png");
+        this.validMove.setShininess(100);
+        this.validMove.setAmbient(0, 0, 0, 1);
+        this.validMove.setDiffuse(0.6, 0.9, 0.6, 1);
+        this.validMove.setSpecular(0, 0, 0, 1);
 
-        this.invalidCell = new CGFappearance(this.scene);
-        this.invalidCell.loadTexture("scenes/images/cell_invalid.png");
-        this.invalidCell.setShininess(100);
-        this.invalidCell.setAmbient(0, 0, 0, 1);
-        this.invalidCell.setDiffuse(0.6, 0.9, 0.6, 1);
-        this.invalidCell.setSpecular(0, 0, 0, 1);
+        this.invalidMove = new CGFappearance(this.scene);
+        this.invalidMove.loadTexture("scenes/images/cell_invalid.png");
+        this.invalidMove.setShininess(100);
+        this.invalidMove.setAmbient(0, 0, 0, 1);
+        this.invalidMove.setDiffuse(0.6, 0.9, 0.6, 1);
+        this.invalidMove.setSpecular(0, 0, 0, 1);
 
         this.awaitingCell = new CGFappearance(this.scene);
         this.awaitingCell.loadTexture("scenes/images/cell_awaiting.png");
@@ -79,13 +79,12 @@ class MyBoard extends CGFobject {
                     if (obj) {
                         let customId = this.scene.pickResults[i][1];				
                         console.log("Picked object: " + obj + ", with pick id " + customId);
-                        this.pickedOne = customId;
-                        this.pickedCell(customId);
-
-                        this.next_turn = true;
-                        this.scene.countdown_starter = 60;
-
-                        
+                        if(customId <= this.dimensions * this.dimensions) {
+                            this.pickedCell = customId;
+                            this.pickCell(customId);
+                        } else if(customId > this.dimensions * this.dimensions) {
+                            this.pickDirection(customId);
+                        }                        
                     }
                 }
                 this.scene.pickResults.splice(0,this.scene.pickResults.length);
@@ -93,12 +92,11 @@ class MyBoard extends CGFobject {
         }
     }
 
-    pickedCell(id){
+    pickCell(id){
         let rowIndex = 0, columnIndex = 1;
         let row = Math.ceil(id/this.dimensions);
         let column;
 
-<<<<<<< HEAD
         if(row > 1) {
             column = id - ((row - 1) * this.dimensions + 1) + 1;
         }
@@ -109,18 +107,13 @@ class MyBoard extends CGFobject {
         this.pickedMove[rowIndex] = row;
         this.pickedMove[columnIndex] = column;
         this.choosingDirection = true;
-=======
-            this.pickedMove[rowIndex] = row;
-            this.pickedMove[columnIndex] = column;
-            this.choosingDirection = true;
-        } else if(id > this.dimensions * this.dimensions) {
-            let directionIndex = 2;
-            let direction = id - this.dimensions*this.dimensions;
-            this.pickedMove[directionIndex] = direction;
-            this.game.validateMove(this.pickedMove, this.oldMove, this.internalBoard);
-        }
+    }
 
->>>>>>> mais de valid move
+    pickDirection(id){
+        let directionIndex = 2;
+        let direction = id - this.dimensions*this.dimensions;
+        this.pickedMove[directionIndex] = direction;
+        this.game.validateMove(this.pickedMove, this.oldMove, this.internalBoard);
     }
 
     displayDirections() {
@@ -130,6 +123,20 @@ class MyBoard extends CGFobject {
         let i=0;
         for(let row=0; row<2; row++) {
             for(let column=0; column<2; column++) {
+                if((i+1) == this.pickedMove[2]) {
+                    this.awaitingCell.apply();
+                    if(this.validCell === true) {
+                        this.validMove.apply();
+                    }
+                    else if(this.validCell === false) {
+                        this.invalidMove.apply();
+                    } else {
+                        this.awaitingCell.apply();
+                    }
+                }
+                else {
+                    this.scene.defaultAppearance.apply();
+                }
                 this.scene.pushMatrix();
                 this.scene.translate(6 + column*1.5, 0.1, 3 - row*1.5);
                 this.scene.rotate(angle[i], 0, 1, 0);
@@ -174,13 +181,12 @@ class MyBoard extends CGFobject {
         for(let row=0; row<this.dimensions; row++) { // rows (0..dimensions-1)
             for(let column=0; column<this.dimensions; column++) { // columns (0..dimensions-1)
                 this.scene.pushMatrix();
-                    if(i == this.pickedOne) {
-                        console.log(this.validOne);
-                        if(this.validOne === true) {
-                            this.validCell.apply();
+                    if(i == this.pickedCell) {
+                        if(this.validCell === true) {
+                            this.validMove.apply();
                         }
-                        else if(this.validOne === false) {
-                            this.invalidCell.apply();
+                        else if(this.validCell === false) {
+                            this.invalidMove.apply();
                         } else {
                             this.awaitingCell.apply();
                         }

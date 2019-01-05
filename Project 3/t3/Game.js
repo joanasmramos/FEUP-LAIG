@@ -39,19 +39,20 @@ class Game {
         if(oldMove[0] == null) {
             oldMove = 1; // there is no old move, this is the first move
         }
-        
+        console.log(this.player);
         // move(Move, OldMove, PlayerNumber, BoardNumbers)
         this.client.getPrologRequest("move(" + JSON.stringify(move) + "," + JSON.stringify(oldMove) + "," +
                                     JSON.stringify(this_t.player) + "," + JSON.stringify(internalBoard) + ")", 
             function(data){
-                let valid = data.target.response[0];
+                let response = JSON.parse(data.target.response);
+                let valid = response[0];
                 if(valid) {
                     this_t.board.boardSequency.push(internalBoard);
-                    this_t.board.internalBoard = data.target.response[1];
-                    this_t.board.validOne = true;
+                    this_t.board.internalBoard = response[1];
+                    this_t.board.validCell = true;
                     this_t.updatePlayer();
                 } else {
-                    this_t.board.validOne = false;
+                    this_t.board.validCell = false;
                 }
                 
             }, function(data){});

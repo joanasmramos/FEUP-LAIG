@@ -1244,7 +1244,7 @@ class MySceneGraphAdapt {
                         return "<primitives> - something wrong with board's dimensions";
                     }
 
-                    this.primitives[id] = new MyBoard(this.scene, dimensions);
+                   // this.primitives[id] = new MyBoard(this.scene, dimensions);
                     
 
                 default:

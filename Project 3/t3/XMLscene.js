@@ -22,6 +22,9 @@ class XMLscene extends CGFscene {
      * @param {Current time in miliseconds} currTime
      */
     update(currTime) {
+        if(this.countdown <= 0) {
+            return;
+        }
         if(this.sceneInited) {
             let delta;
             if(this.lastT == null) {
@@ -38,7 +41,7 @@ class XMLscene extends CGFscene {
             
             if(this.countdown <= 0){
                 this.game.startGame();
-                this.camera_perspectiveTurn(delta);
+                //this.camera_perspectiveTurn(delta);
             }
 
         }
@@ -56,6 +59,7 @@ class XMLscene extends CGFscene {
 
         return this.countdown_starter + this.countdown;
     }
+
     /**
      * Updates player play in interface related to player.
      * 
@@ -73,7 +77,8 @@ class XMLscene extends CGFscene {
 
         return turn;
     }
-     /**
+
+    /**
      * Updates camera perspective each 2 seconds.
      * @param {Time in seconds} delta 
      */

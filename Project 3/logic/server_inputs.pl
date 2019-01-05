@@ -21,26 +21,18 @@ parse_input(create_empty_board(Dimensions), Board) :-
 parse_input(assert_dimensions(Dimensions), 'Done my dude') :-
   asserta(board_size(Dimensions)).
 
-parse_input(valid_move(Move, OldMove, BoardNumbers), IsValid) :-
-  boardToNumbers(Board, BoardNumbers),
-  valid_move(Move, OldMove, Board), !,
-  IsValid = true.
-
-parse_input(valid_move(Move, OldMove, BoardNumbers), IsValid) :-
-  boardToNumbers(Board, BoardNumbers),
-  \+valid_move(Move, OldMove, Board), !,
-  IsValid = false.
-
-parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoard]) :-
+parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoardNumbers]) :-
   boardToNumbers(Board, BoardNumbers),
   symbol_player(PlayerNumber, Player),
   move(Move, OldMove, Player, Board, NewBoard), !,
+  boardToNumbers(NewBoard, NewBoardNumbers),
   IsValid = true.
 
 parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoard]) :-
   boardToNumbers(Board, BoardNumbers),
   symbol_player(PlayerNumber, Player),
   \+move(Move, OldMove, Player, Board, NewBoard), !,
+  boardToNumbers(NewBoard, NewBoardNumbers),
   IsValid = false.
 
 symbol_player(0, brown).
