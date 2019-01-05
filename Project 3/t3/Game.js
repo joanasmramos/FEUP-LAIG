@@ -15,6 +15,7 @@ class Game {
         this.board = new MyBoard(this.scene, boardDimensions, this);
         this.orangePiece = new MyPiece(this.scene, "orange");
         this.brownPiece = new MyPiece(this.scene, "brown");
+        this.started = false;
 
         this.setupProlog();
     }
@@ -65,6 +66,12 @@ class Game {
     }
 
     setPiece(move) {
+        if(this.player) { // orange
+            this.numberOfOrangePieces--;
+        }
+        else { // brown
+            this.numberOfBrownPieces--;
+        }
         let row = move[0], column = move[1];
         this.boardPieces.push([this.player, row, column]);
     }
@@ -85,8 +92,7 @@ class Game {
         this.player = 0; // brown
         this.scene.camera = this.scene.cameraBrown;
         this.board.pickable = true;
-
-        console.log("Brown player's turn");
+        this.started = true;
     }
 
     /**
@@ -137,9 +143,27 @@ class Game {
         }
     }
 
+    displayBoardPieces() {
+        let playerIndex = 0, rowIndex = 1, columnIndex = 2;
+
+        for(let i=0; i<this.boardPieces.length; i++) {
+            this.scene.pushMatrix();
+            this.scene.translate(0.5 + this.boardPieces[i][columnIndex] - 1, 0, 0.5 + this.boardPieces[i][rowIndex] - 1);
+            if(this.boardPieces[i][playerIndex]) { // orange
+                this.orangePiece.display();
+            }
+            else { // brown
+                this.brownPiece.display();
+            }
+            this.scene.popMatrix();
+        }
+
+    }
+
     display() {
         this.displayBoard();
         this.displayStationaryPieces();
+        this.displayBoardPieces();
         if(this.board.choosingDirection) {
             this.board.displayDirections();
         }
