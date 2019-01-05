@@ -140,7 +140,7 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-        this.cameraBrown = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(20.5, 2, -4), vec3.fromValues(2.5, 0, 2.5));
+        this.cameraBrown = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, -4), vec3.fromValues(2.5, 0, 2.5));
         this.cameraOrange = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, 10), vec3.fromValues(2.5, 0, 2.5));
     }
 
