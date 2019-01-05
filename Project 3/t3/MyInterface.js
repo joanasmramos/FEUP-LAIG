@@ -25,11 +25,17 @@ class MyInterface extends CGFinterface {
 
         return true;
     }
-
+    /**
+     * Adds a folder for game informations
+     */
     addGameInformations(){
         this.gui_play.add(this.scene, 'countdown_starter').listen().name('Countdown');
+      //  this.gui_play.add(this.scene.changePlayer, 'turn').listen().name('Player Turn');
 
     }
+     /**
+     * Adds a folder for Game and Environment controls
+     */
     addOptionsGroup(){
         var group = this.gui.addFolder("General Options");
         group.open();

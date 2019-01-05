@@ -56,8 +56,23 @@ class XMLscene extends CGFscene {
 
         return this.countdown_starter + this.countdown;
     }
-    
+    /**
+     * Updates player play in interface related to player.
+     * 
+     */
+    changePlayer(){
+        let turn;
 
+        if(this.game.player == 0){
+            turn = 'Brown Player playing...';
+
+        } else {
+            turn = 'Orange Player playing...';
+            this.game.player = 1;
+        }
+
+        return turn;
+    }
      /**
      * Updates camera perspective each 2 seconds.
      * @param {Time in seconds} delta 
@@ -110,10 +125,13 @@ class XMLscene extends CGFscene {
         this.server = new MyClient(8081);
         //this.server.makeRequest();
         this.lastT = null;
+
         this.rotTime = 2;
         this.rotational_angle = 0;
         this.time_passed = 0;
         this.countdown = 0.1;
+        
+
         this.countdown_starter = 60;
     }
 
@@ -122,7 +140,7 @@ class XMLscene extends CGFscene {
      */
     initCameras() {
         this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-        this.cameraBrown = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, -4), vec3.fromValues(2.5, 0, 2.5));
+        this.cameraBrown = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(10.5, 23, -4), vec3.fromValues(2.5, 0, 2.5));
         this.cameraOrange = new CGFcamera(Math.PI/6, 0.1, 500, vec3.fromValues(2.5, 23, 10), vec3.fromValues(2.5, 0, 2.5));
     }
 
@@ -181,7 +199,7 @@ class XMLscene extends CGFscene {
      * @param {View id} id
      */
     selectView(id) {
-        this.camera = this.data.views[id];
+        this.camera = this.data.views[this.data.defaultView];
         this.interface.setActiveCamera(this.camera);
     }
 

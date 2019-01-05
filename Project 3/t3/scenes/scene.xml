@@ -46,12 +46,26 @@
     </lights>
 
     <textures>
-
+       <!--> <texture id ="seat_popart" file=" "/>
+       <--> 
+       
+        <texture id ="sphere_popart" file="scenes/images/sphere_popart.png"/>
+        <texture id="pillar" file="scenes/images/pilar.png" />
+        <texture id="metal" file="scenes/images/metal.jpg"/>
+        <texture id="structure_popart" file="scenes/images/structure_popart.jpg"/>
         <texture id="cat_popart" file="scenes/images/cat_popart.png" />
+        <texture id="wall_top_popart" file="scenes/images/wall_top_popart.jpg"/>
         <texture id="popart_wall" file="scenes/images/popart_wall.jpg" />
         <texture id="wooden_floor" file="scenes/images/wooden_floor.png" />
+
+        <!-->
+        <texture id ="1920s_seat" file=" "/>
+        <texture id ="1920_table" file=" "/>
+        <-->
         <texture id="1920s_wall" file="scenes/images/1920s_wall.jpg" />
         <texture id="1920s_floor" file="scenes/images/1920s_floor.jpg" />
+        <texture id="1920s_topbackwall" file="scenes/images/1920s_topbackwall.jpg"/>
+
         <texture id="purple" file="scenes/images/purple.jpg" />
 
     </textures>
@@ -228,8 +242,16 @@
                 <componentref id="floor_r"/>
                 <componentref id="right_wall_r" />
                 <componentref id="left_wall_r" />
+                <componentref id="top_wall_r" />
+                <componentref id="back_wall_r" />
                 <componentref id="piece_holder_orange"/>
                 <componentref id="piece_holder_brown"/>
+                <componentref id="structure"/>
+                <componentref id="structure1"/>
+                <componentref id="structure2"/>
+                <componentref id="sphere_statue"/>
+                <componentref id="sphere_statuette1"/>
+                <componentref id="sphere_statuette2"/>
                 
             </children>
         </component>
@@ -245,6 +267,8 @@
                 <componentref id="floor_1920"/>
                 <componentref id="right_wall_1920" />
                 <componentref id="left_wall_1920" />
+                <componentref id="top_wall_1920" />
+                <componentref id="back_wall_1920" />
                 <componentref id="piece_holder_orange"/>
                 <componentref id="piece_holder_brown"/>
             </children>
@@ -253,6 +277,34 @@
         <component id="left_wall_r">
             <transformation>
                 <transformationref id="left_wall" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="popart_wall" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
+            </children>
+        </component>
+
+        <component id="top_wall_r">
+            <transformation>
+                <rotate axis="y" angle="180"/>
+                <translate x="-3" y="4.5" z="-10" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="wall_top_popart" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
+            </children>
+        </component>
+
+        <component id="back_wall_r">
+            <transformation>
+                <rotate axis="y" angle="0"/>
+                <translate x="3" y="4.5" z="-4 " />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -286,6 +338,34 @@
             <texture id="wooden_floor" length_s="1" length_t="1"/>
             <children>
                 <primitiveref id="plane"/>
+            </children>
+        </component>
+
+        <component id="top_wall_1920">
+            <transformation>
+                <rotate axis="y" angle="180"/>
+                <translate x="-3" y="4.5" z="-10" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="1920s_topbackwall" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
+            </children>
+        </component>
+
+        <component id="back_wall_1920">
+            <transformation>
+                <rotate axis="y" angle="0"/>
+                <translate x="3" y="4.5" z="-4 " />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="1920s_topbackwall" length_s="1" length_t="1" />
+            <children>
+                <componentref id="base_wall" />
             </children>
         </component>
 
@@ -467,6 +547,154 @@
                 <componentref id="cube_part4" />
                 <componentref id="cube_part5" />
                 <componentref id="cube_part6" />
+            </children>
+        </component>
+
+        <component id="structure">
+            <transformation>
+            <translate x="-8" y="0" z="1.5" />
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="structure_popart" length_s="5.0" length_t="5.0"/>
+            <children>
+                <componentref id="chandelier_base"/>
+                <componentref id="chandelier_bigbase-0"/>
+                <componentref id="chandelier_bigbase-3"/>
+            </children>
+        </component>
+        <component id="structure1">
+            <transformation>
+            <translate x="-8" y="0" z="5.5" />
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="structure_popart" length_s="5.0" length_t="5.0"/>
+            <children>
+                <componentref id="chandelier_base"/>
+                <componentref id="chandelier_bigbase-0"/>
+                <componentref id="chandelier_bigbase-3"/>
+            </children>
+        </component>
+        <component id="structure2">
+            <transformation>
+            <translate x="-8" y="0" z="-2.5" />
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="structure_popart" length_s="5.0" length_t="5.0"/>
+            <children>
+                <componentref id="chandelier_base"/>
+                <componentref id="chandelier_bigbase-0"/>
+                <componentref id="chandelier_bigbase-3"/>
+            </children>
+        </component>
+
+        <component id="chandelier_base">
+            <transformation>
+                <translate x="6" y="0.8" z="1" />
+                <scale x="0.04" y="1.5" z="0.04"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cylinder2"/>
+            </children>
+        </component>
+
+        <component id="chandelier_bigbase-0">
+            <transformation>
+                <translate x="6" y="0" z="1" />
+                <scale x="0.25" y="0.07" z="0.25"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="metal"/>
+                
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+        <component id="chandelier_bigbase-1">
+            <transformation>
+                <translate x="6" y="2.5" z="0.5" />
+                <scale x="0.3" y="0.06" z="0.3"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+        
+        <component id="chandelier_bigbase-3">
+            <transformation>
+                <translate x="6" y="1.4" z="1" />
+                <scale x="0.4" y="0.06" z="1.2"/>
+                <rotate axis="x" angle="-90"/>
+            </transformation>
+            <materials>
+                <material id="metal"/>
+            </materials>
+            <texture id="inherit" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="cylinder"/>
+            </children>
+        </component>
+
+
+        <component id="sphere_statue">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-2" y="2.5" z="2.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sphere_popart" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="sphere_statuette1">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-2" y="2" z="6.5" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sphere_popart" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="sphere_statuette2">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-2" y="2" z="-1.5" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="sphere_popart" />
+            <children>
+                <primitiveref id="sphere" />
             </children>
         </component>
 
