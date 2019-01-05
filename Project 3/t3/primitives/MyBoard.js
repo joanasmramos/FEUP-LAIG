@@ -77,7 +77,9 @@ class MyBoard extends CGFobject {
                         console.log("Picked object: " + obj + ", with pick id " + customId);
                         this.pickedOne = customId;
                         this.pickedCell(customId);
+                        
                         this.next_turn = true;
+                        this.scene.countdown_starter = 60;
                     }
                 }
                 this.scene.pickResults.splice(0,this.scene.pickResults.length);

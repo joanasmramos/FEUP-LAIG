@@ -34,7 +34,7 @@ class XMLscene extends CGFscene {
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
             this.countdown -= delta;
-
+            this.countdown_starter -= delta;
             
             if(this.countdown <= 0){
                 this.game.startGame();
@@ -44,6 +44,24 @@ class XMLscene extends CGFscene {
         }
     }
 
+    /**
+     * Updates countdown of each play
+     * 
+     */
+    countdown() {
+        
+        if(this.countdown_starter <= 0){
+            //acabar o jogo aqui!
+        }
+
+        return this.countdown_starter + this.countdown;
+    }
+    
+
+     /**
+     * Updates camera perspective each 2 seconds.
+     * @param {Time in seconds} delta 
+     */
     camera_perspectiveTurn(delta) {
         if(this.time_passed >= this.rotTime && this.game.board.next_turn) {
             this.rotational_angle = (Math.PI/this.rotTime) * (this.rotTime - this.time_passed);
@@ -96,6 +114,7 @@ class XMLscene extends CGFscene {
         this.rotational_angle = 0;
         this.time_passed = 0;
         this.countdown = 0.1;
+        this.countdown_starter = 60;
     }
 
     /**
@@ -198,6 +217,7 @@ class XMLscene extends CGFscene {
         this.interface.addLightsGroup(this.data.omniLights, this.data.spotLights);
         //this.interface.addViewsGroup();
         this.interface.addOptionsGroup();
+        this.interface.addGameInformations();
 
         this.sceneInited = true;
         this.setUpdatePeriod(1000/60);

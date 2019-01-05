@@ -21,13 +21,20 @@ class MyInterface extends CGFinterface {
         this.gui = new dat.GUI();
         // add a group of controls (and open/expand by defult)
 
+        this.gui_play = new dat.GUI();
+
         return true;
     }
 
+    addGameInformations(){
+        this.gui_play.add(this.scene, 'countdown_starter').listen().name('Countdown');
+
+    }
     addOptionsGroup(){
         var group = this.gui.addFolder("General Options");
         group.open();
-        
+       
+
         group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
     }
     /**
