@@ -50,6 +50,7 @@
        <--> 
        
         <texture id ="sphere_popart" file="scenes/images/sphere_popart.png"/>
+        <texture id ="sphere_popart3" file="scenes/images/sphere_popart3.png"/>
         <texture id="pillar" file="scenes/images/pilar.png" />
         <texture id="metal" file="scenes/images/metal.jpg"/>
         <texture id="structure_popart" file="scenes/images/structure_popart.jpg"/>
@@ -58,14 +59,14 @@
         <texture id="popart_wall" file="scenes/images/popart_wall.jpg" />
         <texture id="wooden_floor" file="scenes/images/wooden_floor.png" />
 
-        <!-->
-        <texture id ="1920s_seat" file=" "/>
-        <texture id ="1920_table" file=" "/>
-        <-->
+
         <texture id="1920s_wall" file="scenes/images/1920s_wall.jpg" />
         <texture id="1920s_floor" file="scenes/images/1920s_floor.jpg" />
         <texture id="1920s_topbackwall" file="scenes/images/1920s_topbackwall.jpg"/>
+        <texture id="statues_white1" file="scenes/images/statues_white1.jpg"/>
+        <texture id="statues_white2" file="scenes/images/statues_white2.jpg"/>
 
+        <texture id="white-wood" file="scenes/images/white-wood.jpg"/>
         <texture id="purple" file="scenes/images/purple.jpg" />
 
     </textures>
@@ -244,8 +245,8 @@
                 <componentref id="left_wall_r" />
                 <componentref id="top_wall_r" />
                 <componentref id="back_wall_r" />
-                <componentref id="piece_holder_orange"/>
-                <componentref id="piece_holder_brown"/>
+                <componentref id="piece_holder_orange_r"/>
+                <componentref id="piece_holder_brown_r"/>
                 <componentref id="structure"/>
                 <componentref id="structure1"/>
                 <componentref id="structure2"/>
@@ -269,8 +270,14 @@
                 <componentref id="left_wall_1920" />
                 <componentref id="top_wall_1920" />
                 <componentref id="back_wall_1920" />
-                <componentref id="piece_holder_orange"/>
-                <componentref id="piece_holder_brown"/>
+                <componentref id="piece_holder_orange_1920"/>
+                <componentref id="piece_holder_brown_1920"/>
+                <componentref id="1920_woodstripe1"/>
+                <componentref id="1920_woodstripe2"/>
+                <componentref id="sphere_statuette1_1920"/>
+                <componentref id="sphere_statuette2_1920"/>
+                <componentref id="sphere_statuette1_19201"/>
+                <componentref id="sphere_statuette2_19201"/>
             </children>
         </component>
 
@@ -421,7 +428,7 @@
             </children>
         </component>
 
-        <component id="piece_holder_brown">
+        <component id="piece_holder_brown_r">
             <transformation>
                 <translate x="2.5" y="0.5" z="-2"/>
                 <rotate axis="y" angle="90"/>
@@ -436,7 +443,7 @@
             </children>
         </component>
 
-        <component id="piece_holder_orange">
+        <component id="piece_holder_orange_r">
             <transformation>
                 <translate x="2.5" y="0.5" z="7"/>
                 <rotate axis="y" angle="90"/>
@@ -446,6 +453,36 @@
                 <material id="inherit" />
             </materials>
             <texture id="purple" length_s="1" length_t="1" />
+            <children>
+                <componentref id="piece_holder" />
+            </children>
+        </component>
+
+        <component id="piece_holder_brown_1920">
+            <transformation>
+                <translate x="2.5" y="0.5" z="-2"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="2" y="1" z="3"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="white-wood" length_s="1" length_t="1" />
+            <children>
+                <componentref id="piece_holder" />
+            </children>
+        </component>
+
+        <component id="piece_holder_orange_1920">
+            <transformation>
+                <translate x="2.5" y="0.5" z="7"/>
+                <rotate axis="y" angle="90"/>
+                <scale x="2" y="1" z="3"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="white-wood" length_s="1" length_t="1" />
             <children>
                 <componentref id="piece_holder" />
             </children>
@@ -522,6 +559,90 @@
         <component id="piece_holder_right">
             <transformation>
                 <transformationref id="cube_part6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+
+        <component id="sphere_statuette1_1920">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-1.5" y="1.75" z="6.5" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="statues_white1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="sphere_statuette2_1920">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-1.5" y="1.75" z="-1.5" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="statues_white2" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="sphere_statuette1_19201">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-1.5" y="1.75" z="0" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="statues_white1" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+        <component id="sphere_statuette2_19201">
+            <transformation>
+                <rotate axis="x" angle="0" />
+                <translate x="-1.5" y="1.75" z="5" />
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="statues_white2" />
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="1920_woodstripe1">
+            <transformation>
+                <scale x="0.2" y="0.2" z="135"/>
+                <translate x="-9" y="6" z="0.024" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <componentref id="parallelepiped" />
+            </children>
+        </component>
+        <component id="1920_woodstripe2">
+            <transformation>
+                <scale x="0.1" y="0.2" z="136"/>
+                <translate x="-14" y="6" z="0.024" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -678,7 +799,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="sphere_popart" />
+            <texture id="sphere_popart3" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -692,7 +813,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="sphere_popart" />
+            <texture id="sphere_popart3" />
             <children>
                 <primitiveref id="sphere" />
             </children>
