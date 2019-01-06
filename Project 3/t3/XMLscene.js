@@ -37,12 +37,20 @@ class XMLscene extends CGFscene {
 
             if(this.countdown <= 0){
                 if(this.game.started) {
+                    if(this.currentMode == 0){
+
                     this.countdown_starter -= delta;
                     this.camera_perspectiveTurn(delta);
-                    if(this.game.nextTurn)
-                    {
+
+                    if(this.countdown_starter <= 0){
+                       this.quit();
+                    }
+                    if(this.game.nextTurn){
                         this.countdown_starter = 60;
                     }
+                }
+
+                //missing bots
                     return;
                 }
             }
@@ -50,35 +58,22 @@ class XMLscene extends CGFscene {
         }
     }
 
+        /**
+     * Creates new Game and quits
+     * 
+     */
+    quit() {
+        this.selectView(this.data.views[this.data.defaultView]);
+        this.countdown_starter = 60;
+        this.game = new Game(this, 5);
+        this.game.display();
+    }
     /**
      * Updates countdown of each play
      * 
      */
     countdown() {
-        
-        if(this.countdown_starter <= 0){
-            //acabar o jogo aqui!
-        }
-
         return this.countdown_starter + this.countdown;
-    }
-
-    /**
-     * Updates player play in interface related to player.
-     * 
-     */
-    changePlayer(){
-        let turn;
-
-        if(this.game.player == 0){
-            turn = 'Brown Player playing...';
-
-        } else {
-            turn = 'Orange Player playing...';
-            this.game.player = 1;
-        }
-
-        return turn;
     }
 
     /**
@@ -120,6 +115,11 @@ class XMLscene extends CGFscene {
         this.themes['retro'] = 0;
         this.themes['1920'] = 1;
         this.currentTheme = 0;
+
+        this.modes = {};
+        this.modes['Human vs Human'] = 0;
+        this.modes['Human vs Bot Easy'] = 1;
+        this.currentMode = 0;
 
         this.enableTextures(true);
 
@@ -208,7 +208,7 @@ class XMLscene extends CGFscene {
      */
     selectView(id) {
         this.camera = this.data.views[this.data.defaultView];
-        this.interface.setActiveCamera(this.camera);
+        this.interface.setActiveCamera(null);
     }
 
     /**

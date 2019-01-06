@@ -76,6 +76,32 @@ class Game {
         this.boardPieces.push([this.player, row, column]);
     }
 
+    undo()
+    {
+        if(this.started){
+        
+            this.updatePlayer();
+            if(this.player) {
+                this.numberOfOrangePieces++;
+            }
+            else { // brown
+                this.numberOfBrownPieces++;
+            }
+            
+            this.nextTurn = true;
+            this.board.boardSequency.pop();
+            this.boardPieces.pop();
+            this.board.oldMove = [null,null,null];
+            this.board.validCell = null;
+            this.board.pickedCell = null;
+
+        
+            this.board.internalBoard.pop();
+            
+            
+        }
+    }
+
     changeTurns(move) {
         this.board.validCell = null;
         this.board.pickedCell = null;

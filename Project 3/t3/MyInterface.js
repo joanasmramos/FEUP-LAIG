@@ -48,6 +48,23 @@ class MyInterface extends CGFinterface {
         var start = new Start(this.scene);
         group.add(start, 'start').name("Start Game");
 
+        var Undo = function (scene) {
+            this.undo = function(){
+                scene.game.undo();
+            }
+        }
+        var undo = new Undo(this.scene);
+        group.add(undo, 'undo').name("Undo Game");
+
+        var Quit = function (scene) {
+            this.quit = function(){
+                scene.quit();
+            }
+        }
+        var quit = new Quit(this.scene);
+        group.add(quit, 'quit').name("Quit Game");
+
+        group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties");
         group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
     }
     /**
