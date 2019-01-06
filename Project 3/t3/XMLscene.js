@@ -96,6 +96,7 @@ class XMLscene extends CGFscene {
 
             this.rotational_angle = 0;
             this.time_passed = 0;
+            this.orange = (this.game.player)? true : false;
             this.game.nextTurn = false;
         } else if (this.game.nextTurn) {
             this.time_passed += delta;
@@ -270,6 +271,9 @@ class XMLscene extends CGFscene {
         this.game.startGame();
         this.game.board.pickable = false;
         this.movesLeft = this.previousGame.boardPieces;
+        if(this.orange) {
+            this.camera.orbit([0,1,0], Math.PI);
+        }
         this.playingFilm = true;
         this.timeForAPlay = 4;
     }
