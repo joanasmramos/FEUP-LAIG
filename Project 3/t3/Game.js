@@ -9,12 +9,12 @@ class Game {
         this.boardDimensions = boardDimensions;
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
-        this.boardPieces = new Array();
-
+        
         this.client = new MyClient();
         this.board = new MyBoard(this.scene, boardDimensions, this);
         this.orangePiece = new MyPiece(this.scene, "orange"); // for the piece holders
         this.brownPiece = new MyPiece(this.scene, "brown"); // for the piece holders
+        this.boardPieces = new Array();
         this.directionPiece = new MyRectangle(this.scene, -0.5, -0.5, 0.5, 0.5);
         this.started = false;
 
@@ -29,6 +29,7 @@ class Game {
         
         this.client.getPrologRequest("create_empty_board(" + JSON.stringify(this.boardDimensions) + ")", function(data) {
             this_t.board.internalBoard = JSON.parse(data.target.response);
+            this_t.board.boardSequency.push(this_t.board.internalBoard);
         }, function(data){});
 
         this.client.getPrologRequest("assert_dimensions(" + JSON.stringify(this.boardDimensions) + ")", function(data){}, function(data){});
@@ -48,7 +49,6 @@ class Game {
         if(oldMove[0] == null) {
             oldMove = 1; // there is no old move, this is the first move
         }
-        console.log(this.player);
         // move(Move, OldMove, PlayerNumber, BoardNumbers)
         this.client.getPrologRequest("move(" + JSON.stringify(move) + "," + JSON.stringify(oldMove) + "," +
                                     JSON.stringify(this_t.player) + "," + JSON.stringify(internalBoard) + ")", 
@@ -83,21 +83,21 @@ class Game {
         this.boardPieces.push([this.player, row, column, direction]);
     }
 
+    /**
+     * Undo last move
+     */
     undo() {
         if(this.started){
-        
-            this.updatePlayer();
-            if(this.player) {
-                this.numberOfOrangePieces++;
-            }
-            else { // brown
-                this.numberOfBrownPieces++;
-            }
             
-            this.nextTurn = true;
             this.board.boardSequency.pop();
+            this.board.internalBoard = this.board.boardSequency[this.board.boardSequency.length - 1];
             this.boardPieces.pop();
-            this.board.oldMove = [null,null,null]; //Não estou bem a ver como consigo eliminar a última jogada de modo a que se consigo meter no mesmo sítio...
+            let oldmove = this.boardPieces[this.boardPieces.length - 1];
+            if(this.boardPieces.length == 0) {
+                oldmove = [null,null,null,null];
+            }
+            this.changeTurns([oldmove[1], oldmove[2], oldmove[3]]);
+            this.board.oldMove = [oldmove[1],oldmove[2],oldmove[3]]; 
             this.board.validCell = null;
             this.board.pickedCell = null;
             
@@ -193,7 +193,6 @@ class Game {
             }
             if(i==(this.boardPieces.length - 1)) {
                 this.scene.translate(0, 0.26, 0);
-                console.log(this.boardPieces[i][directionIndex]);
                 this.scene.rotate(angle[this.boardPieces[i][directionIndex] - 1], 0, 1, 0);
                 this.scene.rotate(-Math.PI/2, 1, 0, 0);
                 this.scene.scale(0.7, 0.2, 1);

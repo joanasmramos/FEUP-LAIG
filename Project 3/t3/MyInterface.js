@@ -55,7 +55,7 @@ class MyInterface extends CGFinterface {
             }
         }
         var undo = new Undo(this.scene);
-        group.add(undo, 'undo').name("Undo Game");
+        group.add(undo, 'undo').name("Undo Move");
 
         var Quit = function (scene) {
             this.quit = function(){
