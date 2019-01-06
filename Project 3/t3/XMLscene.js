@@ -34,7 +34,6 @@ class XMLscene extends CGFscene {
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
 
-            
             if(this.game.started) {
                 if(this.currentMode == 0){
 
@@ -46,6 +45,19 @@ class XMLscene extends CGFscene {
                 }
                 if(this.game.nextTurn){
                     this.countdown_starter = 60;
+                }
+            }
+
+            if(this.playingFilm) {
+                this.timeForAPlay -= delta;
+                if(this.timeForAPlay <= 0) {
+                    this.updateFilm();
+                    if(this.movesLeft.length == 0) {
+                        this.timeForAPlay = 4;
+                        return;
+                    }
+                    this.game.changeTurns();
+                    this.timeForAPlay = 4;
                 }
             }
 
@@ -63,7 +75,6 @@ class XMLscene extends CGFscene {
         this.countdown_starter = 60;
         this.previousGame = this.game;
         this.game = new Game(this, 5);
-        this.game.display();
     }
 
     /**
@@ -75,7 +86,7 @@ class XMLscene extends CGFscene {
     }
 
     /**
-     * Updates camera perspective each 2 seconds.
+     * Updates camera perspective rotating during rotTime seconds.
      * @param {Time in seconds} delta 
      */
     camera_perspectiveTurn(delta) {
@@ -129,8 +140,8 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
 
         this.server = new MyClient(8081);
-        //this.server.makeRequest();
         this.lastT = null;
+        this.orange = false;
 
         this.rotTime = 2;
         this.rotational_angle = 0;
@@ -228,6 +239,7 @@ class XMLscene extends CGFscene {
 
         //<views>
         this.camera = this.data.views[this.data.defaultView];
+        this.defaultCamera = this.camera;
         this.interface.setActiveCamera(null);
 
         //<ambient>
@@ -248,10 +260,31 @@ class XMLscene extends CGFscene {
         // this.graph.boardDimensions = this.interface.getBoardDimensions(this.document);
         // this.graph.board = new MyBoard(this, this.graph.boardDimensions);
         
-        // provisório só pra testing
         this.game = new Game(this, 5);
+        this.previousGame = null;
 
         this.setPickEnabled(true);
+    }
+
+    playFilm(){
+        this.game.startGame();
+        this.game.board.pickable = false;
+        this.movesLeft = this.previousGame.boardPieces;
+        this.playingFilm = true;
+        this.timeForAPlay = 4;
+    }
+
+    updateFilm() {
+        if(this.movesLeft.length == 0) {
+            this.playingFilm = false;
+            this.timeForAPlay = 4;
+            this.camera = this.defaultCamera;
+            this.game = new Game(this, 5);
+            return;
+        }
+        let move = this.movesLeft[0];
+        this.game.boardPieces.push(move);
+        this.movesLeft.splice(0, 1);
     }
 
     /**

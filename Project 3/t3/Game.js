@@ -17,6 +17,7 @@ class Game {
         this.boardPieces = new Array();
         this.directionPiece = new MyRectangle(this.scene, -0.5, -0.5, 0.5, 0.5);
         this.started = false;
+        this.nextTurn = false;
 
         this.setupProlog();
     }
@@ -87,7 +88,7 @@ class Game {
      * Undo last move
      */
     undo() {
-        if(this.started){
+        if(this.started && this.boardPieces.length > 0){
             
             this.board.boardSequency.pop();
             this.board.internalBoard = this.board.boardSequency[this.board.boardSequency.length - 1];

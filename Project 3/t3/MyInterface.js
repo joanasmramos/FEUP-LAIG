@@ -43,30 +43,50 @@ class MyInterface extends CGFinterface {
         this.general = group;
         group.open();
        
-        var Start = function (scene) {
+        let Start = function (scene) {
             this.start = function(){
-                scene.interface.general.remove(scene.interface.modes);
+                if(scene.game.started) {
+                    return;
+                }
+
                 scene.game.startGame();
             }
         }
-        var start = new Start(this.scene);
+        let start = new Start(this.scene);
         group.add(start, 'start').name("Start Game");
 
-        var Undo = function (scene) {
+        let Undo = function (scene) {
             this.undo = function(){
+                if(scene.playingFilm || !scene.game.started) {
+                    return;
+                }
                 scene.game.undo();
             }
         }
-        var undo = new Undo(this.scene);
-        group.add(undo, 'undo').name("Undo Move");
+        let undo = new Undo(this.scene);
+        this.undo = group.add(undo, 'undo').name("Undo Move");
 
-        var Quit = function (scene) {
+        let PlayFilm = function(scene) {
+            this.playFilm = function() {
+                if(scene.game.started || scene.previousGame == null) {
+                    return;
+                }
+                scene.playFilm();
+            }
+        }
+        let playFilm = new PlayFilm(this.scene);
+        this.playFilm = group.add(playFilm, 'playFilm').name("Play Film");
+
+        let Quit = function (scene) {
             this.quit = function(){
-                scene.interface.modes = scene.interface.general.add(scene, 'currentMode', scene.modes).name("Modes/Difficulties");
+                if(!scene.game.started) {
+                    return;
+                }
                 scene.quit();
             }
         }
-        var quit = new Quit(this.scene);
+
+        let quit = new Quit(this.scene);
         group.add(quit, 'quit').name("Quit Game");
 
         this.modes = group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties");
