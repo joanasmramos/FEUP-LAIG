@@ -22,6 +22,7 @@ class MyInterface extends CGFinterface {
         // add a group of controls (and open/expand by defult)
 
         this.gui_play = new dat.GUI();
+        this.displayModes = true;
 
         return true;
     }
@@ -38,11 +39,13 @@ class MyInterface extends CGFinterface {
      * Adds a folder for Game and Environment controls
      */
     addOptionsGroup(){
-        var group = this.gui.addFolder("General Options");
+        let group = this.gui.addFolder("General Options");
+        this.general = group;
         group.open();
        
         var Start = function (scene) {
             this.start = function(){
+                scene.interface.general.remove(scene.interface.modes);
                 scene.game.startGame();
             }
         }
@@ -59,13 +62,14 @@ class MyInterface extends CGFinterface {
 
         var Quit = function (scene) {
             this.quit = function(){
+                scene.interface.modes = scene.interface.general.add(scene, 'currentMode', scene.modes).name("Modes/Difficulties");
                 scene.quit();
             }
         }
         var quit = new Quit(this.scene);
         group.add(quit, 'quit').name("Quit Game");
 
-        group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties");
+        this.modes = group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties");
         group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
     }
     /**

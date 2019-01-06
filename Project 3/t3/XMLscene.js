@@ -61,6 +61,7 @@ class XMLscene extends CGFscene {
     quit() {
         this.selectView(this.data.views[this.data.defaultView]);
         this.countdown_starter = 60;
+        this.previousGame = this.game;
         this.game = new Game(this, 5);
         this.game.display();
     }
