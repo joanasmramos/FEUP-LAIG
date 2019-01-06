@@ -92,6 +92,10 @@ class MyBoard extends CGFobject {
         }
     }
 
+    /**
+     * Processes cell picked
+     * @param {Pick id} id 
+     */
     pickCell(id){
         // reset
         this.validCell = null;
@@ -113,6 +117,10 @@ class MyBoard extends CGFobject {
         this.choosingDirection = true;
     }
 
+    /**
+     * Processes direction picked
+     * @param {Pick id} id 
+     */
     pickDirection(id){
         // reset
         this.validCell = null;
@@ -123,9 +131,12 @@ class MyBoard extends CGFobject {
         this.game.validateMove(this.pickedMove, this.oldMove, this.internalBoard);
     }
 
+    /**
+     * Display direction options, registering for picking
+     */
     displayDirections() {
         this.scene.clearPickRegistration();
-        let angle = [0, Math.PI/2, -Math.PI/2/2, Math.PI/2/2]
+        let angle = [0, Math.PI/2, -Math.PI/2/2, Math.PI/2/2];
 
         let i=0;
         for(let row=0; row<2; row++) {
@@ -158,6 +169,9 @@ class MyBoard extends CGFobject {
         this.scene.clearPickRegistration();
     }
 
+    /**
+     * Diplays board and registers picking board for picking
+     */
     display() {
         this.logPicking();
         this.scene.clearPickRegistration();

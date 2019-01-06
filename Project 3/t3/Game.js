@@ -13,8 +13,9 @@ class Game {
 
         this.client = new MyClient();
         this.board = new MyBoard(this.scene, boardDimensions, this);
-        this.orangePiece = new MyPiece(this.scene, "orange");
-        this.brownPiece = new MyPiece(this.scene, "brown");
+        this.orangePiece = new MyPiece(this.scene, "orange"); // for the piece holders
+        this.brownPiece = new MyPiece(this.scene, "brown"); // for the piece holders
+        this.directionPiece = new MyRectangle(this.scene, -0.5, -0.5, 0.5, 0.5);
         this.started = false;
 
         this.setupProlog();
@@ -78,8 +79,8 @@ class Game {
         else { // brown
             this.numberOfBrownPieces--;
         }
-        let row = move[0], column = move[1];
-        this.boardPieces.push([this.player, row, column]);
+        let row = move[0], column = move[1], direction = move[2];
+        this.boardPieces.push([this.player, row, column, direction]);
     }
 
     undo() {
@@ -178,7 +179,8 @@ class Game {
      * Displays pieces that are in the board
      */
     displayBoardPieces() {
-        let playerIndex = 0, rowIndex = 1, columnIndex = 2;
+        let playerIndex = 0, rowIndex = 1, columnIndex = 2, directionIndex = 3;
+        let angle = [Math.PI/2, 0, Math.PI/2/2, -Math.PI/2/2];
 
         for(let i=0; i<this.boardPieces.length; i++) {
             this.scene.pushMatrix();
@@ -189,7 +191,16 @@ class Game {
             else { // brown
                 this.brownPiece.display();
             }
+            if(i==(this.boardPieces.length - 1)) {
+                this.scene.translate(0, 0.26, 0);
+                console.log(this.boardPieces[i][directionIndex]);
+                this.scene.rotate(angle[this.boardPieces[i][directionIndex] - 1], 0, 1, 0);
+                this.scene.rotate(-Math.PI/2, 1, 0, 0);
+                this.scene.scale(0.7, 0.2, 1);
+                this.directionPiece.display();
+            }
             this.scene.popMatrix();
+
         }
 
     }

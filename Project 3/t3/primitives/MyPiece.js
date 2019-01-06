@@ -7,8 +7,6 @@ class MyPiece extends CGFobject {
         super(scene);
 
         this.type = type;
-        // this.row = row;
-        // this.column = column;
 
         this.appearance = new CGFappearance(this.scene);
         this.appearance.setAmbient(0.1, 0.1, 0.1, 1);
@@ -28,14 +26,13 @@ class MyPiece extends CGFobject {
     };
 
     display(){
-    this.scene.pushMatrix();
-        this.appearance.apply();
-        this.scene.rotate(-Math.PI/2, 1, 0, 0);
-        this.scene.scale(0.8, 0.8, 0.25);
-        this.piece.display();
-    this.scene.popMatrix();
+        this.scene.pushMatrix();
+            this.appearance.apply();
+            this.scene.rotate(-Math.PI/2, 1, 0, 0);
+            this.scene.scale(0.8, 0.8, 0.25);
+            this.piece.display();
+        this.scene.popMatrix();
 
-    this.scene.defaultAppearance.apply();
-    
+        this.scene.defaultAppearance.apply();
     };
 }
