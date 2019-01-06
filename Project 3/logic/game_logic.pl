@@ -110,12 +110,12 @@ check_diagonal_d2(Row, Column, AuxRow, AuxColumn, BoardSize) :- AuxRow =< BoardS
                                                                 AuxAuxColumn is AuxColumn + 1,
                                                                 check_diagonal_d2(Row, Column, AuxAuxRow, AuxAuxColumn, BoardSize).
 
-valid_direction(Board, v, Row, Column) :- !, findall(AvailableRow, get_element(Board, AvailableRow, Column, e), AvailableRows),
-                                          length(AvailableRows, EmptyCells),
-                                          EmptyCells >= 2. %we already know one empty cell is for the current piece
-valid_direction(Board, h, Row, Column) :- !, findall(AvailableColumn, get_element(Board, Row, AvailableColumn, e), AvailableColumns),
-                                          length(AvailableColumns, EmptyCells),
-                                          EmptyCells >= 2. %we already know one empty cell is for the current piece
+% valid_direction(Board, v, Row, Column) :- !, findall(AvailableRow, get_element(Board, AvailableRow, Column, e), AvailableRows),
+%                                           length(AvailableRows, EmptyCells),
+%                                           EmptyCells >= 2. %we already know one empty cell is for the current piece
+% valid_direction(Board, h, Row, Column) :- !, findall(AvailableColumn, get_element(Board, Row, AvailableColumn, e), AvailableColumns),
+%                                           length(AvailableColumns, EmptyCells),
+%                                           EmptyCells >= 2. %we already know one empty cell is for the current piece
 
 check_diagonal_d1_elements(_, 0, _, _, _, Aux, N) :- !, N = Aux.
 check_diagonal_d1_elements(BoardSize, _, _, BoardSize, _, Aux, N) :- !, N = Aux.
@@ -135,11 +135,11 @@ check_diagonal_d1_elements(Row, Column, Board, BoardSize, Element, Aux, N) :- Ro
                                                                               AuxColumn is Column - 1,
                                                                               check_diagonal_d1_elements(AuxRow, AuxColumn, Board, BoardSize, Element, Aux2, N).
 
-valid_direction(Board, d1, Row, Column) :- !, board_size(Size),
-                                           BoardSize is Size + 1,
-                                           go_to_border_d1(Row, Column, BorderRow, BorderColumn, Size),
-                                           check_diagonal_d1_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
-                                           N > 1. %we already know one empty cell is for the current piece
+% valid_direction(Board, d1, Row, Column) :- !, board_size(Size),
+%                                            BoardSize is Size + 1,
+%                                            go_to_border_d1(Row, Column, BorderRow, BorderColumn, Size),
+%                                            check_diagonal_d1_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
+%                                            N > 1. %we already know one empty cell is for the current piece
 
 check_diagonal_d2_elements(_, BoardSize, _, BoardSize, _, Aux, N) :- !, N = Aux.
 check_diagonal_d2_elements(BoardSize, _, _, BoardSize, _, Aux, N) :- !, N = Aux.
@@ -159,11 +159,11 @@ check_diagonal_d2_elements(Row, Column, Board, BoardSize, Element, Aux, N) :- Ro
                                                                              AuxColumn is Column + 1,
                                                                              check_diagonal_d2_elements(AuxRow, AuxColumn, Board, BoardSize, Element, Aux2, N).
 
-valid_direction(Board, d2, Row, Column) :- !, board_size(Size),
-                                          BoardSize is Size + 1,
-                                          go_to_border_d2(Row, Column, BorderRow, BorderColumn, Size),
-                                          check_diagonal_d2_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
-                                          N > 1. %we already know one empty cell is for the current piece
+% valid_direction(Board, d2, Row, Column) :- !, board_size(Size),
+%                                           BoardSize is Size + 1,
+%                                           go_to_border_d2(Row, Column, BorderRow, BorderColumn, Size),
+%                                           check_diagonal_d2_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
+%                                           N > 1. %we already know one empty cell is for the current piece
 
 % --------- LAIG
 valid_direction(Board, 1, Row, Column) :- !, findall(AvailableRow, get_element(Board, AvailableRow, Column, e), AvailableRows),

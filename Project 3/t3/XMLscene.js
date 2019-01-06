@@ -232,6 +232,19 @@ class XMLscene extends CGFscene {
     }
 
     /**
+     * 
+     * @param {*} val 
+     */
+    selectDificulty(val) {
+        if(val) {
+            this.game.setupBot();
+        }
+        else {
+            this.game.mode = 0;
+        }
+    }
+
+    /**
      *
      */
     switchComponentMaterials() {

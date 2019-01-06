@@ -9,6 +9,7 @@ class Game {
         this.boardDimensions = boardDimensions;
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
+        this.mode = 0; // human vs human
 
         this.orangePieces = new Array();
         this.brownPieces = new Array();
@@ -99,6 +100,10 @@ class Game {
         this.boardPieces.push([this.player, row, column, direction]);
     }
 
+    setupBot() {
+        this.mode = 1; // human vs bot
+    }
+
     /**
      * Undo last move
      */
@@ -134,6 +139,26 @@ class Game {
         this.board.pickedMove = [null, null, null];
         this.nextTurn = true;
         this.player = (this.player)? 0 : 1;
+        if(this.mode == 1 && this.player == 1) {
+            this.board.pickable = 0;
+            this.botMove();
+        }
+        else {
+            this.board.pickable = true;
+        }
+    }
+
+    botMove() {
+        let this_t = this;
+
+        //choose_move(BoardNumbers, OldMove)
+        this.client.getPrologRequest("choose_move(" + JSON.stringify(this.board.internalBoard) + "," +
+                                    JSON.stringify(this.board.oldMove) + ")", 
+            function(data) {
+                let response = JSON.parse(data.target.response);
+                this_t.board.pickedMove = response;
+                this_t.validateMove(response, this_t.board.oldMove, this_t.board.internalBoard);
+            }, function(data){});
     }
 
     /**

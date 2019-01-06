@@ -31,7 +31,7 @@ class MyInterface extends CGFinterface {
      */
     addGameInformations(){
         this.gui_play.add(this.scene, 'countdown_starter').listen().name('Countdown');
-        this.gui_play.add(this.scene, 'mark').listen().name('Marker +Bk/-Og'); //starting this
+        this.gui_play.add(this.scene, 'mark').listen().name('Marker +Bw/-Og'); //starting this
       //  this.gui_play.add(this.scene.changePlayer, 'turn').listen().name('Player Turn');
 
     }
@@ -90,7 +90,7 @@ class MyInterface extends CGFinterface {
         let quit = new Quit(this.scene);
         group.add(quit, 'quit').name("Quit Game");
 
-        this.modes = group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties");
+        this.modes = group.add(this.scene, 'currentMode', this.scene.modes).name("Modes/Difficulties").onChange(val => this.scene.selectDificulty(val));
         group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
     }
     /**

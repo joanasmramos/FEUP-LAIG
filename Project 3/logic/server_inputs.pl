@@ -35,5 +35,16 @@ parse_input(move(Move, OldMove, PlayerNumber, BoardNumbers), [IsValid, NewBoard]
   boardToNumbers(NewBoard, NewBoardNumbers),
   IsValid = false.
 
+%choose_move(Board, Dimensions, OldMove, Move)
+parse_input(choose_move(BoardNumbers, OldMove), Move) :-
+  boardToNumbers(Board, BoardNumbers),
+  board_size(Dimensions),
+  choose_move(Board, Dimensions, OldMove, Move).
+
 symbol_player(0, brown).
 symbol_player(1, orange).
+
+symbol_direction(1, v).
+symbol_direction(2, h).
+symbol_direction(3, d1).
+symbol_direction(4, d2).
