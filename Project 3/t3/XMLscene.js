@@ -34,6 +34,18 @@ class XMLscene extends CGFscene {
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
 
+            for(let i=0; i<this.game.orangePieces.length;i++) {
+                if(this.game.orangePieces[i].animation != null) {
+                    this.game.orangePieces[i].animation.update(currTime);
+                }
+            }
+
+            for(let i=0; i<this.game.brownPieces.length;i++) {
+                if(this.game.brownPieces[i].animation != null) {
+                    this.game.brownPieces[i].animation.update(currTime);
+                }
+            }
+
             if(this.game.started) {
                 if(this.currentMode == 0){
                 this.marker();

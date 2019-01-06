@@ -89,17 +89,22 @@ class Game {
             this.orangePieces[this.numberOfOrangePieces].onBoard = true;
             this.orangePieces[this.numberOfOrangePieces].row = row;
             this.orangePieces[this.numberOfOrangePieces].column = column;
+            this.orangePieces[this.numberOfOrangePieces].animation = new ArchAnimation(this.scene, 3, 1.55, 6.5, row, column);
         }
         else { // brown
             this.numberOfBrownPieces--;
             this.brownPieces[this.numberOfBrownPieces].onBoard = true;
             this.brownPieces[this.numberOfBrownPieces].row = row;
             this.brownPieces[this.numberOfBrownPieces].column = column;
+            this.brownPieces[this.numberOfBrownPieces].animation = new ArchAnimation(this.scene, 3, 1.55, -2.5, row, column);
             
         }
         this.boardPieces.push([this.player, row, column, direction]);
     }
 
+    /**
+     * Changes game mode
+     */
     setupBot() {
         this.mode = 1; // human vs bot
     }
@@ -125,9 +130,13 @@ class Game {
         }
     }
 
+    /**
+     * Callback for when time for a play is exceeded
+     */
     timeOut(){
         this.changeTurns(this.board.pickedMove);
     }
+
     /**
      * Changes turns
      * @param {Move} move 
@@ -148,6 +157,9 @@ class Game {
         }
     }
 
+    /**
+     * Fetch a move for the bot and play it
+     */
     botMove() {
         let this_t = this;
 

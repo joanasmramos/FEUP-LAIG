@@ -33,7 +33,18 @@ class MyPiece extends CGFobject {
         this.scene.pushMatrix();
             this.appearance.apply();
             if(this.onBoard) {
-                this.scene.translate(0.5 + this.column - 1, 0, 0.5 + this.row - 1);
+                if(this.animation != null) {
+                    this.animation.apply();
+                }
+                else { 
+                    this.scene.translate(0.5 + this.column - 1, 0, 0.5 + this.row - 1);
+                }
+            }
+            if(this.animation != null && this.type == "brown") {
+                this.scene.translate(1.55, 0, -2.5);
+            }
+            else if (this.animation != null && this.type == "orange") {
+                this.scene.translate(1.55, 0, 6.5);
             }
             this.scene.rotate(-Math.PI/2, 1, 0, 0);
             this.scene.scale(0.8, 0.8, 0.25);
