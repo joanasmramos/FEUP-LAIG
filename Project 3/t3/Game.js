@@ -120,6 +120,9 @@ class Game {
         }
     }
 
+    timeOut(){
+        this.changeTurns(this.board.pickedMove);
+    }
     /**
      * Changes turns
      * @param {Move} move 

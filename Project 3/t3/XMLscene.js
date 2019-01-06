@@ -36,12 +36,12 @@ class XMLscene extends CGFscene {
 
             if(this.game.started) {
                 if(this.currentMode == 0){
-
+                this.marker();
                 this.countdown_starter -= delta;
                 this.camera_perspectiveTurn(delta);
 
                 if(this.countdown_starter <= 0){
-                    this.quit();
+                    this.game.timeOut();
                 }
                 if(this.game.nextTurn){
                     this.countdown_starter = 60;
@@ -85,6 +85,15 @@ class XMLscene extends CGFscene {
         return this.countdown_starter;
     }
 
+     /**
+     * Updates mark in pieces
+     * 
+     */
+    marker() {
+        this.mark = this.game.numberOfOrangePieces - this.game.numberOfBrownPieces;
+
+        return this.mark;
+    }
     /**
      * Updates camera perspective rotating during rotTime seconds.
      * @param {Time in seconds} delta 
@@ -147,6 +156,8 @@ class XMLscene extends CGFscene {
         this.rotTime = 2;
         this.rotational_angle = 0;
         this.time_passed = 0;
+
+        this.mark = 0;
         
 
         this.countdown_starter = 60;
