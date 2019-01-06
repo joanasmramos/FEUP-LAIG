@@ -40,6 +40,13 @@ class MyInterface extends CGFinterface {
         var group = this.gui.addFolder("General Options");
         group.open();
        
+        var Start = function (scene) {
+            this.start = function(){
+                scene.game.startGame();
+            }
+        }
+        var start = new Start(this.scene);
+        group.add(start, 'start').name("Start Game");
 
         group.add(this.scene, 'currentTheme', this.scene.themes).name("Environment");
     }

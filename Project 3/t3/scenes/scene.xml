@@ -592,7 +592,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="statues_white2" />
+            <texture id="statues_white1" />
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -606,7 +606,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="statues_white1" />
+            <texture id="statues_white2" />
             <children>
                 <primitiveref id="sphere" />
             </children>

@@ -34,14 +34,13 @@ class XMLscene extends CGFscene {
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
             this.countdown -= delta;
-            this.countdown_starter -= delta;
 
             if(this.countdown <= 0){
                 if(this.game.started) {
+                    this.countdown_starter -= delta;
                     this.camera_perspectiveTurn(delta);
                     return;
                 }
-                this.game.startGame();
             }
 
         }
