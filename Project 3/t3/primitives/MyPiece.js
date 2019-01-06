@@ -7,6 +7,10 @@ class MyPiece extends CGFobject {
         super(scene);
 
         this.type = type;
+        this.animation = null;
+        this.onBoard = false;
+        this.row = null;
+        this.column = null;
 
         this.appearance = new CGFappearance(this.scene);
         this.appearance.setAmbient(0.1, 0.1, 0.1, 1);
@@ -28,6 +32,9 @@ class MyPiece extends CGFobject {
     display(){
         this.scene.pushMatrix();
             this.appearance.apply();
+            if(this.onBoard) {
+                this.scene.translate(0.5 + this.column - 1, 0, 0.5 + this.row - 1);
+            }
             this.scene.rotate(-Math.PI/2, 1, 0, 0);
             this.scene.scale(0.8, 0.8, 0.25);
             this.piece.display();

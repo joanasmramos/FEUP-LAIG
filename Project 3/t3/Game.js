@@ -9,6 +9,13 @@ class Game {
         this.boardDimensions = boardDimensions;
         this.numberOfOrangePieces = (boardDimensions * boardDimensions + 1) / 2;
         this.numberOfBrownPieces = this.numberOfOrangePieces;
+
+        this.orangePieces = new Array();
+        this.brownPieces = new Array();
+        for(let i = 0; i < this.numberOfOrangePieces; i++) {
+            this.orangePieces.push(new MyPiece(this.scene, "orange"));
+            this.brownPieces.push(new MyPiece(this.scene, "brown"));
+        }
         
         this.client = new MyClient();
         this.board = new MyBoard(this.scene, boardDimensions, this);
@@ -74,13 +81,21 @@ class Game {
      * @param {Move} move 
      */
     setPiece(move) {
+        let row = move[0], column = move[1], direction = move[2];
+
         if(this.player) { // orange
             this.numberOfOrangePieces--;
+            this.orangePieces[this.numberOfOrangePieces].onBoard = true;
+            this.orangePieces[this.numberOfOrangePieces].row = row;
+            this.orangePieces[this.numberOfOrangePieces].column = column;
         }
         else { // brown
             this.numberOfBrownPieces--;
+            this.brownPieces[this.numberOfBrownPieces].onBoard = true;
+            this.brownPieces[this.numberOfBrownPieces].row = row;
+            this.brownPieces[this.numberOfBrownPieces].column = column;
+            
         }
-        let row = move[0], column = move[1], direction = move[2];
         this.boardPieces.push([this.player, row, column, direction]);
     }
 
@@ -163,14 +178,14 @@ class Game {
             if(i < this.numberOfOrangePieces) {
                 this.scene.pushMatrix();
                 this.scene.translate(1.55 + row, level, 6.5 + column);
-                this.orangePiece.display();
+                this.orangePieces[i].display();
                 this.scene.popMatrix();
             }
 
             if(i < this.numberOfBrownPieces) {
                 this.scene.pushMatrix();
                 this.scene.translate(1.55 + row, level, -1.5 - column);
-                this.brownPiece.display();
+                this.brownPieces[i].display();
                 this.scene.popMatrix();
             }
         }
@@ -180,18 +195,13 @@ class Game {
      * Displays pieces that are in the board
      */
     displayBoardPieces() {
-        let playerIndex = 0, rowIndex = 1, columnIndex = 2, directionIndex = 3;
+        let rowIndex = 1, columnIndex = 2, directionIndex = 3;
         let angle = [Math.PI/2, 0, Math.PI/2/2, -Math.PI/2/2];
 
         for(let i=0; i<this.boardPieces.length; i++) {
             this.scene.pushMatrix();
             this.scene.translate(0.5 + this.boardPieces[i][columnIndex] - 1, 0, 0.5 + this.boardPieces[i][rowIndex] - 1);
-            if(this.boardPieces[i][playerIndex]) { // orange
-                this.orangePiece.display();
-            }
-            else { // brown
-                this.brownPiece.display();
-            }
+
             if(i==(this.boardPieces.length - 1)) {
                 this.scene.translate(0, 0.26, 0);
                 this.scene.rotate(angle[this.boardPieces[i][directionIndex] - 1], 0, 1, 0);
@@ -201,6 +211,14 @@ class Game {
             }
             this.scene.popMatrix();
 
+        }
+
+        for(let i=this.numberOfOrangePieces; i<this.orangePieces.length; i++) {
+            this.orangePieces[i].display();
+        }
+
+        for(let i=this.numberOfBrownPieces; i<this.brownPieces.length; i++) {
+            this.brownPieces[i].display();
         }
 
     }
