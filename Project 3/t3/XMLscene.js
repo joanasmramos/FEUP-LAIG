@@ -39,6 +39,10 @@ class XMLscene extends CGFscene {
                 if(this.game.started) {
                     this.countdown_starter -= delta;
                     this.camera_perspectiveTurn(delta);
+                    if(this.game.nextTurn)
+                    {
+                        this.countdown_starter = 60;
+                    }
                     return;
                 }
             }
