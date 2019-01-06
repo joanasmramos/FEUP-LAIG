@@ -33,32 +33,28 @@ class XMLscene extends CGFscene {
                 this.lastT = currTime;
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
-            this.countdown -= delta;
 
-            if(this.countdown <= 0){
-                if(this.game.started) {
-                    if(this.currentMode == 0){
+            
+            if(this.game.started) {
+                if(this.currentMode == 0){
 
-                    this.countdown_starter -= delta;
-                    this.camera_perspectiveTurn(delta);
+                this.countdown_starter -= delta;
+                this.camera_perspectiveTurn(delta);
 
-                    if(this.countdown_starter <= 0){
-                       this.quit();
-                    }
-                    if(this.game.nextTurn){
-                        this.countdown_starter = 60;
-                    }
+                if(this.countdown_starter <= 0){
+                    this.quit();
                 }
-
-                //missing bots
-                    return;
+                if(this.game.nextTurn){
+                    this.countdown_starter = 60;
                 }
             }
 
+            //missing bots
+            }
         }
     }
 
-        /**
+    /**
      * Creates new Game and quits
      * 
      */
@@ -68,12 +64,13 @@ class XMLscene extends CGFscene {
         this.game = new Game(this, 5);
         this.game.display();
     }
+
     /**
      * Updates countdown of each play
      * 
      */
     countdown() {
-        return this.countdown_starter + this.countdown;
+        return this.countdown_starter;
     }
 
     /**
@@ -137,7 +134,6 @@ class XMLscene extends CGFscene {
         this.rotTime = 2;
         this.rotational_angle = 0;
         this.time_passed = 0;
-        this.countdown = 0.1;
         
 
         this.countdown_starter = 60;

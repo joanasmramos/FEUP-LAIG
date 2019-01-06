@@ -93,6 +93,10 @@ class MyBoard extends CGFobject {
     }
 
     pickCell(id){
+        // reset
+        this.validCell = null;
+        this.pickedMove = [null,null,null];
+
         let rowIndex = 0, columnIndex = 1;
         let row = Math.ceil(id/this.dimensions);
         let column;
@@ -110,6 +114,9 @@ class MyBoard extends CGFobject {
     }
 
     pickDirection(id){
+        // reset
+        this.validCell = null;
+
         let directionIndex = 2;
         let direction = id - this.dimensions*this.dimensions;
         this.pickedMove[directionIndex] = direction;
@@ -166,7 +173,9 @@ class MyBoard extends CGFobject {
                 this.scene.pushMatrix();
                     this.scene.translate(column, 0, row);
                     this.scene.translate(0.5, 0.25, 0.5);
-                    this.scene.registerForPick(i, this.cells[i-1]);
+                    if(this.pickable) {
+                        this.scene.registerForPick(i, this.cells[i-1]);
+                    }
                     if(this.scene.pickMode) {
                         this.cells[i-1].display();
                     }

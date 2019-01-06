@@ -35,6 +35,12 @@ class Game {
         //this.client.getPrologRequest("quit", function(data) {}, function(data) {});
     }
 
+    /**
+     * Verifies if a move is valid, through prolog
+     * @param {Move} move 
+     * @param {Previous move} oldMove 
+     * @param {Board's internal representation} internalBoard 
+     */
     validateMove(move, oldMove, internalBoard) {
         let this_t = this;
 
@@ -61,10 +67,10 @@ class Game {
             }, function(data){});
     }
 
-    updatePlayer() {
-        this.player = (this.player)? 0 : 1;
-    }
-
+    /**
+     * Adds piece to board according to the move
+     * @param {Move} move 
+     */
     setPiece(move) {
         if(this.player) { // orange
             this.numberOfOrangePieces--;
@@ -76,8 +82,7 @@ class Game {
         this.boardPieces.push([this.player, row, column]);
     }
 
-    undo()
-    {
+    undo() {
         if(this.started){
         
             this.updatePlayer();
@@ -94,25 +99,25 @@ class Game {
             this.board.oldMove = [null,null,null]; //Não estou bem a ver como consigo eliminar a última jogada de modo a que se consigo meter no mesmo sítio...
             this.board.validCell = null;
             this.board.pickedCell = null;
-
-        
-            this.board.internalBoard.pop();
-            
             
         }
     }
 
+    /**
+     * Changes turns
+     * @param {Move} move 
+     */
     changeTurns(move) {
         this.board.validCell = null;
         this.board.pickedCell = null;
         this.board.oldMove = move;
         this.board.pickedMove = [null, null, null];
         this.nextTurn = true;
-        this.updatePlayer();
+        this.player = (this.player)? 0 : 1;
     }
 
     /**
-     * Called after countdown
+     * Initializes values for the game to start
      */
     startGame(){
         this.player = 0; // brown
@@ -169,6 +174,9 @@ class Game {
         }
     }
 
+    /**
+     * Displays pieces that are in the board
+     */
     displayBoardPieces() {
         let playerIndex = 0, rowIndex = 1, columnIndex = 2;
 
@@ -186,6 +194,9 @@ class Game {
 
     }
 
+    /**
+     * Displays whole game
+     */
     display() {
         this.displayBoard();
         this.displayStationaryPieces();

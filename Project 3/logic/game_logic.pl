@@ -165,6 +165,24 @@ valid_direction(Board, d2, Row, Column) :- !, board_size(Size),
                                           check_diagonal_d2_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
                                           N > 1. %we already know one empty cell is for the current piece
 
+% --------- LAIG
+valid_direction(Board, 1, Row, Column) :- !, findall(AvailableRow, get_element(Board, AvailableRow, Column, e), AvailableRows),
+                                          length(AvailableRows, EmptyCells),
+                                          EmptyCells >= 2. %we already know one empty cell is for the current piece
+valid_direction(Board, 2, Row, Column) :- !, findall(AvailableColumn, get_element(Board, Row, AvailableColumn, e), AvailableColumns),
+                                          length(AvailableColumns, EmptyCells),
+                                          EmptyCells >= 2. %we already know one empty cell is for the current piece
+valid_direction(Board, 3, Row, Column) :- !, board_size(Size),
+                                           BoardSize is Size + 1,
+                                           go_to_border_d1(Row, Column, BorderRow, BorderColumn, Size),
+                                           check_diagonal_d1_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
+                                           N > 1. %we already know one empty cell is for the current piece
+valid_direction(Board, 4, Row, Column) :- !, board_size(Size),
+                                         BoardSize is Size + 1,
+                                         go_to_border_d2(Row, Column, BorderRow, BorderColumn, Size),
+                                         check_diagonal_d2_elements(BorderRow, BorderColumn, Board, BoardSize, e, 0, N),
+                                         N > 1. %we already know one empty cell is for the current piece
+% --------- LAIG
 
 %symbol_piece(Player, StickDirection, Piece)
 symbol_piece(orange, v, vo).
@@ -333,6 +351,6 @@ check_diagonalline_win(Direction, Board, Row, Column, RowInc, ColumnInc, _Cnt):-
                                                                                  NewRow is (Row + RowInc), NewColumn is (Column + ColumnInc),
                                                                                  check_diagonalline_win(Direction, Board, NewRow, NewColumn, RowInc, ColumnInc, 0).
 
-get_row_column_direction(Move, Row, Column, Player) :- nth0(0, Move, Row),
+get_row_column_direction(Move, Row, Column, Direction) :- nth0(0, Move, Row),
                                                           nth0(1, Move, Column),
                                                           nth0(2, Move, Direction).
