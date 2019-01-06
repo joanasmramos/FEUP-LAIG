@@ -30,6 +30,7 @@ class MyInterface extends CGFinterface {
      */
     addGameInformations(){
         this.gui_play.add(this.scene, 'countdown_starter').listen().name('Countdown');
+        this.gui_play.add(this.scene, 'countdown_starter').listen().name('Marker +Bk/-Og'); //starting this
       //  this.gui_play.add(this.scene.changePlayer, 'turn').listen().name('Player Turn');
 
     }

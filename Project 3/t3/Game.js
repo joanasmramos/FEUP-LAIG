@@ -91,7 +91,7 @@ class Game {
             this.nextTurn = true;
             this.board.boardSequency.pop();
             this.boardPieces.pop();
-            this.board.oldMove = [null,null,null];
+            this.board.oldMove = [null,null,null]; //Não estou bem a ver como consigo eliminar a última jogada de modo a que se consigo meter no mesmo sítio...
             this.board.validCell = null;
             this.board.pickedCell = null;
 
