@@ -25,8 +25,13 @@ ___
 
 ## Project 3
 **3D interface to a game**
-A 3D interface integrated with game logic developed in SICStus Prolog. <br><br>
-Some gifs: <br><br>
+A 3D interface integrated with game logic developed in SICStus Prolog. <br>
+![User manual](https://github.com/joanasmramos/FEUP-LAIG/blob/master/Project%203/user_manual.pdf) <br><br>
+Some snapshots: <br><br>
+
+<img src="https://github.com/joanasmramos/FEUP-LAIG/blob/master/Project%203/screenshots/1.PNG" width="700"> <br><br>
+![](https://github.com/joanasmramos/FEUP-LAIG/blob/master/Project%203/screenshots/gif.gif) <br><br>
+<img src="https://github.com/joanasmramos/FEUP-LAIG/blob/master/Project%203/screenshots/2.PNG" width="700"> <br><br>
 ___
 
 Authors:
