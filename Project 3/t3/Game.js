@@ -26,6 +26,8 @@ class Game {
         this.directionPiece = new MyRectangle(this.scene, -0.5, -0.5, 0.5, 0.5);
         this.started = false;
         this.nextTurn = false;
+        this.waiting = false;
+        this.wait = 3;
 
         this.setupProlog();
     }
@@ -114,7 +116,17 @@ class Game {
      */
     undo() {
         if(this.started && this.boardPieces.length > 0){
-            
+            if(this.player) { // orange
+                this.brownPieces[this.numberOfBrownPieces].animation = null;
+                this.brownPieces[this.numberOfBrownPieces].onBoard = false;
+                this.numberOfBrownPieces++;
+            }
+            else { // brown
+                this.orangePieces[this.numberOfOrangePieces].animation = null;
+                this.orangePieces[this.numberOfOrangePieces].onBoard = false;
+                this.numberOfOrangePieces++;
+            }
+
             this.board.boardSequency.pop();
             this.board.internalBoard = this.board.boardSequency[this.board.boardSequency.length - 1];
             this.boardPieces.pop();
@@ -135,6 +147,8 @@ class Game {
      */
     timeOut(){
         this.changeTurns(this.board.pickedMove);
+        let lastMove = this.boardPieces[this.boardPieces.length-1];
+        this.board.oldMove = [lastMove[1], lastMove[2], lastMove[3]];
     }
 
     /**
@@ -161,6 +175,11 @@ class Game {
      * Fetch a move for the bot and play it
      */
     botMove() {
+        this.waiting = true;
+        this.wait = 3;
+        //while(this.wait > 0) {}
+        this.waiting = false;
+
         let this_t = this;
 
         //choose_move(BoardNumbers, OldMove)
@@ -181,6 +200,10 @@ class Game {
         this.scene.camera = this.scene.cameraBrown;
         this.board.pickable = true;
         this.started = true;
+        if(this.scene.orange) {
+            this.scene.camera.orbit([0,1,0], Math.PI);
+            this.scene.orange = false;
+        }
     }
 
     /**

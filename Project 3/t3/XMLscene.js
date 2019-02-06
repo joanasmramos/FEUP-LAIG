@@ -34,6 +34,11 @@ class XMLscene extends CGFscene {
             }
             delta *= Math.pow(10, -3); // mili seconds to seconds
 
+            if(this.game.waiting) {
+                this.game.wait -= delta;
+                console.log("here");
+            }
+
             for(let i=0; i<this.game.orangePieces.length;i++) {
                 if(this.game.orangePieces[i].animation != null) {
                     this.game.orangePieces[i].animation.update(currTime);
@@ -309,6 +314,7 @@ class XMLscene extends CGFscene {
         this.movesLeft = this.previousGame.boardPieces;
         if(this.orange) {
             this.camera.orbit([0,1,0], Math.PI);
+            this.orange = false;
         }
         this.playingFilm = true;
         this.timeForAPlay = 4;
@@ -323,6 +329,7 @@ class XMLscene extends CGFscene {
             return;
         }
         let move = this.movesLeft[0];
+        this.game.setPiece([move[1],move[2],move[3]]);
         this.game.boardPieces.push(move);
         this.movesLeft.splice(0, 1);
     }
